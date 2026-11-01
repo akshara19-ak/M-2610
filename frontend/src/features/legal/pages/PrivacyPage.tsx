@@ -1,3 +1,5 @@
+import { LandingNavbar } from "@/features/landing/components/LandingNavbar";
+import { LandingFooter } from "@/features/landing/components/LandingFooter";
 import React, { useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import {
@@ -58,52 +60,7 @@ export function PrivacyPage() {
   return (
     <div className="min-h-screen bg-[#FAF9F6] text-[#111111] flex flex-col font-sans selection:bg-[#E67230]/20 selection:text-[#E67230]">
       {/* Top Navigation Bar */}
-      <header className="sticky top-0 z-30 w-full border-b border-[#EBE7DF] bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex h-16 sm:h-18 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center gap-6">
-            <Link to="/" className="flex items-center gap-2">
-              <img
-                src={meyvedaLogo}
-                alt="Meyveda Logo"
-                className="h-9 sm:h-10 w-auto object-contain select-none"
-              />
-            </Link>
-            <span className="hidden sm:inline-block h-5 w-px bg-[#EBE7DF]" />
-            <span className="hidden sm:inline-block text-xs font-bold uppercase tracking-wider text-[#777777]">
-              Privacy Documentation
-            </span>
-          </div>
-
-          <div className="flex items-center gap-3">
-            <Link
-              to="/terms"
-              className="text-xs sm:text-sm font-semibold text-[#555555] hover:text-[#E67230] px-3 py-1.5 transition-colors"
-            >
-              Terms &amp; Conditions
-            </Link>
-            <Link
-              to="/login"
-              className="hidden sm:inline-flex text-xs sm:text-sm font-bold text-[#111111] hover:text-[#E67230] px-3 py-1.5 transition-colors"
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/register"
-              className="inline-flex items-center justify-center rounded-md bg-[#E67230] hover:bg-[#d94e10] text-white px-4 py-2 text-xs sm:text-sm font-bold shadow-xs transition-colors"
-            >
-              Register as Doctor
-            </Link>
-            <Link
-              to="/"
-              className="inline-flex size-9 sm:size-10 items-center justify-center rounded-md border border-[#EBE7DF] bg-[#FAF9F6] text-[#555555] hover:bg-white hover:text-[#E67230] hover:border-[#E67230]/40 transition-colors shadow-2xs"
-              title="Return to Meyveda Home"
-              aria-label="Back to Home"
-            >
-              <Home className="size-4 sm:size-4.5" />
-            </Link>
-          </div>
-        </div>
-      </header>
+      <LandingNavbar />
 
       {/* Hero Header */}
       <section className="relative border-b border-[#EBE7DF] bg-white py-12 sm:py-16 overflow-hidden">
@@ -443,28 +400,7 @@ export function PrivacyPage() {
       </div>
 
       {/* Footer */}
-      <footer className="w-full border-t border-[#EBE7DF] bg-white py-8 text-xs text-[#666666]">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <img src={meyvedaLogo} alt="Meyveda Logo" className="h-7 w-auto object-contain" />
-            <span>© {new Date().getFullYear()} Meyveda. Built for <strong className="font-bold text-[#E65C24]">AYUSH</strong> physicians.</span>
-          </div>
-          <div className="flex items-center gap-6 font-semibold">
-            <Link to="/terms" className="hover:text-[#E67230] hover:underline transition-colors">
-              Terms &amp; Conditions
-            </Link>
-            <Link to="/privacy" className="text-[#E67230] hover:underline">
-              Privacy Policy
-            </Link>
-            <Link to="/login" className="hover:text-[#E67230] hover:underline transition-colors">
-              Sign In
-            </Link>
-            <Link to="/register" className="hover:text-[#E67230] hover:underline transition-colors">
-              Doctor Register
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }

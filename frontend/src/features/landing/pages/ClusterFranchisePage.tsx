@@ -1,3 +1,5 @@
+import { LandingNavbar } from "../components/LandingNavbar";
+import { LandingFooter } from "../components/LandingFooter";
 import { useState, useId } from "react";
 import { Link } from "@tanstack/react-router";
 import {
@@ -286,54 +288,7 @@ Timestamp: ${d.timestamp}`;
       {/* -------------------------------------------------------------------- */}
       {/* TOP NAVIGATION BAR                                                   */}
       {/* -------------------------------------------------------------------- */}
-      <header className="sticky top-0 z-40 border-b border-[#EBE7DF] bg-white/95 backdrop-blur-md">
-        <div className="mx-auto flex h-16 sm:h-18 max-w-[1320px] items-center justify-between px-4 sm:px-8 lg:px-12">
-          {/* Brand Logo Link to Landing */}
-          <Link
-            to="/"
-            className="flex items-center gap-3 transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E67230] rounded-md"
-            aria-label="Meyveda Home"
-          >
-            <img
-              src={meyvedaLogo}
-              alt="Meyveda"
-              width={1755}
-              height={492}
-              className="h-9 sm:h-11 w-auto object-contain select-none"
-            />
-          </Link>
-
-          {/* Navigation Items */}
-          <div className="flex items-center gap-2 sm:gap-4">
-            <a
-              href="#check-availability"
-              className="hidden md:inline-flex text-xs sm:text-sm font-semibold text-[#555555] hover:text-[#E67230] transition-colors py-2 px-3"
-            >
-              Check Availability
-            </a>
-            <a
-              href="#partnership-tiers"
-              className="hidden sm:inline-flex text-xs sm:text-sm font-semibold text-[#555555] hover:text-[#E67230] transition-colors py-2 px-3"
-            >
-              Tiers & Deposits
-            </a>
-            <a
-              href="#franchise-enquiry"
-              className="inline-flex h-9 sm:h-10 items-center justify-center rounded-md bg-[#E67230] px-4 text-xs sm:text-sm font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all hover:-translate-y-0.5"
-            >
-              Enquire Now
-            </a>
-            <Link
-              to="/"
-              className="inline-flex size-9 sm:size-10 items-center justify-center rounded-md border border-[#EBE7DF] bg-[#FAF9F6] text-[#555555] hover:bg-white hover:text-[#E67230] hover:border-[#E67230]/40 transition-colors"
-              title="Return to Main Doctor Platform"
-              aria-label="Back to Doctor Platform"
-            >
-              <Home className="size-4.5" />
-            </Link>
-          </div>
-        </div>
-      </header>
+      <LandingNavbar />
 
       {/* -------------------------------------------------------------------- */}
       {/* 1. HERO SECTION — CINEMATIC VIDEO BACKGROUND WITH EDITORIAL OVERLAY  */}
@@ -1238,61 +1193,7 @@ Timestamp: ${d.timestamp}`;
       {/* -------------------------------------------------------------------- */}
       {/* 7. FOOTER                                                            */}
       {/* -------------------------------------------------------------------- */}
-      <footer className="border-t border-[#EBE7DF] bg-white py-12 text-[#111111]">
-        <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 pb-8 border-b border-[#EBE7DF]">
-            <div>
-              <img
-                src={meyvedaLogo}
-                alt="Meyveda"
-                width={1755}
-                height={492}
-                className="h-10 w-auto object-contain select-none"
-              />
-              <p className="mt-2 text-xs sm:text-sm text-[#666666] max-w-md">
-                Connecting clinical wisdom with modern pharmacy supply &amp; healthcare infrastructure across India.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-[#555555]">
-              <Link to="/doctor" className="hover:text-[#E67230] transition-colors font-medium">
-                Doctor Platform
-              </Link>
-              <span>·</span>
-              <Link to="/terms" className="hover:text-[#E67230] transition-colors font-medium">
-                Terms &amp; Conditions
-              </Link>
-              <span>·</span>
-              <Link to="/privacy" className="hover:text-[#E67230] transition-colors font-medium">
-                Privacy Policy
-              </Link>
-              <span>·</span>
-              <Link to="/contact" className="hover:text-[#E67230] transition-colors font-medium">
-                Contact Us
-              </Link>
-              <span>·</span>
-              <a href="mailto:meyvedalife@gmail.com" className="hover:text-[#E67230] transition-colors font-medium">
-                meyvedalife@gmail.com
-              </a>
-              <span>·</span>
-              <a href="tel:+919986398332" className="hover:text-[#E67230] transition-colors font-medium">
-                998-MEYVEDA
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#888888]">
-            <p>© 2026 Meyveda. Reinvent You · All rights reserved.</p>
-            <Link
-              to="/doctor"
-              className="inline-flex items-center gap-1.5 font-semibold text-[#555555] hover:text-[#E67230] transition-colors"
-            >
-              <ArrowLeft className="size-3.5" />
-              <span>Back to Doctor Platform</span>
-            </Link>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }

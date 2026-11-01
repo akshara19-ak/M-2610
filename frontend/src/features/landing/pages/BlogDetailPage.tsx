@@ -1,3 +1,5 @@
+import { LandingNavbar } from "../components/LandingNavbar";
+import { LandingFooter } from "../components/LandingFooter";
 import { useState, useEffect } from "react";
 import { Link, useParams } from "@tanstack/react-router";
 import {
@@ -124,78 +126,7 @@ export function BlogDetailPage() {
       {/* -------------------------------------------------------------------- */}
       {/* 1. HEADER                                                            */}
       {/* -------------------------------------------------------------------- */}
-      <header className="sticky top-0 z-50 border-b border-[#EBE7DF] bg-[#FAF9F6]/95 backdrop-blur-md transition-all">
-        <div className="mx-auto flex h-20 max-w-[1216px] items-center justify-between px-5 sm:px-8 lg:px-12">
-          <Link
-            to="/"
-            aria-label="Meyveda — Return to Home"
-            className="inline-flex items-center rounded-sm transition-opacity hover:opacity-90"
-          >
-            <img
-              src={meyvedaLogo}
-              alt="Meyveda — Reinvent You"
-              className="h-10 sm:h-12 w-auto object-contain"
-            />
-          </Link>
-
-          <nav aria-label="Main Navigation" className="hidden items-center gap-6 lg:flex xl:gap-8">
-            <Link
-              to="/"
-              className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
-            >
-              For Doctors
-            </Link>
-            <Link
-              to="/about"
-              className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
-            >
-              About us
-            </Link>
-            <Link
-              to="/public-relations"
-              className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
-            >
-              Public relation
-            </Link>
-            <Link
-              to="/blogs"
-              className="whitespace-nowrap py-2 text-[15px] font-bold text-[#E67230] border-b-2 border-[#E67230]"
-            >
-              Blogs
-            </Link>
-            <Link
-              to="/contact"
-              className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
-            >
-              Contact us
-            </Link>
-          </nav>
-
-          <div className="flex items-center gap-3 sm:gap-4">
-            <Link
-              to="/login"
-              className="inline-flex items-center justify-center rounded-md px-3.5 py-2 text-sm sm:text-[15px] font-bold text-[#111111] transition-colors hover:text-[#E67230]"
-            >
-              Sign In
-            </Link>
-            <Link
-              to="/register"
-              className="group relative inline-flex h-11 items-center justify-center gap-2 rounded-md bg-[#E67230] px-5 text-sm sm:text-[15px] font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] hover:shadow-[0_8px_24px_-4px_rgba(230,114,48,0.5)] active:translate-y-0 active:shadow-sm"
-            >
-              <span>Register as Doctor</span>
-              <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-            </Link>
-            <Link
-              to="/"
-              className="inline-flex size-10 sm:size-11 items-center justify-center rounded-md border border-[#EBE7DF] bg-[#FAF9F6] text-[#555555] hover:bg-white hover:text-[#E67230] hover:border-[#E67230]/40 transition-colors shadow-2xs"
-              title="Return to Meyveda Home"
-              aria-label="Back to Home"
-            >
-              <Home className="size-4.5" />
-            </Link>
-          </div>
-        </div>
-      </header>
+      <LandingNavbar activePath="/blogs" />
 
       {/* -------------------------------------------------------------------- */}
       {/* 2. MAIN DETAIL CONTENT                                               */}
@@ -301,24 +232,7 @@ export function BlogDetailPage() {
       {/* -------------------------------------------------------------------- */}
       {/* 3. FOOTER                                                            */}
       {/* -------------------------------------------------------------------- */}
-      <footer className="border-t border-[#EBE7DF] bg-white py-10 text-[#111111]">
-        <div className="mx-auto max-w-[1216px] px-5 sm:px-8 lg:px-12">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#777777]">
-            <div className="flex items-center gap-3">
-              <img src={meyvedaLogo} alt="Meyveda Logo" className="h-7 w-auto object-contain" />
-              <span>© {new Date().getFullYear()} Meyveda Ayush Pvt Ltd.</span>
-            </div>
-            <div className="flex gap-6">
-              <Link to="/about" className="hover:text-[#E67230]">About Us</Link>
-              <Link to="/public-relations" className="hover:text-[#E67230]">Public relation</Link>
-              <Link to="/blogs" className="text-[#E67230] font-semibold">Blogs</Link>
-              <Link to="/contact" className="hover:text-[#E67230]">Contact Us</Link>
-              <Link to="/privacy" className="hover:text-[#E67230]">Privacy</Link>
-              <Link to="/terms" className="hover:text-[#E67230]">Terms</Link>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <LandingFooter />
     </div>
   );
 }
