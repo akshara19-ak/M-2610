@@ -7,7 +7,7 @@ import * as M from "./admin-mock-data";
 export interface Admin { name: string; email: string; role: M.Role }
 
 export const DEMO_ACCOUNTS: (Admin & { password: string })[] = [
-  { name: "Ananya Iyer", email: "admin@meyveda.com", password: "Meyveda@2026", role: "Platform Administrator" },
+  { name: "Platform Administrator", email: "admin@meyveda.com", password: "mey@123", role: "Platform Administrator" },
   { name: "Meyveda Content Desk", email: "content@meyveda.com", password: "mey@123", role: "Platform Administrator" },
   { name: "Meera Pillai", email: "auditor@meyveda.com", password: "Meyveda@2026", role: "Read-Only Auditor" },
 ];
@@ -52,22 +52,7 @@ function readStoredAdmin(): Admin | null {
         return { name: parsed.name, email: parsed.email, role: parsed.role as M.Role };
       }
     }
-    const userRole = localStorage.getItem("meyveda_user_role");
-    const userEmail = localStorage.getItem("meyveda_user_email");
-    if (
-      userRole === "admin" ||
-      (userRole && userRole.toLowerCase().includes("admin")) ||
-      userEmail === "admin@meyveda.com"
-    ) {
-      const fallback: Admin = {
-        name: "Platform Administrator",
-        email: userEmail || "admin@meyveda.com",
-        role: "Platform Administrator",
-      };
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(fallback));
-      localStorage.setItem(SESSION_KEY, JSON.stringify(fallback));
-      return fallback;
-    }
+    // Require authentication via password; do not auto-login
     return null;
   } catch {
     return null;
@@ -88,7 +73,7 @@ function useStoreValue() {
   }, []);
 
   const ensureDemoSession = useCallback(() => {
-    const next = readStoredAdmin() ?? demoAdmin();
+    const next = readStoredAdmin();
     if (!next) return null;
     sessionStorage.setItem(SESSION_KEY, JSON.stringify(next));
     localStorage.setItem(SESSION_KEY, JSON.stringify(next));
