@@ -5884,11 +5884,14 @@ export function MeyvedaDoctorsPage() {
               </Link>
             </div>
             <a
-              href="#top"
-              onClick={(e) => handleNavClick(e, "#top")}
+              href="/#top"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }}
               className="inline-flex items-center justify-center size-8 rounded-full border border-[#EBE7DF] bg-white text-[#111111] hover:text-[#E67230] hover:border-[#E67230]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs cursor-pointer"
-              title="Back to Top"
-              aria-label="Back to Top"
+              title="Back to Home Hero"
+              aria-label="Back to Home Hero"
             >
               <Home className="size-3.5" />
             </a>
