@@ -689,34 +689,29 @@ export function Register() {
 
       {/* Full-Screen Main Content Area */}
       <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-80px)]">
-        {/* LEFT SIDE: Interactive Doctor Mascot & Registration Presentation */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-[#FFFBF8] via-[#FAF9F6] to-[#F5F2EB] border-b lg:border-b-0 lg:border-r border-[#EBE7DF] p-8 sm:p-12 lg:p-14 flex flex-col items-center justify-center text-center relative overflow-hidden">
+        {/* LEFT SIDE: Centered Sticky Interactive Doctor Mascot */}
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#FFFBF8] via-[#FAF9F6] to-[#F5F2EB] border-b lg:border-b-0 lg:border-r border-[#EBE7DF] relative overflow-hidden flex flex-col items-center justify-center">
+          {/* Ambient subtle glow */}
           <div
             className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply"
             style={{
               background:
-                "radial-gradient(ellipse 70% 60% at 50% 40%, rgba(230, 114, 48, 0.12) 0%, rgba(250, 249, 246, 0) 70%)",
+                "radial-gradient(ellipse 70% 60% at 50% 50%, rgba(230, 114, 48, 0.12) 0%, rgba(250, 249, 246, 0) 70%)",
             }}
           />
 
-          {/* Heading (Unwanted badge removed) */}
-          
-
-          {/* Interactive Cursor-Tracking Mascot (Enlarged to 7-8 cm on screen) */}
-          <div className="relative z-10 flex flex-col items-center justify-center">
-            <div className="relative flex items-center justify-center p-3 rounded-full bg-white shadow-xs border border-[#EBE7DF]/80">
+          {/* Centered & Sticky container: stays in the center-left even during scrolling */}
+          <div className="lg:sticky lg:top-24 w-full flex flex-col items-center justify-center p-8 sm:p-12 lg:p-14 my-auto">
+            <div className="relative z-10 flex items-center justify-center p-3 rounded-full bg-white shadow-md border border-[#EBE7DF]/80 hover:shadow-lg transition-shadow duration-300">
               <Mascot
                 directions="/mascots/meyveda-doctor-directions.webp"
                 reactions="/mascots/meyveda-doctor-reactions.webp"
-                size={280}
+                size={300}
                 label="Meyveda Ayurveda Doctor Mascot"
                 className="select-none"
               />
             </div>
-            
           </div>
-
-          {/* (Unwanted bottom trust/security text 'Verified AYUSH Doctor Platform · 256-bit SSL' removed) */}
         </div>
 
         {/* RIGHT SIDE: Clean, Professional Registration Form */}
