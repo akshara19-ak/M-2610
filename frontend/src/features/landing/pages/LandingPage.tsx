@@ -28,6 +28,12 @@ import {
   Layers2,
   Lock,
   Mail,
+  MapPin,
+  Facebook,
+  Instagram,
+  Linkedin,
+  Youtube,
+  Send,
   Menu,
   MessageCircle,
   Network,
@@ -5625,122 +5631,110 @@ export function MeyvedaDoctorsPage() {
       {/* 13. FOOTER (#footer)                                                 */}
       {/* Compact, professional footer for Phase 1 Doctor Platform             */}
       {/* ==================================================================== */}
-      <footer id="footer" className="bg-white py-12 text-[#111111] sm:py-16">
-        <div className="mx-auto max-w-[1216px] px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 lg:gap-8">
-            {/* Col 1: Brand */}
-            <div className="space-y-4">
+      <footer id="footer" className="bg-[#FAF9F6] border-t border-[#EBE7DF] pt-14 pb-10 text-[#111111]">
+        <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
+          {/* Main Footer 4-Column Grid */}
+          <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8 pb-12 border-b border-[#EBE7DF]">
+            {/* Col 1 (Span 4): Logo, About & Corporate/CIN */}
+            <div className="lg:col-span-4 space-y-4">
               <MeyvedaLogo />
               <p className="text-sm leading-relaxed text-[#555555]">
-                Classical wisdom. A stronger practice. Management Service Organization support for AYUSH practitioners.
+                Meyveda is a proprietary digital operating system and Management Services Organization (MSO) dedicated exclusively to the AYUSH sector.
               </p>
-              <ul className="space-y-2.5 text-sm text-[#555555]">
-                <li>
+              <div className="pt-2 text-xs text-[#666666] space-y-1">
+                <p className="font-bold text-[#111111] uppercase tracking-wide">MEYVEDA AYUSH PRIVATE LIMITED</p>
+                <p className="font-mono text-[#555555]">CIN: U86909TN2026PTC199470</p>
+              </div>
+            </div>
+
+            {/* Col 2 (Span 3): Contact Information */}
+            <div className="lg:col-span-3 space-y-3">
+              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
+                CONTACT
+              </p>
+              <ul className="space-y-3 text-xs sm:text-sm text-[#555555]">
+                <li className="flex items-start gap-2.5">
+                  <MapPin className="size-4 text-[#E67230] shrink-0 mt-0.5" />
+                  <div>
+                    <a
+                      href="https://maps.google.com/?q=Meyveda+Ayush+Private+Limited"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-[#E67230] transition-colors underline flex items-center gap-1"
+                    >
+                      <span>View on Google Maps</span>
+                      <ExternalLink className="size-3 text-[#888888]" />
+                    </a>
+                    <p className="text-[11px] text-[#777777] mt-0.5">Chennai, Tamil Nadu, India</p>
+                  </div>
+                </li>
+                <li className="flex items-center gap-2.5">
+                  <Mail className="size-4 text-[#E67230] shrink-0" />
                   <a
-                    href="#top"
-                    onClick={(e) => handleNavClick(e, "#top")}
-                    className="hover:text-[#E67230] transition-colors"
+                    href="mailto:CONTACT@MEYVEDA.COM"
+                    className="hover:text-[#E67230] transition-colors font-medium"
                   >
-                    Home
+                    CONTACT@MEYVEDA.COM
                   </a>
                 </li>
-                <li>
+                <li className="flex items-center gap-2.5">
+                  <Phone className="size-4 text-[#E67230] shrink-0" />
                   <a
-                    href="/blogs"
-                    onClick={(e) => handleNavClick(e, "/blogs")}
-                    className="hover:text-[#E67230] transition-colors"
+                    href="tel:998-MEYVEDA"
+                    className="hover:text-[#E67230] transition-colors font-medium"
                   >
-                    Blogs
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/public-relations"
-                    onClick={(e) => handleNavClick(e, "/public-relations")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Public Relations
+                    998-MEYVEDA
                   </a>
                 </li>
               </ul>
             </div>
 
-            {/* Col 2: Universal Services for AYUSH Practitioners */}
-            <div>
+            {/* Col 3 (Span 2): Quick Links */}
+            <div className="lg:col-span-2">
               <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
-                Universal services for AYUSH Practitioners
+                QUICK LINKS
               </p>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#555555]">
+              <ul className="mt-3.5 space-y-2 text-xs sm:text-sm text-[#555555]">
+                <li>
+                  <Link to="/about" className="hover:text-[#E67230] transition-colors">
+                    About Us
+                  </Link>
+                </li>
+                <li>
+                  <Link to="/blogs" className="hover:text-[#E67230] transition-colors">
+                    Blog
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href="#community"
+                    onClick={(e) => handleNavClick(e, "#community")}
+                    className="hover:text-[#E67230] transition-colors"
+                  >
+                    Community
+                  </a>
+                </li>
+                <li>
+                  <Link to="/public-relations" className="hover:text-[#E67230] transition-colors">
+                    Public Relations
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Col 4 (Span 3): Platform */}
+            <div className="lg:col-span-3">
+              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
+                PLATFORM
+              </p>
+              <ul className="mt-3.5 space-y-2 text-xs sm:text-sm text-[#555555]">
                 <li>
                   <a
                     href="#knowledge"
                     onClick={(e) => handleNavClick(e, "#knowledge")}
                     className="hover:text-[#E67230] transition-colors"
                   >
-                    Knowledge Library & Updates
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#journals"
-                    onClick={(e) => handleNavClick(e, "#journals")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Journals & Publications
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#profile"
-                    onClick={(e) => handleNavClick(e, "#profile")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Professional Profile Management
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#find-medicines"
-                    onClick={(e) => handleNavClick(e, "#find-medicines")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Interactive Medicine Catalogue
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#hrms"
-                    onClick={(e) => handleNavClick(e, "#hrms")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    HRMS & Hiring Tools
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#compliance"
-                    onClick={(e) => handleNavClick(e, "#compliance")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Compliances Management Dashboard
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 3: Core Vaidya */}
-            <div>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
-                Core Vaidya
-              </p>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#555555]">
-                <li>
-                  <a
-                    href="#core-vaidya"
-                    onClick={(e) => handleNavClick(e, "#core-vaidya")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Supply Chain Management
+                    For Practitioners
                   </a>
                 </li>
                 <li>
@@ -5749,89 +5743,8 @@ export function MeyvedaDoctorsPage() {
                     onClick={(e) => handleNavClick(e, "#core-vaidya")}
                     className="hover:text-[#E67230] transition-colors"
                   >
-                    Virtual Clinic
+                    For Clinics &amp; Hospitals
                   </a>
-                </li>
-                <li>
-                  <a
-                    href="#core-vaidya"
-                    onClick={(e) => handleNavClick(e, "#core-vaidya")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Package Service Management
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#core-vaidya"
-                    onClick={(e) => handleNavClick(e, "#core-vaidya")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Practitioners Forum & Co-practice
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 4: Managed Services Organization */}
-            <div>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
-                Managed Services Organization
-              </p>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#555555]">
-                <li>
-                  <a
-                    href="#managed-services"
-                    onClick={(e) => handleNavClick(e, "#managed-services")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Physical Co-working Clinics
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#managed-services"
-                    onClick={(e) => handleNavClick(e, "#managed-services")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    HIMS & Marketing Supports
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#managed-services"
-                    onClick={(e) => handleNavClick(e, "#managed-services")}
-                    className="hover:text-[#E67230] transition-colors"
-                  >
-                    Operational Support System
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            {/* Col 5: Connect with Meyveda */}
-            <div>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#111111]">
-                Connect with Meyveda
-              </p>
-              <ul className="mt-4 space-y-2.5 text-sm text-[#555555]">
-                <li>
-                  <Link
-                    to="/contact"
-                    className="hover:text-[#E67230] transition-colors font-bold text-[#E67230] inline-flex items-center gap-1"
-                  >
-                    <span>Contact Us</span>
-                    <ArrowRight className="size-3.5" />
-                  </Link>
-                </li>
-                <li>
-                  <button
-                    type="button"
-                    onClick={handleExploreDoctorDashboard}
-                    className="hover:text-[#E67230] transition-colors text-left cursor-pointer"
-                  >
-                    Explore Doctor Dashboard
-                  </button>
                 </li>
                 <li>
                   <a
@@ -5839,81 +5752,137 @@ export function MeyvedaDoctorsPage() {
                     onClick={(e) => handleNavClick(e, "#pharma")}
                     className="hover:text-[#E67230] transition-colors"
                   >
-                    AYUSH Pharma Makers
+                    For Ayush Manufacturers
                   </a>
                 </li>
                 <li>
-                  <Link
-                    to="/cluster-franchise"
-                    className="hover:text-[#E67230] transition-colors text-left"
-                  >
-                    Cluster Management Partner
+                  <Link to="/cluster-franchise" className="hover:text-[#E67230] transition-colors">
+                    Cluster Management Partners
                   </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/terms"
-                    className="hover:text-[#E67230] transition-colors text-left"
-                  >
-                    Terms &amp; Conditions
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/privacy"
-                    className="hover:text-[#E67230] transition-colors text-left"
-                  >
-                    Privacy Policy
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    to="/login"
-                    className="hover:text-[#E67230] transition-colors text-left"
-                  >
-                    Sign In
-                  </Link>
-                </li>
-                <li className="pt-2.5 border-t border-[#EBE7DF] text-xs text-[#555555] space-y-1.5">
-                  <p className="font-bold text-[#111111]">Direct Contact</p>
-                  <p>
-                    <a href="mailto:meyvedalife@gmail.com" className="hover:text-[#E67230] transition-colors flex items-center gap-1.5 font-medium">
-                      <Mail className="size-3.5 text-[#E67230]" />
-                      meyvedalife@gmail.com
-                    </a>
-                  </p>
-                  <p>
-                    <a href="tel:+919986398332" className="hover:text-[#E67230] transition-colors flex items-center gap-1.5 font-medium">
-                      <Phone className="size-3.5 text-[#E67230]" />
-                      998-MEYVEDA
-                    </a>
-                  </p>
                 </li>
               </ul>
             </div>
           </div>
 
-          {/* Bottom Bar: Copyright, Legal Links & Back to Top */}
-          <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-[#EBE7DF] pt-6 text-xs text-[#666666] sm:flex-row">
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <span>© {new Date().getFullYear()} Meyveda. All rights reserved.</span>
-              <span className="hidden sm:inline">•</span>
-              <Link to="/terms" className="hover:text-[#E67230] hover:underline transition-colors">
-                Terms &amp; Conditions
-              </Link>
-              <span className="hidden sm:inline">•</span>
-              <Link to="/privacy" className="hover:text-[#E67230] hover:underline transition-colors">
+          {/* Social Communities, Messengers & Linktree Row */}
+          <div className="py-8 border-b border-[#EBE7DF] flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            {/* Messengers: WhatsApp & Telegram */}
+            <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm">
+              <a
+                href="https://whatsapp.com/channel/0029Vb5lp2eICVfeN93oxw11"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-[#EBE7DF] bg-white px-3.5 py-2 font-medium text-[#111111] hover:border-[#25D366] hover:text-[#25D366] transition-colors shadow-2xs"
+              >
+                <MessageCircle className="size-4 text-[#25D366]" />
+                <span>WhatsApp Community</span>
+              </a>
+              <a
+                href="https://t.me/meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg border border-[#EBE7DF] bg-white px-3.5 py-2 font-medium text-[#111111] hover:border-[#229ED9] hover:text-[#229ED9] transition-colors shadow-2xs"
+              >
+                <Send className="size-4 text-[#229ED9]" />
+                <span>Telegram Community</span>
+              </a>
+              <a
+                href="https://linktr.ee/meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 rounded-lg border border-[#EBE7DF] bg-white px-3.5 py-2 font-medium text-[#111111] hover:border-[#E67230] hover:text-[#E67230] transition-colors shadow-2xs"
+              >
+                <span className="font-bold text-[#E67230]">linktr.ee</span>
+                <span className="text-[#555555]">/meyveda</span>
+                <ExternalLink className="size-3 text-[#888888] ml-0.5" />
+              </a>
+            </div>
+
+            {/* Social Media Channels */}
+            <div className="flex items-center gap-2.5">
+              <a
+                href="https://www.facebook.com/meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meyveda on Facebook"
+                className="flex size-9 items-center justify-center rounded-full border border-[#EBE7DF] bg-white text-[#555555] hover:text-[#1877F2] hover:border-[#1877F2]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs"
+              >
+                <Facebook className="size-4" />
+              </a>
+              <a
+                href="https://www.instagram.com/meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meyveda on Instagram"
+                className="flex size-9 items-center justify-center rounded-full border border-[#EBE7DF] bg-white text-[#555555] hover:text-[#E4405F] hover:border-[#E4405F]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs"
+              >
+                <Instagram className="size-4" />
+              </a>
+              <a
+                href="https://www.linkedin.com/company/meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meyveda on LinkedIn"
+                className="flex size-9 items-center justify-center rounded-full border border-[#EBE7DF] bg-white text-[#555555] hover:text-[#0A66C2] hover:border-[#0A66C2]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs"
+              >
+                <Linkedin className="size-4" />
+              </a>
+              <a
+                href="https://www.youtube.com/@Meyveda_reinvent_you"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meyveda on YouTube"
+                className="flex size-9 items-center justify-center rounded-full border border-[#EBE7DF] bg-white text-[#555555] hover:text-[#FF0000] hover:border-[#FF0000]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs"
+              >
+                <Youtube className="size-4" />
+              </a>
+              <a
+                href="https://x.com/Meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meyveda on X (Twitter)"
+                className="flex size-9 items-center justify-center rounded-full border border-[#EBE7DF] bg-white text-[#555555] hover:text-[#111111] hover:border-[#111111]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs font-extrabold text-sm"
+              >
+                𝕏
+              </a>
+              <a
+                href="https://www.threads.com/@meyveda"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Meyveda on Threads"
+                className="flex size-9 items-center justify-center rounded-full border border-[#EBE7DF] bg-white text-[#555555] hover:text-[#111111] hover:border-[#111111]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs font-bold text-xs"
+              >
+                @
+              </a>
+            </div>
+          </div>
+
+          {/* Bottom Bar: Copyright & Grievance Links */}
+          <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-[#666666]">
+            <div>
+              © 2026 meyveda ayush pvt ltd. All rights reserved.
+            </div>
+            <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+              <Link to="/privacy" className="hover:text-[#E67230] transition-colors">
                 Privacy Policy
+              </Link>
+              <span>|</span>
+              <Link to="/terms" className="hover:text-[#E67230] transition-colors">
+                Terms of Service
+              </Link>
+              <span>|</span>
+              <Link to="/contact" className="hover:text-[#E67230] transition-colors">
+                Support &amp; Grievance Desk
               </Link>
             </div>
             <a
               href="#top"
               onClick={(e) => handleNavClick(e, "#top")}
-              className="inline-flex items-center justify-center size-9 rounded-full border border-[#EBE7DF] bg-white text-[#111111] hover:text-[#E67230] hover:border-[#E67230]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs cursor-pointer"
+              className="inline-flex items-center justify-center size-8 rounded-full border border-[#EBE7DF] bg-white text-[#111111] hover:text-[#E67230] hover:border-[#E67230]/40 hover:bg-[#FAF9F6] transition-all shadow-2xs cursor-pointer"
               title="Back to Top"
               aria-label="Back to Top"
             >
-              <Home className="size-4" />
+              <Home className="size-3.5" />
             </a>
           </div>
         </div>
