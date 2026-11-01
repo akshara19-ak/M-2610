@@ -189,69 +189,58 @@ const AYUSH_SYSTEMS = [
 const carouselFeatures = [
   {
     number: "01",
-    tag: "Available",
-    title: "Knowledge Library & Updates",
-    description: "Keep the original source close to every question.",
-    referenceDetail: "Classical texts · Verses · Source updates",
-    href: "#knowledge",
-    icon: BookOpen,
-    ctaText: "Explore Library",
-    illustrationType: "library",
-  },
-  {
-    number: "02",
-    tag: "Planned",
-    title: "Journals & Publications",
-    description: "Bring research into your ongoing professional learning.",
-    referenceDetail: "Peer review · Clinical studies · Citations",
-    href: "#journals",
-    icon: FileText,
-    ctaText: "View Publications",
-    illustrationType: "journals",
-  },
-  {
-    number: "03",
-    tag: "Profile available",
-    title: "Professional Profile Management",
-    description: "Build a professional identity, sharable to the Vaidya Forum.",
-    referenceDetail: "Verified credentials · Vaidya Forum · Public ID",
+    tag: "Trust & Credentials",
+    title: "Verified Digital Identity & Trust Engine",
+    description: "Public Profile (education, HFR, achievements), Practice Management (schedules, costing), and Credibility Building (endorsed case histories, care programs).",
+    referenceDetail: "Public Profile · Practice Management · Credibility Building",
     href: "#profile",
     icon: UserRound,
-    ctaText: "Manage Profile",
+    ctaText: "Manage Identity",
     illustrationType: "profile",
   },
   {
-    number: "04",
-    tag: "Preview",
-    title: "Interactive Medicine Catalogue",
-    description: "Explore medicines with clearer sourcing and reference context.",
-    referenceDetail: "Formulations · Dravya sourcing · Dosage specs",
+    number: "02",
+    tag: "Knowledge & Research",
+    title: "The Wisdom Hub (Knowledge & Research Base)",
+    description: "Classical Library (ancient/govt authorized texts), Modern Publications (open-access journals), and Clinical Insights.",
+    referenceDetail: "Classical Library · Modern Publications · Clinical Insights",
+    href: "#knowledge",
+    icon: BookOpen,
+    ctaText: "Explore Wisdom Hub",
+    illustrationType: "library",
+  },
+  {
+    number: "03",
+    tag: "Formulation & Supply",
+    title: "Dynamic Medicine Catalogue & Procurement",
+    description: "Interactive Manufacturer Profiles (with ingredients, ADR, expiry), Safe Prescribing (allergy cross-checking), and B2B Marketplace (consumables, equipment).",
+    referenceDetail: "Manufacturer Profiles · Safe Prescribing · B2B Marketplace",
     href: "#find-medicines",
     icon: Search,
     ctaText: "Browse Catalogue",
     illustrationType: "medicines",
   },
   {
-    number: "05",
-    tag: "Planned",
-    title: "HRMS & Hiring Tools",
-    description: "Spend less time coordinating teams and more time delivering care.",
-    referenceDetail: "Team rosters · Practitioner hiring · Scheduling",
-    href: "#hrms",
-    icon: UsersRound,
-    ctaText: "Learn More",
-    illustrationType: "hrms",
+    number: "04",
+    tag: "Clinical Care & Growth",
+    title: "Clinical Toolkit & Structured Care Programs",
+    description: "E-Prescription Engine, Patient Lifecycle Management (Prakriti assessment, chronic care subscriptions), and Patient Sourcing (digital/physical campaigns, webinars).",
+    referenceDetail: "E-Prescriptions · Prakriti & Lifecycle · Patient Sourcing",
+    href: "#clinical-toolkit",
+    icon: ShieldCheck,
+    ctaText: "View Toolkit",
+    illustrationType: "compliance",
   },
   {
-    number: "06",
-    tag: "Planned",
-    title: "Compliances Management Dashboard",
-    description: "Keep important practice obligations visible in one place.",
-    referenceDetail: "Obligations registry · Audit trails · Verification",
-    href: "#compliance",
-    icon: ShieldCheck,
-    ctaText: "Learn More",
-    illustrationType: "compliance",
+    number: "05",
+    tag: "Peer Network & Careers",
+    title: "Opportunity Desk & Peer Collaborative",
+    description: "Career & Event Tracking (job availability, validated CMEs), Monetized Networking (co-signing, second opinions), and Clinical Expansion (cross-border practice, CTMS internships).",
+    referenceDetail: "Career & CMEs · Monetized Networking · Clinical Expansion",
+    href: "#community",
+    icon: UsersRound,
+    ctaText: "Join Collaborative",
+    illustrationType: "hrms",
   },
 ];
 
@@ -3102,10 +3091,10 @@ function PracticeSuiteScrollSection({
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                FOUNDATIONAL SERVICES · FOR ALL AYUSH PRACTITIONERS
+                FOUNDATIONAL LAYER · FOR ALL AYUSH PRACTITIONERS
               </p>
               <h3 className="mt-1 text-2xl font-extrabold tracking-tight text-[#111111] sm:text-3xl lg:text-[34px]">
-                Universal services for AYUSH Practitioners
+                Foundational Layer: Essential Service to AYUSH Practitioners
               </h3>
               <p className="mt-2 text-base text-[#6B6B6B] sm:text-[17px] leading-relaxed max-w-2xl">
                 A shared foundation for informed, connected practice.
