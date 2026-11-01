@@ -38,8 +38,7 @@ export interface NavItem {
 }
 
 export const NAV: readonly NavItem[] = [
-  { to: "/", label: "Home", icon: Home },
-  { to: "/workspace", label: "Dashboard", icon: LayoutDashboard },
+    { to: "/workspace", label: "Dashboard", icon: LayoutDashboard },
   { to: "/survey", label: "Survey", icon: ClipboardList },
   { to: "/referrals", label: "Referrals & Early Access", icon: UserPlus },
 ] as const;
@@ -50,20 +49,16 @@ const navItemClass = (active: boolean) =>
     active && "bg-sidebar-accent font-semibold",
   );
 
-function BrandPanel({ compact, onNavigate }: { compact?: boolean; onNavigate?: () => void }) {
+function BrandPanel({ compact }: { compact?: boolean; onNavigate?: () => void }) {
   return (
-    <Link
-      to="/"
-      onClick={onNavigate}
-      title="Return to Meyveda Home"
-      aria-label="Return to Meyveda Home"
+    <div
       className={cn(
-        "group flex shrink-0 items-center justify-center rounded-2xl bg-white shadow-soft transition-all duration-200 hover:scale-[1.02] hover:shadow-md cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white",
+        "group flex shrink-0 items-center justify-center rounded-2xl bg-white shadow-soft transition-all duration-200 select-none",
         compact ? "mx-auto h-14 w-14" : "w-full px-3 py-3",
       )}
     >
       <Logo compact={compact ?? false} />
-    </Link>
+    </div>
   );
 }
 
@@ -314,30 +309,13 @@ export function AppShell({ children }: { children: ReactNode }) {
           <span className="max-w-[200px] truncate text-xs font-semibold text-foreground">
             {doctor.name}
           </span>
-          <Link
-            to="/"
-            title="Return to Meyveda Home"
-            aria-label="Return to Meyveda Home"
-            className="grid h-9 w-9 shrink-0 place-items-center rounded-lg hover:bg-muted text-foreground transition-colors"
-          >
-            <Home className="h-4 w-4" />
-          </Link>
+          
         </div>
 
-        {/* Desktop Top Header Bar with prominent Back to Home option */}
+        {/* Desktop Top Header Bar */}
         <header className="hidden h-14 items-center justify-between border-b border-border bg-white/80 px-6 backdrop-blur-md lg:flex">
-          <div className="flex items-center gap-3">
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 rounded-lg border border-[#EBE7DF] bg-[#FAF9F6] px-3 py-1.5 text-xs font-bold text-[#555555] transition-colors hover:border-[#E67230]/40 hover:bg-white hover:text-[#E67230] shadow-2xs"
-              title="Return to Meyveda Landing Page"
-              aria-label="Back to Home"
-            >
-              <Home className="h-3.5 w-3.5 text-[#E67230]" />
-              <span>Back to Home</span>
-            </Link>
-            <span className="text-xs text-muted-foreground/60">•</span>
-            <span className="text-xs font-semibold text-muted-foreground capitalize">
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-bold text-foreground capitalize">
               {pathname === "/workspace" || pathname === "/ws"
                 ? "Doctor Workspace"
                 : pathname.replace("/", "").replace("-", " ")}
@@ -348,14 +326,6 @@ export function AppShell({ children }: { children: ReactNode }) {
             <span className="text-xs font-bold text-foreground">
               {doctor.name}
             </span>
-            <Link
-              to="/"
-              className="inline-flex size-9 items-center justify-center rounded-lg border border-[#EBE7DF] bg-[#FAF9F6] text-[#555555] transition-colors hover:border-[#E67230]/40 hover:bg-white hover:text-[#E67230] shadow-2xs"
-              title="Return to Meyveda Home"
-              aria-label="Back to Home"
-            >
-              <Home className="h-4 w-4" />
-            </Link>
           </div>
         </header>
 
