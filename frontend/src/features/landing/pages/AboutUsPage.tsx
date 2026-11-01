@@ -2,6 +2,7 @@ import { LandingNavbar } from "../components/LandingNavbar";
 import { LandingFooter } from "../components/LandingFooter";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
+import meyvedaLogo2 from "@/assets/MEY_VEDA Logo2.png";
 import {
   ArrowRight,
   ShieldCheck,
@@ -194,41 +195,64 @@ export function AboutUsPage() {
         {/* ================================================================== */}
         <section id="who-we-are" className="py-16 sm:py-24 border-b border-[#EBE7DF] bg-white">
           <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
-            <div className="max-w-3xl space-y-6">
-              <div>
-                <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                  WHO WE ARE
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-14 items-center">
+              {/* Left Column: Editorial Text & Charter Callout */}
+              <div className="lg:col-span-7 space-y-6">
+                <div>
+                  <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[#E67230]">
+                    WHO WE ARE
+                  </p>
+                  <h2
+                    className="text-balance text-3xl font-extrabold leading-[1.14] tracking-tight text-[#111111] sm:text-4xl lg:text-[42px]"
+                    style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
+                  >
+                    Your Clinician-First Partner
+                  </h2>
+                </div>
+
+                <p className="text-base sm:text-lg text-[#555555] leading-relaxed">
+                  <strong className="font-bold text-[#111111]">Meyveda Ayush Pvt Ltd</strong> is an
+                  AYUSH-focused practitioner enablement ecosystem and Phygital practice toolkit.
+                  Rather than positioning as an abstract algorithm or commercial middleman, Meyveda serves as a
+                  grounded, clinician-first partner designed to help registered AYUSH practitioners (Vaidyas)
+                  launch, operate, and scale their careers with absolute professional dignity.
                 </p>
-                <h2
-                  className="text-balance text-3xl font-extrabold leading-[1.14] tracking-tight text-[#111111] sm:text-4xl lg:text-[42px]"
-                  style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
-                >
-                  Your Clinician-First Partner
-                </h2>
+
+                {/* The Clean Division of Responsibility Charter Callout */}
+                <div className="rounded-xl border-l-4 border-[#E67230] border-y border-r border-[#EBE7DF] bg-[#FAF9F6] p-6 sm:p-7 space-y-3">
+                  <p className="text-xs font-bold uppercase tracking-wider text-[#E67230] flex items-center gap-1.5">
+                    <Scale className="size-3.5" />
+                    <span>The Meyveda Practice Charter</span>
+                  </p>
+                  <blockquote className="text-base sm:text-lg italic font-medium text-[#111111] leading-relaxed">
+                    &ldquo;We establish a clean division of responsibility: every non-medical, operational,
+                    administrative, and logistical task stays with us, leaving all clinical decisions and patient
+                    care entirely in your hands.&rdquo;
+                  </blockquote>
+                  <p className="text-xs font-medium text-[#777777]">
+                    — Meyveda Clinician Enablement Commitment
+                  </p>
+                </div>
               </div>
 
-              <p className="text-base sm:text-lg text-[#555555] leading-relaxed">
-                <strong className="font-bold text-[#111111]">Meyveda Ayush Pvt Ltd</strong> is an
-                AYUSH-focused practitioner enablement ecosystem and Phygital practice toolkit.
-                Rather than positioning as an abstract algorithm or commercial middleman, Meyveda serves as a
-                grounded, clinician-first partner designed to help registered AYUSH practitioners (Vaidyas)
-                launch, operate, and scale their careers with absolute professional dignity.
-              </p>
-
-              {/* The Clean Division of Responsibility Charter Callout */}
-              <div className="rounded-xl border-l-4 border-[#E67230] border-y border-r border-[#EBE7DF] bg-[#FAF9F6] p-6 sm:p-7 space-y-3">
-                <p className="text-xs font-bold uppercase tracking-wider text-[#E67230] flex items-center gap-1.5">
-                  <Scale className="size-3.5" />
-                  <span>The Meyveda Practice Charter</span>
-                </p>
-                <blockquote className="text-base sm:text-lg italic font-medium text-[#111111] leading-relaxed">
-                  &ldquo;We establish a clean division of responsibility: every non-medical, operational,
-                  administrative, and logistical task stays with us, leaving all clinical decisions and patient
-                  care entirely in your hands.&rdquo;
-                </blockquote>
-                <p className="text-xs font-medium text-[#777777]">
-                  — Meyveda Clinician Enablement Commitment
-                </p>
+              {/* Right Column: Balanced Logo Presentation */}
+              <div className="lg:col-span-5 flex items-center justify-center py-4 lg:py-0">
+                <div className="relative w-full max-w-[380px] lg:max-w-[420px] rounded-3xl border border-[#EBE7DF] bg-gradient-to-b from-[#FFFBF8] via-[#FAF9F6] to-[#FAF7F2] p-8 sm:p-10 shadow-[0_12px_40px_-12px_rgba(230,114,48,0.12)] flex flex-col items-center justify-center text-center group transition-all duration-300 hover:border-[#E67230]/40 hover:shadow-[0_16px_48px_-12px_rgba(230,114,48,0.2)]">
+                  <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-br from-[#E67230]/15 to-transparent opacity-40 blur-sm pointer-events-none" />
+                  <img
+                    src={meyvedaLogo2}
+                    alt="Meyveda Official Emblem"
+                    className="relative z-10 w-full max-h-[220px] sm:max-h-[260px] object-contain select-none transition-transform duration-300 group-hover:scale-103 drop-shadow-sm"
+                  />
+                  <div className="mt-6 relative z-10 pt-4 border-t border-[#EBE7DF] w-full text-center">
+                    <p className="text-xs font-bold tracking-wider uppercase text-[#E67230]">
+                      Meyveda Ayush Pvt Ltd
+                    </p>
+                    <p className="mt-1 text-[11.5px] text-[#777777]">
+                      Clinician-First AYUSH Ecosystem · Phygital Infrastructure
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
