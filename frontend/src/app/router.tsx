@@ -162,8 +162,26 @@ function ErrorComponent({ error, reset }: { error: unknown; reset: () => void })
 /*                                ROUTE TREE                                  */
 /* -------------------------------------------------------------------------- */
 
+function RootComponent() {
+  React.useEffect(() => {
+    if (typeof window !== "undefined") {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const ref = (params.get("ref") || params.get("invite") || "").toUpperCase().slice(0, 5);
+        if (ref && ref.length === 5) {
+          localStorage.setItem("meyveda_cached_referral_code", ref);
+        }
+      } catch {
+        /* ignore */
+      }
+    }
+  }, []);
+
+  return <Outlet />;
+}
+
 export const rootRoute = createRootRoute({
-  component: () => <Outlet />,
+  component: RootComponent,
   notFoundComponent: NotFoundComponent,
   errorComponent: ErrorComponent as any,
 });

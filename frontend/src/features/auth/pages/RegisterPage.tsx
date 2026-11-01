@@ -211,11 +211,19 @@ export function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  // 9. Invite / Referral Code
+  // 9. Invite / Referral Code (persisted in cache/storage across navigation)
   const [inviteCode, setInviteCode] = useState(() => {
     if (typeof window !== "undefined") {
       const params = new URLSearchParams(window.location.search);
-      return (params.get("ref") || params.get("invite") || "").toUpperCase().slice(0, 5);
+      const urlCode = (params.get("ref") || params.get("invite") || "").toUpperCase().slice(0, 5);
+      if (urlCode && urlCode.length === 5) {
+        try { localStorage.setItem("meyveda_cached_referral_code", urlCode); } catch {}
+        return urlCode;
+      }
+      try {
+        const cached = localStorage.getItem("meyveda_cached_referral_code") || "";
+        if (cached) return cached.toUpperCase().slice(0, 5);
+      } catch {}
     }
     return "";
   });
@@ -248,9 +256,10 @@ export function Register() {
     return () => clearInterval(interval);
   }, [mobileCooldown]);
 
-  // Auto-validate invite code if passed via URL parameter
+  // Auto-validate invite code from URL parameter or persistent cache
   useEffect(() => {
     if (inviteCode && inviteCode.length === 5) {
+      try { localStorage.setItem("meyveda_cached_referral_code", inviteCode); } catch {}
       handleValidateInvite(inviteCode);
     }
   }, []);
