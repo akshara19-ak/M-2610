@@ -5329,8 +5329,8 @@ export function MeyvedaDoctorsPage() {
       </section>
 
       {/* ==================================================================== */}
-      {/* 3. DOCTOR-CENTRIC VALUE BRIDGE & CAROUSEL (#doctors)                 */}
-      {/* Concise value proposition + Sleek carousel WITHOUT number indicator  */}
+      {/* 3. AYUSH PHYGITAL ECOSYSTEM (#doctors)                               */}
+      {/* Three distinct operational tiers: Foundational, Functional, Flagship */}
       {/* ==================================================================== */}
       <section
         id="doctors"
@@ -5342,7 +5342,7 @@ export function MeyvedaDoctorsPage() {
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:gap-12 items-start">
             <div className="lg:col-span-4 xl:col-span-4">
               <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                <strong className="font-bold text-[#E65C24]">AYUSH</strong> Medical Intelligence
+                AYUSH Phygital Ecosystem
               </p>
               <h2
                 id="practice-connected-title"
@@ -5350,172 +5350,176 @@ export function MeyvedaDoctorsPage() {
               >
                 Classical Knowledge.
                 <br />
-                Medicine Intelligence.
+                Modern Intelligence.
                 <br />
                 <span className="text-[#E67230]">Evidence-Driven Practice.</span>
               </h2>
             </div>
             <div className="lg:col-span-8 xl:col-span-8 lg:border-l lg:border-[#EBE7DF] lg:pl-10 xl:pl-12">
               <p className="text-base sm:text-lg lg:text-[18px] leading-relaxed sm:leading-[1.75] text-[#555555]">
-                Meyveda connects authoritative Samhita literature, commercial formulation
-                records, and batch-level testing evidence with your personal research—built
-                specifically for <strong className="font-bold text-[#E65C24]">AYUSH</strong> physicians.
+                Establish your verified digital identity and tap into a trusted network of traditional medical wisdom. Power your daily practice with a dynamic, digital-first clinic operating system tailored for <strong className="font-bold text-[#E65C24]">AYUSH</strong>. Scale your healthcare enterprise seamlessly with turnkey infrastructure and full-stack administrative support.
               </p>
 
-              {/* 3 Distinctive Doctor Value Cards: Balanced row on desktop, equal widths/heights, generous text room */}
+              {/* 3 Distinctive Ecosystem Layer Cards: Box 1, Box 2, Box 3 */}
               <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5 sm:gap-4 lg:gap-3.5 xl:gap-4 items-stretch">
-                {/* Value Card 1: Knowledge, HRMS & Compliance */}
-                <div className="group flex h-full flex-col justify-start rounded-2xl border border-[#EBE7DF] bg-white p-4.5 sm:p-5 lg:p-4.5 xl:p-5 shadow-2xs transition-all duration-250 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-xs motion-reduce:transition-none">
-                  {/* Upper Row: Left-aligned Icon and Top Heading */}
-                  <div className="flex items-center gap-3 sm:gap-3.5">
-                    {/* Compact Animated Vector Icon */}
-                    <div className="shrink-0 w-9 sm:w-10 lg:w-9.5 xl:w-10 flex items-center justify-center transition-transform duration-250 group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0">
-                      <svg
-                        viewBox="0 0 72 72"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-9 sm:size-10 lg:size-9.5 xl:size-10 text-[#E67230] meyveda-icon-float"
-                        aria-hidden="true"
-                      >
-                        {/* Open manuscript & legal balance scales doodle */}
-                        <path
-                          d="M36 48C30 44 20 44 10 47V23C20 20 30 20 36 24M36 48C42 44 52 44 62 47V23C52 20 42 20 36 24M36 48V24"
-                          stroke="#E67230"
-                          strokeWidth="2.25"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        {/* Compliance check shield mark */}
-                        <path
-                          d="M48 20L53 25L61 17"
-                          stroke="#E67230"
-                          strokeWidth="2.25"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        {/* Manuscript lines */}
-                        <path
-                          d="M17 29C22 28 27 28 30 29M17 35C22 34 27 34 30 35M17 41C22 40 27 40 30 41"
-                          stroke="#E67230"
-                          strokeWidth="1.75"
-                          strokeOpacity="0.55"
-                          strokeLinecap="round"
-                        />
-                      </svg>
+                {/* Box 1: Foundational Layer */}
+                <div className="group flex h-full flex-col justify-between rounded-2xl border border-[#EBE7DF] bg-white p-5 lg:p-5 shadow-2xs transition-all duration-250 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-sm">
+                  <div>
+                    {/* Header: Icon + Title */}
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 w-9 sm:w-10 flex items-center justify-center transition-transform duration-250 group-hover:-translate-y-0.5">
+                        <svg
+                          viewBox="0 0 72 72"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="size-9 sm:size-10 text-[#E67230] meyveda-icon-float"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M36 48C30 44 20 44 10 47V23C20 20 30 20 36 24M36 48C42 44 52 44 62 47V23C52 20 42 20 36 24M36 48V24"
+                            stroke="#E67230"
+                            strokeWidth="2.25"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M48 20L53 25L61 17"
+                            stroke="#E67230"
+                            strokeWidth="2.25"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M17 29C22 28 27 28 30 29M17 35C22 34 27 34 30 35M17 41C22 40 27 40 30 41"
+                            stroke="#E67230"
+                            strokeWidth="1.75"
+                            strokeOpacity="0.55"
+                            strokeLinecap="round"
+                          />
+                        </svg>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#E67230] block">
+                          Foundational Layer
+                        </span>
+                        <h3 className="text-[15px] sm:text-[16px] font-bold tracking-tight text-[#111111] leading-snug mt-0.5">
+                          Essential Service to AYUSH Practitioners
+                        </h3>
+                      </div>
                     </div>
 
-                    <h3 className="flex-1 min-w-0 text-[16px] sm:text-[17px] lg:text-[16px] xl:text-[17px] font-bold tracking-tight text-[#111111] leading-snug">
-                      Knowledge, HRMS & Compliance
-                    </h3>
+                    <p className="mt-3 text-[13px] sm:text-[13.5px] font-normal leading-relaxed text-[#555555]">
+                      Access the essential digital toolkit designed for every modern AYUSH practitioner. This layer secures your verified public identity, unlocks authorized classical medical wisdom, and connects you directly to a trusted peer and procurement network.
+                    </p>
                   </div>
-
-                  {/* Lower Content Area: Regular-weight, readable secondary description */}
-                  <p className="mt-2.5 sm:mt-3 text-[13.5px] sm:text-[14px] lg:text-[13px] xl:text-[14px] font-normal leading-relaxed text-[#555555]">
-                    Trusted clinical references, practice resources, HRMS tools, and compliance support in one place.
-                  </p>
                 </div>
 
-                {/* Value Card 2: Ethical Supply & Billing */}
-                <div className="group flex h-full flex-col justify-start rounded-2xl border border-[#EBE7DF] bg-white p-4.5 sm:p-5 lg:p-4.5 xl:p-5 shadow-2xs transition-all duration-250 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-xs motion-reduce:transition-none">
-                  {/* Upper Row: Left-aligned Icon and Top Heading */}
-                  <div className="flex items-center gap-3 sm:gap-3.5">
-                    {/* Compact Animated Vector Icon */}
-                    <div className="shrink-0 w-9 sm:w-10 lg:w-9.5 xl:w-10 flex items-center justify-center transition-transform duration-250 group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0">
-                      <svg
-                        viewBox="0 0 72 72"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-9 sm:size-10 lg:size-9.5 xl:size-10 text-[#E67230] meyveda-icon-pulse"
-                        aria-hidden="true"
-                      >
-                        {/* Medicine box / ethical supply delivery carton */}
-                        <path
-                          d="M36 14L56 25V47L36 58L16 47V25L36 14Z"
-                          stroke="#E67230"
-                          strokeWidth="2.25"
-                          strokeLinejoin="round"
-                        />
-                        <path
-                          d="M36 14V58M16 25L36 36L56 25"
-                          stroke="#E67230"
-                          strokeWidth="2"
-                          strokeLinejoin="round"
-                        />
-                        {/* Transparent billing receipt / tick symbol on carton */}
-                        <circle cx="36" cy="36" r="6" fill="#FFFBF8" stroke="#E67230" strokeWidth="1.75" />
-                        <path
-                          d="M33.5 36L35.5 38L39 34.5"
-                          stroke="#E67230"
-                          strokeWidth="1.75"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </svg>
+                {/* Box 2: Functional Layer */}
+                <div className="group flex h-full flex-col justify-between rounded-2xl border border-[#EBE7DF] bg-white p-5 lg:p-5 shadow-2xs transition-all duration-250 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-sm">
+                  <div>
+                    {/* Header: Icon + Title */}
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 w-9 sm:w-10 flex items-center justify-center transition-transform duration-250 group-hover:-translate-y-0.5">
+                        <svg
+                          viewBox="0 0 72 72"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="size-9 sm:size-10 text-[#E67230] meyveda-icon-pulse"
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M36 14L56 25V47L36 58L16 47V25L36 14Z"
+                            stroke="#E67230"
+                            strokeWidth="2.25"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M36 14V58M16 25L36 36L56 25"
+                            stroke="#E67230"
+                            strokeWidth="2"
+                            strokeLinejoin="round"
+                          />
+                          <circle cx="36" cy="36" r="6" fill="#FFFBF8" stroke="#E67230" strokeWidth="1.75" />
+                          <path
+                            d="M33.5 36L35.5 38L39 34.5"
+                            stroke="#E67230"
+                            strokeWidth="1.75"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                        </svg>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#E67230] block">
+                          Functional Layer
+                        </span>
+                        <h3 className="text-[15px] sm:text-[16px] font-bold tracking-tight text-[#111111] leading-snug mt-0.5">
+                          DynamicPMS - Digital-First Clinic OS
+                        </h3>
+                      </div>
                     </div>
 
-                    <h3 className="flex-1 min-w-0 text-[16px] sm:text-[17px] lg:text-[16px] xl:text-[17px] font-bold tracking-tight text-[#111111] leading-snug">
-                      Ethical Supply & Billing
-                    </h3>
+                    <p className="mt-3 text-[13px] sm:text-[13.5px] font-normal leading-relaxed text-[#555555]">
+                      Step into the future of clinical operations with an active, digital-first operating system built to scale your daily practice. This tier automates your scheduling, delivers intelligent clinical decision support, and seamlessly manages your complete supply chain.
+                    </p>
                   </div>
-
-                  {/* Lower Content Area: Regular-weight, readable secondary description */}
-                  <p className="mt-2.5 sm:mt-3 text-[13.5px] sm:text-[14px] lg:text-[13px] xl:text-[14px] font-normal leading-relaxed text-[#555555]">
-                    Simplify medicine sourcing, consumable supply, and transparent, patient-centric billing.
-                  </p>
                 </div>
 
-                {/* Value Card 3: Practice Growth & MSO Services */}
-                <div className="group flex h-full flex-col justify-start rounded-2xl border border-[#EBE7DF] bg-white p-4.5 sm:p-5 lg:p-4.5 xl:p-5 shadow-2xs transition-all duration-250 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-xs motion-reduce:transition-none">
-                  {/* Upper Row: Left-aligned Icon and Top Heading */}
-                  <div className="flex items-center gap-3 sm:gap-3.5">
-                    {/* Compact Animated Vector Icon */}
-                    <div className="shrink-0 w-9 sm:w-10 lg:w-9.5 xl:w-10 flex items-center justify-center transition-transform duration-250 group-hover:-translate-y-0.5 motion-reduce:group-hover:translate-y-0">
-                      <svg
-                        viewBox="0 0 72 72"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-9 sm:size-10 lg:size-9.5 xl:size-10 text-[#E67230] meyveda-icon-float"
-                        style={{ animationDelay: "1.2s" }}
-                        aria-hidden="true"
-                      >
-                        {/* Practice growth trend upward curve and hospital/clinic outline */}
-                        <path
-                          d="M14 54L30 38L42 50L58 22"
-                          stroke="#E67230"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        {/* Upward arrow pointer */}
-                        <path
-                          d="M48 22H58V32"
-                          stroke="#E67230"
-                          strokeWidth="2.5"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                        {/* Clinic building silhouette accent */}
-                        <path
-                          d="M16 54V44H24V54M32 54V38H40V54M48 54V32H56V54"
-                          stroke="#E67230"
-                          strokeWidth="1.75"
-                          strokeOpacity="0.45"
-                          strokeLinecap="round"
-                        />
-                        {/* MSO node dot */}
-                        <circle cx="58" cy="22" r="3" fill="#E67230" />
-                      </svg>
+                {/* Box 3: Flagship Layer */}
+                <div className="group flex h-full flex-col justify-between rounded-2xl border border-[#EBE7DF] bg-white p-5 lg:p-5 shadow-2xs transition-all duration-250 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-sm">
+                  <div>
+                    {/* Header: Icon + Title */}
+                    <div className="flex items-start gap-3">
+                      <div className="shrink-0 w-9 sm:w-10 flex items-center justify-center transition-transform duration-250 group-hover:-translate-y-0.5">
+                        <svg
+                          viewBox="0 0 72 72"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="size-9 sm:size-10 text-[#E67230] meyveda-icon-float"
+                          style={{ animationDelay: "1.2s" }}
+                          aria-hidden="true"
+                        >
+                          <path
+                            d="M14 54L30 38L42 50L58 22"
+                            stroke="#E67230"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M48 22H58V32"
+                            stroke="#E67230"
+                            strokeWidth="2.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
+                          <path
+                            d="M16 54V44H24V54M32 54V38H40V54M48 54V32H56V54"
+                            stroke="#E67230"
+                            strokeWidth="1.75"
+                            strokeOpacity="0.45"
+                            strokeLinecap="round"
+                          />
+                          <circle cx="58" cy="22" r="3" fill="#E67230" />
+                        </svg>
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#E67230] block">
+                          Flagship Layer
+                        </span>
+                        <h3 className="text-[15px] sm:text-[16px] font-bold tracking-tight text-[#111111] leading-snug mt-0.5">
+                          Enterprise Ecosystem - MSO Support
+                        </h3>
+                      </div>
                     </div>
 
-                    <h3 className="flex-1 min-w-0 text-[16px] sm:text-[17px] lg:text-[16px] xl:text-[17px] font-bold tracking-tight text-[#111111] leading-snug">
-                      Practice Growth & MSO Services
-                    </h3>
+                    <p className="mt-3 text-[13px] sm:text-[13.5px] font-normal leading-relaxed text-[#555555]">
+                      Scale your healthcare brand effortlessly with our all-inclusive administrative and physical infrastructure support. This enterprise tier delivers turnkey co-working clinics, centralized financial operations, and global patient sourcing to power massive multi-location growth.
+                    </p>
                   </div>
-
-                  {/* Lower Content Area: Regular-weight, readable secondary description */}
-                  <p className="mt-2.5 sm:mt-3 text-[13.5px] sm:text-[14px] lg:text-[13px] xl:text-[14px] font-normal leading-relaxed text-[#555555]">
-                    Access guided operational support and managed services to strengthen and grow your practice.
-                  </p>
                 </div>
               </div>
 
