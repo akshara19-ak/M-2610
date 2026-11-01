@@ -351,7 +351,7 @@ export function Login({ initialMode }: { initialMode?: "signin" | "forgot" | "re
       {/* Full-Screen Main Content Area */}
       <div className="flex-1 w-full grid grid-cols-1 lg:grid-cols-12 min-h-[calc(100vh-64px)] sm:min-h-[calc(100vh-80px)]">
         {/* LEFT SIDE: Centered Sticky Interactive Doctor Mascot */}
-        <div className="lg:col-span-5 bg-gradient-to-b from-[#FFFBF8] via-[#FAF9F6] to-[#F5F2EB] border-b lg:border-b-0 lg:border-r border-[#EBE7DF] relative overflow-hidden flex flex-col items-center justify-center">
+        <div className="lg:col-span-5 bg-gradient-to-b from-[#FFFBF8] via-[#FAF9F6] to-[#F5F2EB] border-b lg:border-b-0 lg:border-r border-[#EBE7DF] relative">
           {/* Ambient subtle glow */}
           <div
             className="pointer-events-none absolute inset-0 opacity-40 mix-blend-multiply"
@@ -361,8 +361,8 @@ export function Login({ initialMode }: { initialMode?: "signin" | "forgot" | "re
             }}
           />
 
-          {/* Centered & Sticky container: stays in the center-left even during scrolling */}
-          <div className="lg:sticky lg:top-24 w-full flex flex-col items-center justify-center p-8 sm:p-12 lg:p-14 my-auto">
+          {/* Sticky container pinned to viewport height, perfectly centering mascot vertically and horizontally */}
+          <div className="lg:sticky lg:top-20 flex h-auto lg:h-[calc(100vh-5rem)] w-full items-center justify-center p-8 sm:p-12 lg:p-14">
             <div className="relative z-10 flex items-center justify-center p-3 rounded-full bg-white shadow-md border border-[#EBE7DF]/80 hover:shadow-lg transition-shadow duration-300">
               <Mascot
                 directions="/mascots/meyveda-doctor-directions.webp"
