@@ -113,11 +113,11 @@ export function Register() {
         .get<any>(`/pincode/${cleanPin}`)
         .then((res) => {
           if (!isCancelled) {
-            const detectedCity =
-              res?.district ||
-              res?.division ||
-              res?.primary_post_office?.district ||
-              "";
+            const postOfficeName = res?.primary_post_office?.name || res?.post_offices?.[0] || "";
+            const districtName = res?.district || res?.primary_post_office?.district || res?.division || "";
+            const detectedCity = postOfficeName && districtName && postOfficeName.toLowerCase() !== districtName.toLowerCase()
+              ? postOfficeName + ', ' + districtName
+              : districtName || postOfficeName || "";
             const detectedState = res?.state || "";
             if (detectedCity) {
               setCity(detectedCity);
@@ -700,26 +700,7 @@ export function Register() {
           />
 
           {/* Heading (Unwanted badge removed) */}
-          <div className="relative z-10 w-full mb-6">
-            <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111]">
-              Register as an Ayurveda Doctor
-            </h2>
-            <p className="mt-2 text-xs sm:text-sm text-[#666666] max-w-xs mx-auto leading-relaxed">
-              Join fellow Ayurvedic physicians. Access classical literature, commercial medicine
-              intelligence, batch quality evidence, and your private research library.
-            </p>
-          </div>
-
-          {/* Meyveda Symbol directly above the mascot (approx 1-2 cm, preserving original proportions & colours) */}
-          <div className="relative z-10 mb-3 sm:mb-4 flex items-center justify-center">
-            <img
-              src={meyvedaMark}
-              alt="Meyveda Symbol"
-              width={100}
-              height={80}
-              className="h-11 sm:h-12 w-auto object-contain select-none drop-shadow-2xs"
-            />
-          </div>
+          
 
           {/* Interactive Cursor-Tracking Mascot (Enlarged to 7-8 cm on screen) */}
           <div className="relative z-10 flex flex-col items-center justify-center">
@@ -732,9 +713,7 @@ export function Register() {
                 className="select-none"
               />
             </div>
-            <p className="mt-3 font-mono text-[11px] text-[#888888]">
-              Hover around · Click mascot to interact
-            </p>
+            
           </div>
 
           {/* (Unwanted bottom trust/security text 'Verified AYUSH Doctor Platform · 256-bit SSL' removed) */}
@@ -840,9 +819,7 @@ export function Register() {
                       ) : null}
                     </div>
                   </div>
-                  <p className="mt-1 text-[11px] text-[#888888]">
-                    Enter 6-digit PIN to auto-fetch City &amp; Medical Council
-                  </p>
+                  
                 </div>
 
                 {/* City - Read-only / Locked (Cannot be changed) */}
@@ -889,9 +866,7 @@ export function Register() {
                       )}
                     </div>
                   </div>
-                  <p className="mt-1 text-[11px] text-[#666666]">
-                    City and state are automatically fetched from postal records and cannot be edited.
-                  </p>
+                  
                 </div>
               </div>
 
@@ -938,9 +913,7 @@ export function Register() {
                   </div>
 
                   <div className="flex items-center justify-between pt-0.5 flex-wrap gap-2">
-                    <span className="text-[11px] text-[#666666]">
-                      Doctor registration credentials are verified under this statutory council.
-                    </span>
+                    
                     {governingCouncil.official_portal && (
                       <a
                         href={governingCouncil.official_portal}
@@ -1278,7 +1251,7 @@ export function Register() {
                       </span>
                     ) : (
                       <span className="text-[11px] text-[#E67230] font-semibold">
-                        Compulsory · 3 letters + 2 numbers (e.g. MSV77)
+                        Compulsory
                       </span>
                     )}
                   </div>

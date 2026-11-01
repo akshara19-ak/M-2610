@@ -6379,7 +6379,7 @@ export function MeyvedaDoctorsPage() {
                   </span>
                 ) : (
                   <span className="text-[10px] text-[#E65C24] font-semibold">
-                    Compulsory · 3 letters + 2 numbers (e.g. MSV77)
+                    Compulsory
                   </span>
                 )}
               </div>

@@ -228,7 +228,7 @@ export function ContactUsPage() {
                           {MEYVEDA_CONTACT.email}
                         </a>
                         <p className="mt-1 text-xs text-[#777777]">
-                          Fast response within 24 business hours.
+                          
                         </p>
                       </div>
                     </div>
@@ -522,53 +522,7 @@ export function ContactUsPage() {
           </div>
         </section>
 
-        {/* 3. CLEAN FREQUENTLY ASKED QUESTIONS */}
-        <section className="border-t border-[#EBE7DF] bg-[#FAF9F6] py-14 sm:py-20">
-          <div className="mx-auto max-w-[840px] px-5 sm:px-8">
-            <div className="text-center mb-10">
-              <h2
-                className="text-3xl sm:text-4xl font-extrabold text-[#111111] tracking-tight"
-                style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
-              >
-                Frequently Asked Questions
-              </h2>
-              <p className="text-sm text-[#666666] mt-2">
-                Quick answers to common questions about contacting Meyveda.
-              </p>
-            </div>
-
-            <div className="space-y-3">
-              {FAQ_ITEMS.map((item, idx) => {
-                const isOpen = expandedFaq === idx;
-                return (
-                  <div
-                    key={item.q}
-                    className="rounded-2xl border border-[#EBE7DF] bg-white overflow-hidden shadow-2xs transition-colors"
-                  >
-                    <button
-                      type="button"
-                      onClick={() => setExpandedFaq(isOpen ? null : idx)}
-                      className="w-full flex items-center justify-between p-5 text-left font-bold text-[#111111] hover:text-[#E67230] transition-colors cursor-pointer"
-                    >
-                      <span className="text-sm sm:text-base">{item.q}</span>
-                      {isOpen ? (
-                        <ChevronUp className="size-4 shrink-0 text-[#E67230]" />
-                      ) : (
-                        <ChevronDown className="size-4 shrink-0 text-[#777777]" />
-                      )}
-                    </button>
-                    {isOpen && (
-                      <div className="px-5 pb-5 text-xs sm:text-sm text-[#555555] leading-relaxed border-t border-[#F0ECE1] pt-3">
-                        {item.a}
-                      </div>
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-        </section>
-      </main>
+        </main>
 
       {/* 4. MEYVEDA COMMON FOOTER */}
       <LandingFooter />

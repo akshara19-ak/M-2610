@@ -4,23 +4,16 @@ import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight,
-  Home,
   ShieldCheck,
   Building2,
   Award,
-  MapPin,
-  Mail,
-  Phone,
   CheckCircle2,
   Compass,
   Scale,
   Boxes,
   ChevronRight,
-  Globe2,
   LineChart,
 } from "lucide-react";
-import meyvedaLogo from "@/assets/meyvedalogo.png";
-import { MEYVEDA_CONTACT } from "@/lib/contact-info";
 
 interface ImpactPillar {
   id: string;
@@ -42,22 +35,22 @@ const IMPACT_PILLARS: ImpactPillar[] = [
     title: "Eliminating the Credibility Gap",
     tagline: "Statutory Verification & National ABDM Gateway Integration",
     summary:
-      "We equip qualified AYUSH practitioners with verified digital health identities (ABDM-HPR), linking state council registrations directly to standardized electronic health records recognized across national healthcare gateways, public health bodies, and insurance providers.",
+      "We elevate your professional identity with verified digital credentials, ensuring your traditional medical practice commands universal trust across the modern healthcare ecosystem.",
     bullets: [
-      "100% manual State Council registration validation (BAMS, BHMS, BSMS, BUMS, BNYS).",
+      "completely quack-free network secured by 100% qualification verification",
       "Seamless integration with Ayushman Bharat Digital Mission (ABDM-HPR registry).",
       "No pay-to-play rankings, commercial advertising bias, or synthetic score inflation.",
       "Tamper-proof digital prescription signatures verified by statutory standards.",
     ],
     metricValue: "100%",
-    metricLabel: "Council-Verified Registry",
+    metricLabel: "ABDM - Verified Registry",
     icon: ShieldCheck,
     highlightColor: "#E67230",
   },
   {
     id: "supply-chain",
     number: "02",
-    title: "Authenticating the Herbal Supply Chain",
+    title: "pharma supply chain",
     tagline: "Doctor-Supervised, Zero-Inventory Direct Formulation Fulfillment",
     summary:
       "We replace risky direct-to-consumer self-medication with an authentic, doctor-guided distribution model. Every prescribed classical medicine reaches the patient under clinical supervision, backed by authenticated batch monographs and heavy-metal testing.",
@@ -80,7 +73,7 @@ const IMPACT_PILLARS: ImpactPillar[] = [
     summary:
       "By standardizing clinical intake, constitutional (Prakriti) assessment, and longitudinal outcomes, we aggregate structured clinical evidence that bridges millennia of classical healing with modern peer-reviewed integrative medical science.",
     bullets: [
-      "Standardized digital clinical intake matching classical Ayurvedic pathology (Samprapti).",
+      "Standardized digital clinical intake matching classical AYUSH pathology (Samprapti).",
       "Longitudinal patient recovery tracking across chronic, lifestyle, and autoimmune care.",
       "Anonymized clinical data sets contributing to peer-reviewed AYUSH research registries.",
       "Structured documentation for ADR (Adverse Drug Reaction) pharmacovigilance reporting.",
@@ -110,26 +103,22 @@ const IMPACT_PILLARS: ImpactPillar[] = [
   },
 ];
 
-const PRACTICE_METRICS = [
+const OPERATIONS_LAYERS = [
   {
-    metric: "100%",
-    label: "Statutory Council Verification",
-    subtext: "Manual lookup against official State Medical Council registries.",
+    title: "The Base:",
+    description: "A Trusted Foundation for Traditional Practice",
   },
   {
-    metric: "5 Systems",
-    label: "Sovereign Systems Supported",
-    subtext: "Ayurveda (BAMS), Siddha (BSMS), Homoeopathy, Unani & Naturopathy.",
+    title: "The Essential:",
+    description: "The Vital Toolkit for Clinical Excellence",
   },
   {
-    metric: "ABDM Aligned",
-    label: "National Gateway Standards",
-    subtext: "Compliant with Healthcare Professional Registry (HPR) guidelines.",
+    title: "The Gateway:",
+    description: "Your Connection to a Thriving Network",
   },
   {
-    metric: "Chennai Hub",
-    label: "Central Operating Headquarters",
-    subtext: "Unified operational, logistics, and partner coordination center.",
+    title: "The Core:",
+    description: "The Central Engine for Enterprise Expansion",
   },
 ];
 
@@ -156,9 +145,9 @@ export function AboutUsPage() {
         {/* ================================================================== */}
         <section className="relative overflow-hidden border-b border-[#EBE7DF] bg-[#FAF9F6] py-16 sm:py-24 lg:py-28">
           <div className="relative mx-auto max-w-[1216px] px-5 sm:px-8 lg:px-12 text-center">
-            {/* Clean Section Eyebrow matching Landing Page philosophy (no pill, no sparkles) */}
+            {/* Clean Section Eyebrow */}
             <p className="mb-3 text-xs sm:text-sm font-bold uppercase tracking-widest text-[#E67230]">
-              THE MODERN ERA OF AYUSH
+              The modern era of “Traditional Medicine System”
             </p>
 
             {/* Main Hero Headline */}
@@ -176,80 +165,39 @@ export function AboutUsPage() {
             </p>
 
             <p className="mx-auto mt-3 max-w-2xl text-sm sm:text-base text-[#666666] leading-relaxed">
-              Equipping registered Vaidyas, Siddha practitioners, and traditional physicians with verified
-              digital identities, authenticated zero-inventory medicine fulfillment, and clinical practice infrastructure.
+              Meyveda equips independent AYUSH practitioners with verified digital identities, seamless zero-inventory logistics, and the foundational clinical infrastructure needed to scale their daily practice.
             </p>
 
-            {/* Primary Action Buttons styled with Landing Page button philosophy */}
+            {/* Action Buttons */}
             <div className="mt-8 sm:mt-10 flex flex-wrap items-center justify-center gap-3.5">
-              <Link
-                to="/"
-                className="group relative inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#E67230] px-7 text-sm font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] hover:shadow-[0_8px_24px_-4px_rgba(230,114,48,0.5)] active:translate-y-0 active:shadow-sm"
-              >
-                <span>Explore the Platform</span>
-                <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
-              </Link>
-
               <a
                 href="#who-we-are"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-[#EBE7DF] bg-white px-7 text-sm font-semibold text-[#111111] shadow-none transition-all duration-200 hover:border-[#E67230]/40 hover:bg-[#FAF9F6] hover:text-[#111111]"
+                className="group relative inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#E67230] px-8 text-sm font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] hover:shadow-[0_8px_24px_-4px_rgba(230,114,48,0.5)] active:translate-y-0 active:shadow-sm"
               >
                 <span>Learn Our Story</span>
-                <ChevronRight className="size-4" />
+                <ChevronRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
-            </div>
-          </div>
-        </section>
 
-        {/* ================================================================== */}
-        {/* 3. PRACTICE METRICS STRIP — OPERATIONS OPTIMIZED                   */}
-        {/* ================================================================== */}
-        <section className="border-b border-[#EBE7DF] bg-white py-12 sm:py-16">
-          <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
-            <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
-              <p className="text-xs font-bold uppercase tracking-wider text-[#E67230] mb-2">
-                PRACTICE METRICS · OPERATIONS OPTIMIZED
-              </p>
-              <h2
-                className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight"
-                style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
+              <Link
+                to="/"
+                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-[#EBE7DF] bg-white px-7 text-sm font-semibold text-[#111111] shadow-none transition-all duration-200 hover:border-[#E67230]/40 hover:bg-[#FAF9F6] hover:text-[#111111]"
               >
-                Centered for Impact
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              {PRACTICE_METRICS.map((item) => (
-                <div
-                  key={item.label}
-                  className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] p-5 sm:p-6 transition-all duration-200 hover:border-[#E67230]/40 flex flex-col justify-between"
-                >
-                  <div>
-                    <span className="text-3xl sm:text-4xl font-extrabold text-[#E67230] tracking-tight font-serif block">
-                      {item.metric}
-                    </span>
-                    <h3 className="mt-2 text-sm sm:text-base font-bold text-[#111111] leading-snug">
-                      {item.label}
-                    </h3>
-                  </div>
-                  <p className="mt-2 text-xs text-[#666666] leading-relaxed">
-                    {item.subtext}
-                  </p>
-                </div>
-              ))}
+                <span>Explore Doctor Platform</span>
+                <ArrowRight className="size-4" />
+              </Link>
             </div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* 4. WHO WE ARE: YOUR CLINICIAN-FIRST PARTNER                        */}
+        {/* 3. WHO WE ARE: YOUR CLINICIAN-FIRST PARTNER                        */}
         {/* ================================================================== */}
-        <section id="who-we-are" className="py-16 sm:py-24 border-b border-[#EBE7DF] bg-[#FAF9F6]">
+        <section id="who-we-are" className="py-16 sm:py-24 border-b border-[#EBE7DF] bg-white">
           <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
             <div className="max-w-3xl space-y-6">
               <div>
                 <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                  WHO WE ARE · YOUR CLINICIAN-FIRST PARTNER
+                  WHO WE ARE
                 </p>
                 <h2
                   className="text-balance text-3xl font-extrabold leading-[1.14] tracking-tight text-[#111111] sm:text-4xl lg:text-[42px]"
@@ -268,7 +216,7 @@ export function AboutUsPage() {
               </p>
 
               {/* The Clean Division of Responsibility Charter Callout */}
-              <div className="rounded-xl border-l-4 border-[#E67230] border-y border-r border-[#EBE7DF] bg-white p-6 sm:p-7 space-y-3">
+              <div className="rounded-xl border-l-4 border-[#E67230] border-y border-r border-[#EBE7DF] bg-[#FAF9F6] p-6 sm:p-7 space-y-3">
                 <p className="text-xs font-bold uppercase tracking-wider text-[#E67230] flex items-center gap-1.5">
                   <Scale className="size-3.5" />
                   <span>The Meyveda Practice Charter</span>
@@ -287,13 +235,48 @@ export function AboutUsPage() {
         </section>
 
         {/* ================================================================== */}
-        {/* 5. OUR VISION & MISSION: DUAL FOUNDATIONAL PILLARS                 */}
+        {/* 4. OPERATIONS OPTIMIZED: POWERING THE FUTURE                       */}
+        {/* ================================================================== */}
+        <section className="border-b border-[#EBE7DF] bg-[#FAF9F6] py-14 sm:py-18">
+          <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
+            <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
+              <p className="text-xs font-bold uppercase tracking-wider text-[#E67230] mb-2">
+                OPERATIONS OPTIMIZED
+              </p>
+              <h2
+                className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-[#111111] tracking-tight"
+                style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
+              >
+                Powering the Future
+              </h2>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+              {OPERATIONS_LAYERS.map((layer) => (
+                <div
+                  key={layer.title}
+                  className="rounded-2xl border border-[#EBE7DF] bg-white p-6 shadow-2xs transition-all duration-200 hover:border-[#E67230]/40 hover:-translate-y-0.5"
+                >
+                  <p className="text-base font-bold text-[#E67230] mb-1.5">
+                    {layer.title}
+                  </p>
+                  <p className="text-sm font-medium text-[#111111] leading-relaxed">
+                    {layer.description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* ================================================================== */}
+        {/* 5. STRATEGIC DIRECTIVE: OUR VISION & MISSION                       */}
         {/* ================================================================== */}
         <section className="py-16 sm:py-24 border-b border-[#EBE7DF] bg-white">
           <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
             <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-14">
               <p className="text-xs font-bold uppercase tracking-wider text-[#E67230] mb-2.5">
-                STRATEGIC NORTH STAR
+                STRATEGIC DIRECTIVE
               </p>
               <h2
                 className="text-balance text-3xl font-extrabold leading-[1.14] tracking-tight text-[#111111] sm:text-4xl lg:text-[42px]"
@@ -331,11 +314,6 @@ export function AboutUsPage() {
                     pillar of healthcare worldwide.
                   </p>
                 </div>
-
-                <div className="mt-8 pt-5 border-t border-[#EBE7DF] flex items-center gap-2 text-xs font-semibold text-[#111111]">
-                  <Globe2 className="size-4 text-[#E67230] shrink-0" />
-                  <span>Universal Access · Root-Cause Healing · Classical Lineage</span>
-                </div>
               </div>
 
               {/* Mission Card */}
@@ -363,24 +341,19 @@ export function AboutUsPage() {
                     quality standards.
                   </p>
                 </div>
-
-                <div className="mt-8 pt-5 border-t border-[#EBE7DF] flex items-center gap-2 text-xs font-semibold text-[#111111]">
-                  <CheckCircle2 className="size-4 text-[#E67230] shrink-0" />
-                  <span>Modern Clinical Software · Verified Formulations · Transparent Care</span>
-                </div>
               </div>
             </div>
           </div>
         </section>
 
         {/* ================================================================== */}
-        {/* 6. THE IMPACT WE DELIVER: 4 CORE PILLARS (INTERACTIVE SHOWCASE)   */}
+        {/* 6. MEASURABLE TRANSFORMATION (DELIVERABLES SHOWCASE)                */}
         {/* ================================================================== */}
         <section id="impact" className="py-16 sm:py-24 border-b border-[#EBE7DF] bg-[#FAF9F6]">
           <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
             <div className="max-w-3xl mb-10 sm:mb-12">
               <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                MEASURABLE TRANSFORMATION · 4 CORE PILLARS
+                MEASURABLE TRANSFORMATION
               </p>
               <h2
                 className="text-balance text-3xl font-extrabold leading-[1.14] tracking-tight text-[#111111] sm:text-4xl lg:text-[42px]"
@@ -391,7 +364,7 @@ export function AboutUsPage() {
               <p className="mt-3 text-base sm:text-lg text-[#555555] leading-relaxed">
                 Traditional medicine touches over a billion lives, yet qualified Vaidyas often shoulder
                 operational friction that distracts from patient healing. Meyveda delivers measurable
-                transformation across four core pillars.
+                transformation across clinical practice and supply infrastructure.
               </p>
             </div>
 
@@ -399,89 +372,78 @@ export function AboutUsPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-8">
               {IMPACT_PILLARS.map((pillar) => {
                 const isSelected = activePillarId === pillar.id;
-                const IconComponent = pillar.icon;
+                const Icon = pillar.icon;
                 return (
                   <button
                     key={pillar.id}
                     type="button"
                     onClick={() => setActivePillarId(pillar.id)}
-                    aria-pressed={isSelected}
-                    className={`rounded-xl border p-4 sm:p-5 text-left transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#E67230] ${isSelected
-                        ? "border-[#E67230] bg-white ring-1 ring-[#E67230] shadow-xs"
-                        : "border-[#EBE7DF] bg-white hover:border-[#D5D0C6] hover:bg-[#FAF9F6]"
-                      }`}
+                    className={`rounded-xl border p-4 sm:p-5 text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
+                      isSelected
+                        ? "border-[#E67230] bg-white shadow-sm ring-1 ring-[#E67230]"
+                        : "border-[#EBE7DF] bg-white/70 hover:bg-white hover:border-[#E67230]/40"
+                    }`}
                   >
-                    <div className="flex items-center justify-between mb-3">
-                      <span
-                        className={`font-mono text-xs font-bold ${isSelected ? "text-[#E67230]" : "text-[#888888]"
+                    <div>
+                      <div className="flex items-center justify-between mb-3">
+                        <span className="font-mono text-xs font-bold text-[#E67230]">
+                          {pillar.number}
+                        </span>
+                        <div
+                          className={`size-8 rounded-lg flex items-center justify-center ${
+                            isSelected
+                              ? "bg-[#E67230] text-white"
+                              : "bg-[#FAF9F6] text-[#777777] border border-[#EBE7DF]"
                           }`}
-                      >
-                        {pillar.number}
-                      </span>
-                      <IconComponent
-                        className={`size-4.5 ${isSelected ? "text-[#E67230]" : "text-[#777777]"
-                          }`}
-                      />
+                        >
+                          <Icon className="size-4" />
+                        </div>
+                      </div>
+                      <h4 className="text-sm sm:text-base font-bold text-[#111111] leading-snug">
+                        {pillar.title}
+                      </h4>
                     </div>
-                    <p
-                      className={`text-sm sm:text-base font-bold leading-snug ${isSelected ? "text-[#111111]" : "text-[#444444]"
-                        }`}
-                    >
-                      {pillar.title}
-                    </p>
                   </button>
                 );
               })}
             </div>
 
-            {/* Selected Pillar Detailed Interactive Display Card */}
-            <div className="rounded-2xl border border-[#EBE7DF] bg-white p-7 sm:p-10 lg:p-12 transition-all duration-300">
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-start">
-                {/* Left side: Detailed Content */}
+            {/* Active Pillar Detail Card */}
+            <div className="rounded-2xl border border-[#EBE7DF] bg-white p-7 sm:p-10 shadow-xs">
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
                 <div className="lg:col-span-8 space-y-5">
-                  <div className="flex items-center gap-2.5">
-                    <span className="font-mono text-xs font-bold text-[#E67230]">
-                      {activePillar.number}
+                  <div className="space-y-2">
+                    <span className="font-mono text-xs font-bold text-[#E67230] uppercase tracking-wider">
+                      Deliverable {activePillar.number} · {activePillar.tagline}
                     </span>
-                    <span className="text-xs text-[#888888]">·</span>
-                    <span className="text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                      {activePillar.tagline}
-                    </span>
+                    <h3
+                      className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight leading-tight"
+                      style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
+                    >
+                      {activePillar.title}
+                    </h3>
                   </div>
 
-                  <h3
-                    className="text-2xl sm:text-3xl lg:text-[34px] font-bold text-[#111111] tracking-tight leading-snug"
-                    style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
-                  >
-                    {activePillar.title}
-                  </h3>
-
-                  <p className="text-base sm:text-lg text-[#555555] leading-relaxed">
+                  <p className="text-base sm:text-lg leading-relaxed text-[#555555]">
                     {activePillar.summary}
                   </p>
 
                   <div className="pt-2">
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-[#111111] mb-3">
-                      Key Deliverables &amp; Practice Standards:
-                    </h4>
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                      {activePillar.bullets.map((b) => (
-                        <div
-                          key={b}
-                          className="flex items-start gap-2.5 rounded-lg border border-[#EBE7DF] bg-[#FAF9F6] p-3.5"
-                        >
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#111111] mb-3">
+                      Key Deliverables &amp; Safeguards
+                    </p>
+                    <ul className="space-y-2.5">
+                      {activePillar.bullets.map((b, idx) => (
+                        <li key={idx} className="flex items-start gap-2.5 text-sm text-[#444444]">
                           <CheckCircle2 className="size-4 text-[#E67230] shrink-0 mt-0.5" />
-                          <span className="text-xs text-[#555555] leading-relaxed">
-                            {b}
-                          </span>
-                        </div>
+                          <span className="leading-relaxed">{b}</span>
+                        </li>
                       ))}
-                    </div>
+                    </ul>
                   </div>
                 </div>
 
-                {/* Right side: Highlight Metric Card */}
-                <div className="lg:col-span-4 flex flex-col justify-between h-full space-y-5">
+                <div className="lg:col-span-4 flex flex-col gap-4">
                   <div className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] p-6 text-center space-y-2">
                     <div className="flex size-11 items-center justify-center rounded-xl bg-white border border-[#EBE7DF] text-[#E67230] mx-auto mb-2">
                       <ActiveIcon className="size-5.5" />
@@ -565,3 +527,4 @@ export function AboutUsPage() {
     </div>
   );
 }
+export default AboutUsPage;
