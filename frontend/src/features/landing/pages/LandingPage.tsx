@@ -85,10 +85,11 @@ import { ClusterFranchiseePartnerSection } from "../components/ClusterFranchisee
 
 const navigation = [
   { label: "For Doctors", href: "#top" },
-  { label: "About us", href: "/about" },
-  { label: "Public relation", href: "/public-relations" },
-  { label: "Contact us", href: "/contact" },
-  { label: "Blogs", href: "/blogs" },
+  { label: "About Us", href: "/about" },
+  { label: "Community", href: "#community" },
+  { label: "Blog", href: "/blogs" },
+  { label: "Contact Us", href: "/contact" },
+  { label: "Public Relations", href: "/public-relations" },
 ];
 
 const AYUSH_SYSTEMS = [
@@ -104,49 +105,8 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Leaf / Herb doodle */}
         <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
         <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
-      </svg>
-    ),
-  },
-  {
-    name: "Naturopathy",
-    icon: (
-      <svg
-        className="size-5 sm:size-6 text-[#E67230]"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {/* Sun & Water Wave nature doodle */}
-        <circle cx="12" cy="9" r="4" />
-        <path d="M12 2v2" />
-        <path d="M4.93 4.93l1.41 1.41" />
-        <path d="M19.07 4.93l-1.41 1.41" />
-        <path d="M2 18c2.5 0 2.5 2 5 2s2.5-2 5-2 2.5 2 5 2 2.5-2 5-2" />
-      </svg>
-    ),
-  },
-  {
-    name: "Unani",
-    icon: (
-      <svg
-        className="size-5 sm:size-6 text-[#E67230]"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="2"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      >
-        {/* Mortar, pestle & flower botanical doodle */}
-        <path d="M4 14a8 8 0 0 0 16 0H4Z" />
-        <path d="M15 4l-4 6" />
-        <path d="M8 20h8" />
       </svg>
     ),
   },
@@ -162,7 +122,6 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Traditional medicinal flask / Kalasha doodle */}
         <path d="M10 2h4" />
         <path d="M12 2v4" />
         <path d="M8.5 7.5a6.5 6.5 0 1 0 7 0L14 6H10l-1.5 1.5Z" />
@@ -171,7 +130,7 @@ const AYUSH_SYSTEMS = [
     ),
   },
   {
-    name: "Homoeopathy",
+    name: "Unani",
     icon: (
       <svg
         className="size-5 sm:size-6 text-[#E67230]"
@@ -182,9 +141,46 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Potentised medicine droplet / phial doodle */}
+        <path d="M4 14a8 8 0 0 0 16 0H4Z" />
+        <path d="M15 4l-4 6" />
+        <path d="M8 20h8" />
+      </svg>
+    ),
+  },
+  {
+    name: "Homeopathy",
+    icon: (
+      <svg
+        className="size-5 sm:size-6 text-[#E67230]"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
         <path d="M12 3a6 6 0 0 0 6 6c0 4-3 8-6 12-3-4-6-8-6-12a6 6 0 0 0 6-6Z" />
         <circle cx="12" cy="9" r="1.5" />
+      </svg>
+    ),
+  },
+  {
+    name: "Yoga & Naturopathy",
+    icon: (
+      <svg
+        className="size-5 sm:size-6 text-[#E67230]"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      >
+        <circle cx="12" cy="9" r="4" />
+        <path d="M12 2v2" />
+        <path d="M4.93 4.93l1.41 1.41" />
+        <path d="M19.07 4.93l-1.41 1.41" />
+        <path d="M2 18c2.5 0 2.5 2 5 2s2.5-2 5-2 2.5 2 5 2 2.5-2 5-2" />
       </svg>
     ),
   },
@@ -5107,7 +5103,7 @@ export function MeyvedaDoctorsPage() {
                     className="h-11 px-5 text-sm sm:text-[15px] font-bold"
                     onClick={() => setRegisterModalOpen(true)}
                   >
-                    Register as Doctor
+                    Early Bird Registration
                   </RegisterPrimaryButton>
                 </div>
 
@@ -5116,7 +5112,7 @@ export function MeyvedaDoctorsPage() {
                     className="h-10 px-3.5 text-xs font-bold"
                     onClick={() => setRegisterModalOpen(true)}
                   >
-                    Register as Doctor
+                    Early Bird Registration
                   </RegisterPrimaryButton>
                 </div>
               </>
@@ -5205,7 +5201,7 @@ export function MeyvedaDoctorsPage() {
                         setMobileMenuOpen(false);
                       }}
                     >
-                      Register as Doctor
+                      Early Bird Registration
                     </RegisterPrimaryButton>
                   </>
                 )}
@@ -5257,7 +5253,7 @@ export function MeyvedaDoctorsPage() {
           <div className="meyveda-enter max-w-[540px] lg:max-w-[490px] xl:max-w-[520px]">
             {/* Section Eyebrow */}
             <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[#E67230] sm:text-xs">
-              Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners,
+              Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
             </p>
 
             {/* Headline with Brand Graphic */}
@@ -5294,40 +5290,38 @@ export function MeyvedaDoctorsPage() {
               </div>
             </div>
 
-            {/* Practice-method line and just_meyveda.png logo */}
-            <div className="mt-2.5 flex flex-wrap items-center gap-2.5 sm:gap-3 text-sm sm:text-base lg:text-[17px] font-bold text-[#111111]">
-              <span>practice method with</span>
+            {/* Practice with Meyveda */}
+            <div className="mt-2.5 flex flex-wrap items-center gap-2 sm:gap-2.5 text-base sm:text-lg lg:text-[20px] font-bold text-[#111111]">
+              <span>Practice with</span>
               <img
                 src={justMeyvedaLogo}
                 alt="Meyveda"
                 width={2151}
                 height={731}
-                className="inline-block h-10 sm:h-11 lg:h-12 w-auto object-contain shrink-0"
+                className="inline-block h-8 sm:h-9 lg:h-10 w-auto object-contain shrink-0"
                 loading="eager"
                 decoding="async"
               />
             </div>
 
             {/* Supporting Headline */}
-            <h2 className="mt-4 text-lg sm:text-xl lg:text-[22px] font-extrabold leading-snug text-[#111111]">
-              Ancient Wisdom. Modern Practice. Your Next Chapter Starts Here.
+            <h2 className="mt-4 text-lg sm:text-xl lg:text-[22px] font-extrabold uppercase tracking-tight leading-snug text-[#111111]">
+              YOUR NEXT CHAPTER STARTS HERE!
             </h2>
 
             {/* Supporting paragraph text */}
-            <p className="mt-2 max-w-[460px] text-xs sm:text-sm leading-relaxed text-[#555555]">
-              Bring trusted <strong className="font-bold text-[#E65C24]">AYUSH</strong> knowledge, clinical insights, and smarter practice management
-              together in one place. Discover a more connected way to strengthen your practice and
-              deepen your knowledge with community grow the confidence.
+            <p className="mt-2.5 max-w-[500px] text-xs sm:text-sm leading-relaxed text-[#555555]">
+              Bring trusted <strong className="font-bold text-[#E65C24]">AYUSH</strong> knowledge, clinical insights, and dynamic practice management together in one unified platform. Discover how Meyveda connects you to a verified peer community, empowering you to strengthen your clinic, deepen your expertise, and grow with confidence.
             </p>
 
-            {/* Action Buttons: Explore Doctor Dashboard CTA */}
+            {/* Action Buttons: Request for Early Access CTA */}
             <div className="mt-5 flex flex-wrap items-center gap-3">
               <RegisterPrimaryButton
                 size="default"
-                className="h-11 sm:h-12 px-6 text-sm sm:text-[15px]"
-                onClick={handleExploreDoctorDashboard}
+                className="h-11 sm:h-12 px-6 text-sm sm:text-[15px] uppercase font-bold tracking-wide"
+                onClick={() => setRegisterModalOpen(true)}
               >
-                Explore Doctor Dashboard
+                REQUEST FOR EARLY ACCESS
               </RegisterPrimaryButton>
             </div>
           </div>
