@@ -3292,7 +3292,9 @@ interface CoreVaidyaService {
   id: string;
   number: string;
   title: string;
+  shortTitle: string;
   description: string;
+  subPoints?: string[];
   gradientClass: string;
   activeRingColor: string;
   badgeBg: string;
@@ -3301,68 +3303,74 @@ interface CoreVaidyaService {
 
 const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
   {
-    id: "supply-chain",
+    id: "multi-clinic",
     number: "01",
-    title: "Supply Chain Management",
+    title: "Multi-Clinic Synchronization & Smart Scheduling",
+    shortTitle: "Multi-Clinic Sync & Scheduling",
     description:
-      "Coordinate medicine and consumable supplies with trusted business partners, supporting reliable availability throughout the patient-care journey.",
+      "Connect with multiple Health Facility Registries (HFRs), HIMS, and CMS platforms for personal time management, capacity sharing, and gated data handling.",
     gradientClass: "from-[#F58238] via-[#E67230] to-[#CF5C1D]",
     activeRingColor: "#E67230",
     badgeBg: "rgba(230, 114, 48, 0.12)",
     subtleGlow: "0 14px 38px -8px rgba(230, 114, 48, 0.42)",
   },
   {
-    id: "virtual-clinic",
+    id: "cdss-telehealth",
     number: "02",
-    title: "Virtual Clinic",
+    title: "Intelligent Clinical Decision Support (CDSS) & Tele-Health",
+    shortTitle: "Intelligent CDSS & Tele-Health",
     description:
-      "Connect electronic health records, patient relationship management, teleconsultation, e-prescriptions, and AI-assisted clinical decision support in one connected care experience.",
+      "Centralized RAG engine utilizing classical texts for precise, protocol-driven care, dynamically syncing with HFRs for real-time medicine pricing and inventory availability.",
     gradientClass: "from-[#E67230] via-[#D86423] to-[#B85217]",
     activeRingColor: "#D86423",
     badgeBg: "rgba(216, 100, 35, 0.12)",
     subtleGlow: "0 14px 38px -8px rgba(216, 100, 35, 0.42)",
   },
   {
-    id: "package-service",
+    id: "clinic-erp",
     number: "03",
-    title: "Package Service Management",
+    title: "Complete Clinic ERP & Asset Engine",
+    shortTitle: "Complete Clinic ERP & Asset Engine",
     description:
-      "Organise ongoing medical support, treatment follow-ups, and coordinated services to deliver more consistent patient care.",
+      "Digital tools for asset management, statutory compliance tracking, and a dedicated HR desk to streamline hiring and staff management.",
     gradientClass: "from-[#D86423] via-[#BE561A] to-[#A04412]",
     activeRingColor: "#BE561A",
     badgeBg: "rgba(190, 86, 26, 0.12)",
     subtleGlow: "0 14px 38px -8px rgba(190, 86, 26, 0.42)",
   },
   {
-    id: "practitioners-forum",
+    id: "supply-chain",
     number: "04",
-    title: "Practitioners Forum & Co-practice",
+    title: "Integrated Supply Chain & Procurement Hub",
+    shortTitle: "Integrated Supply Chain & Hub",
     description:
-      "Connect with fellow practitioners for collaboration, second opinions, co-signing, professional guidance, and shared clinical learning.",
+      "Logistics support managing B2B bulk procurement, backward sourcing, and forward last-mile delivery directly to patients.",
     gradientClass: "from-[#F37B32] via-[#E06822] to-[#AE4E18]",
     activeRingColor: "#AE4E18",
     badgeBg: "rgba(174, 78, 24, 0.12)",
     subtleGlow: "0 14px 38px -8px rgba(174, 78, 24, 0.42)",
   },
+  {
+    id: "growth-bi",
+    number: "05",
+    title: "Growth, Business Intelligence (BI) & Collaborative Care",
+    shortTitle: "Growth, BI & Collaborative Care",
+    description:
+      "HFR reporting to scale revenue and careers, front-end marketing visibility, premium care programs with allied partners, and corporate interaction tools for localized health camps.",
+    gradientClass: "from-[#E67230] via-[#C95618] to-[#9E3E0E]",
+    activeRingColor: "#C95618",
+    badgeBg: "rgba(201, 86, 24, 0.12)",
+    subtleGlow: "0 14px 38px -8px rgba(201, 86, 24, 0.42)",
+  },
 ];
 
-const CIRCLE_POSITIONS = [
-  {
-    // Index 0: Supply Chain Management - Starts at TOP (0 deg)
-    containerClass: "top-0 left-1/2 -translate-x-1/2",
-  },
-  {
-    // Index 1: Virtual Clinic - Starts at LEFT (270 deg / -90 deg). Moving clockwise lands at TOP (0 deg).
-    containerClass: "top-1/2 left-0 -translate-y-1/2",
-  },
-  {
-    // Index 2: Package Service Management - Starts at BOTTOM (180 deg).
-    containerClass: "bottom-0 left-1/2 -translate-x-1/2",
-  },
-  {
-    // Index 3: Practitioners Forum & Co-practice - Starts at RIGHT (90 deg).
-    containerClass: "top-1/2 right-0 -translate-y-1/2",
-  },
+// Positions for 5 circular nodes distributed evenly along the orbit (72 degrees apart)
+const CIRCLE_POSITIONS_5 = [
+  { left: "50%", top: "11%", transform: "translate(-50%, -50%)" },
+  { left: "86.5%", top: "37.5%", transform: "translate(-50%, -50%)" },
+  { left: "72.5%", top: "81%", transform: "translate(-50%, -50%)" },
+  { left: "27.5%", top: "81%", transform: "translate(-50%, -50%)" },
+  { left: "13.5%", top: "37.5%", transform: "translate(-50%, -50%)" },
 ];
 
 export function CoreVaidyaSection() {
@@ -3370,7 +3378,7 @@ export function CoreVaidyaSection() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isDesktop, setIsDesktop] = useState(false);
   const [reducedMotion, setReducedMotion] = useState(false);
-  const [selectedId, setSelectedId] = useState<string>("supply-chain");
+  const [selectedId, setSelectedId] = useState<string>("multi-clinic");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -3428,8 +3436,8 @@ export function CoreVaidyaSection() {
   // Continuous clockwise rotation on scroll down (0 -> 270 deg), or snapped to current service on mobile/tablet
   const currentRotation =
     isDesktop && !reducedMotion
-      ? scrollProgress * (CORE_VAIDYA_SERVICES.length - 1) * 90
-      : safeSlideIndex * 90;
+      ? scrollProgress * (CORE_VAIDYA_SERVICES.length - 1) * 72
+      : safeSlideIndex * 72;
 
   const scrollToService = (index: number) => {
     if (isDesktop && !reducedMotion && containerRef.current) {
@@ -3516,11 +3524,16 @@ export function CoreVaidyaSection() {
                 >
                   {CORE_VAIDYA_SERVICES.map((service, idx) => {
                     const isCurrent = safeSlideIndex === idx;
-                    const pos = CIRCLE_POSITIONS[idx];
+                    const pos = CIRCLE_POSITIONS_5[idx];
                     return (
                       <div
                         key={service.id}
-                        className={`absolute ${pos.containerClass} size-[152px] lg:size-[170px] pointer-events-auto`}
+                        className="absolute size-[136px] lg:size-[154px] pointer-events-auto"
+                        style={{
+                          left: pos.left,
+                          top: pos.top,
+                          transform: pos.transform,
+                        }}
                       >
                         <button
                           type="button"
@@ -3545,8 +3558,8 @@ export function CoreVaidyaSection() {
                               : "0 6px 20px -4px rgba(230, 114, 48, 0.25)",
                           }}
                         >
-                          <span className="text-white font-extrabold text-[14px] lg:text-[15.5px] leading-[1.22] tracking-tight drop-shadow-xs select-none px-2 pointer-events-none">
-                            {service.title}
+                          <span className="text-white font-extrabold text-[12.5px] lg:text-[13.5px] leading-[1.2] tracking-tight drop-shadow-xs select-none px-2 pointer-events-none">
+                            {service.shortTitle}
                           </span>
                         </button>
                       </div>
@@ -3561,16 +3574,16 @@ export function CoreVaidyaSection() {
               {/* Section Eyebrow, Main Heading & Subtitle */}
               <div className="mb-6 lg:mb-8 text-left">
                 <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
-                  MEMBER SERVICES · FOR MEMBER PRACTITIONERS
+                  FUNCTIONAL LAYER · DIGITAL-FIRST CLINIC OS
                 </p>
                 <h2
                   id="core-vaidya-title"
                   className="mt-2 text-3xl sm:text-4xl lg:text-[40px] font-extrabold tracking-tight text-[#111111] leading-[1.18]"
                 >
-                  Core Vaidya
+                  Functional Layer: DynamicPMS - Digital First Clinic OS
                 </h2>
                 <p className="mt-3 text-base sm:text-lg text-[#555555] leading-relaxed">
-                  Connected care, coordinated supplies and a community of peers around your practice.
+                  Connected care, coordinated supplies and a community of peers around your practice
                 </p>
               </div>
 
@@ -3633,7 +3646,7 @@ export function CoreVaidyaSection() {
                 MEMBER SERVICES · FOR MEMBER PRACTITIONERS
               </p>
               <h2 className="mt-1 text-2xl font-extrabold tracking-tight text-[#111111]">
-                Core Vaidya
+                Functional Layer: DynamicPMS
               </h2>
               <p className="mt-2 text-sm text-[#555555]">
                 Connected care, coordinated supplies and a community of peers around your practice.
@@ -3652,7 +3665,7 @@ export function CoreVaidyaSection() {
             </div>
 
             {/* 4 Interactive Circles in 2x2 Connected Grid */}
-            <div className="grid grid-cols-2 gap-3 max-w-[340px] mx-auto mb-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-w-[380px] mx-auto mb-5">
               {CORE_VAIDYA_SERVICES.map((service, idx) => {
                 const isCurrent = safeSlideIndex === idx;
                 return (
@@ -3673,8 +3686,8 @@ export function CoreVaidyaSection() {
                       boxShadow: isCurrent ? service.subtleGlow : "0 4px 14px rgba(230, 114, 48, 0.25)",
                     }}
                   >
-                    <span className="text-white font-extrabold text-[12px] leading-[1.2] tracking-tight drop-shadow-xs select-none">
-                      {service.title}
+                    <span className="text-white font-extrabold text-[11px] leading-[1.2] tracking-tight drop-shadow-xs select-none">
+                      {service.shortTitle}
                     </span>
                   </button>
                 );
