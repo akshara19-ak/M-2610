@@ -3738,11 +3738,11 @@ interface ManagedServiceNode {
 
 const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
-    id: "physical-clinics",
+    id: "iaas",
     number: "01",
-    title: "Physical Co-working Clinics",
+    title: "Infrastructure-as-a-Service (IaaS)",
     description:
-      "Grow your practice in shared physical clinics without building every facility from scratch. Access turnkey consultation suites and collaborative clinical environments designed for modern AYUSH medicine.",
+      "Instantly deployable, plug-and-play co-working physical spaces, and tele-health for bypassing heavy initial capital expenditures for medical and IT equipment.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
     glow: "0 12px 32px -4px rgba(230, 114, 48, 0.45)",
     border: "#E67230",
@@ -3752,57 +3752,57 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
     sizePercent: 14.5,
   },
   {
-    id: "customer",
+    id: "global-patient-sourcing",
     number: "02",
-    title: "Customer & Practitioner Engagement",
+    title: "Global Patient Sourcing & MVT Footprint",
     description:
-      "Strengthen practitioner engagement and patient support at every touchpoint. Build enduring care relationships with seamless coordination and collaborative patient follow-up tools.",
+      "Centralized marketplace driving patient acquisition locally and internationally via Medical Value Travel (MVT), featuring a customized micro-site builder for member clinics.",
     gradient: "linear-gradient(135deg, #F37E38 0%, #D86423 50%, #B84E14 100%)",
     glow: "0 12px 32px -4px rgba(216, 100, 35, 0.45)",
     border: "#D86423",
-    tag: "PRACTITIONER ENGAGEMENT",
+    tag: "PATIENT ACQUISITION & MVT",
     leftPercent: 30.0,
     topPercent: 42.0,
     sizePercent: 13.0,
   },
   {
-    id: "vision",
+    id: "mso-backbone",
     number: "03",
-    title: "Strategic Vision & Ecosystem",
+    title: "MSO Backbone & Financial Command Center",
     description:
-      "Build a more connected future for the field of AYUSH and integrated healthcare. Unite clinical traditions with scalable digital standards and continuous collective intelligence.",
+      "Complete support for hub-and-spoke expansion, including a financial, accounting, and tax knowledge hub to handle regulatory compliance and enable vertical/horizontal scaling.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
     glow: "0 12px 32px -4px rgba(190, 86, 26, 0.45)",
     border: "#AE4E18",
-    tag: "ECOSYSTEM VISION",
+    tag: "FINANCIAL COMMAND & SCALE",
     leftPercent: 46.2,
     topPercent: 30.3,
     sizePercent: 14.0,
   },
   {
-    id: "innovation",
+    id: "enterprise-logistics",
     number: "04",
-    title: "Continuous Innovation",
+    title: "Enterprise Logistics, NHCX Claims & M-CAMP Engine",
     description:
-      "Continuously improve products, clinical services and care delivery processes. Leverage modern digital health workflows and standardized clinical formulations for sustainable practice excellence.",
+      "High-level logistics dashboard, frictionless NHCX cashless claim settlements, and coordination of corporate & Outreach CAMPS like \"NO-TO-NCD\" preventive health camps.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
     glow: "0 12px 32px -4px rgba(230, 114, 48, 0.45)",
     border: "#E67230",
-    tag: "SYSTEMS INNOVATION",
+    tag: "LOGISTICS & NHCX CLAIMS",
     leftPercent: 61.8,
     topPercent: 42.0,
     sizePercent: 13.0,
   },
   {
-    id: "operations",
+    id: "brand-incubation",
     number: "05",
-    title: "Operational Support System",
+    title: "Brand Incubation & Clinical Research Hub",
     description:
-      "Bring day-to-day operations together with an all-inclusive practice support model. Streamline appointment orchestration, billing, supply logistics, and compliance through one unified partner.",
+      "CTMS for executing structured research, alongside an incubation network scaling brand equity and connecting practitioners with mentors for new product/service launches.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
     glow: "0 12px 32px -4px rgba(190, 86, 26, 0.45)",
     border: "#AE4E18",
-    tag: "OPERATING MODEL",
+    tag: "RESEARCH & BRAND INCUBATION",
     leftPercent: 66.1,
     topPercent: 61.0,
     sizePercent: 14.5,
@@ -3855,7 +3855,7 @@ export function ManagedServicesTreeSection() {
                   <Building2 className="size-3.5" />
                 </span>
                 <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
-                  MANAGED SERVICES · FOR CLINICS & CARE ORGANIZATIONS
+                  FLAGSHIP LAYER · ENTERPRISE ECOSYSTEM
                 </p>
               </div>
               <h2
@@ -4115,7 +4115,7 @@ export function ManagedServicesTreeSection() {
                 <Building2 className="size-3.5" />
               </span>
               <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
-                MANAGED SERVICES · FOR CLINICS & CARE ORGANIZATIONS
+                FLAGSHIP LAYER · ENTERPRISE ECOSYSTEM
               </p>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111] leading-tight">
