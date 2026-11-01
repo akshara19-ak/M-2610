@@ -3439,11 +3439,11 @@ export function CoreVaidyaSection() {
   const safeSlideIndex = activeSlideIndex >= 0 ? activeSlideIndex : 0;
   const activeService = CORE_VAIDYA_SERVICES[safeSlideIndex];
 
-  // Continuous clockwise rotation on scroll down (0 -> 270 deg), or snapped to current service on mobile/tablet
+  // Rotation rotates so that the active highlighted service is ALWAYS positioned directly at the TOP (12 o'clock)
   const currentRotation =
     isDesktop && !reducedMotion
-      ? scrollProgress * (CORE_VAIDYA_SERVICES.length - 1) * 72
-      : safeSlideIndex * 72;
+      ? -scrollProgress * (CORE_VAIDYA_SERVICES.length - 1) * 72
+      : -safeSlideIndex * 72;
 
   const scrollToService = (index: number) => {
     if (isDesktop && !reducedMotion && containerRef.current) {
