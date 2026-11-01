@@ -5847,7 +5847,7 @@ export function MeyvedaDoctorsPage() {
                     to="/cluster-franchise"
                     className="hover:text-[#E67230] transition-colors text-left"
                   >
-                    Cluster Franchise Partner
+                    Cluster Management Partner
                   </Link>
                 </li>
                 <li>
