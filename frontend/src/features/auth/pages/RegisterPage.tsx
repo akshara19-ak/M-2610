@@ -740,7 +740,7 @@ export function Register() {
               </div>
             )}
 
-            <form onSubmit={handleSubmit} autoComplete="off" className="space-y-4">
+            <form onSubmit={handleSubmit} autoComplete="off" autoCorrect="off" autoCapitalize="off" className="space-y-4">
               {/* 1. Full Name */}
               <div>
                 <label className="block text-xs sm:text-sm font-bold text-[#111111] mb-1.5">
@@ -1186,9 +1186,14 @@ export function Register() {
                         <Lock className="size-4" />
                       </div>
                       <input
+                        id="register-password"
+                        name="register_password_field"
                         type={showPassword ? "text" : "password"}
                         required
-                        placeholder="••••••••••••"
+                        autoComplete="new-password"
+                        data-lpignore="true"
+                        data-form-type="other"
+                        placeholder=""
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         className="w-full rounded-md border border-[#EBE7DF] bg-white pl-10 pr-10 py-2.5 sm:py-3 text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
@@ -1212,9 +1217,14 @@ export function Register() {
                         <Lock className="size-4" />
                       </div>
                       <input
+                        id="register-confirm-password"
+                        name="register_confirm_password_field"
                         type={showConfirmPassword ? "text" : "password"}
                         required
-                        placeholder="••••••••••••"
+                        autoComplete="new-password"
+                        data-lpignore="true"
+                        data-form-type="other"
+                        placeholder=""
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         className="w-full rounded-md border border-[#EBE7DF] bg-white pl-10 pr-10 py-2.5 sm:py-3 text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
