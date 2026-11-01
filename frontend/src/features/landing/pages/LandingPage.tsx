@@ -3373,10 +3373,10 @@ const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
 // Positions for 5 circular nodes distributed evenly along the orbit (72 degrees apart)
 const CIRCLE_POSITIONS_5 = [
   { left: "50%", top: "11%", transform: "translate(-50%, -50%)" },
-  { left: "86.5%", top: "37.5%", transform: "translate(-50%, -50%)" },
-  { left: "72.5%", top: "81%", transform: "translate(-50%, -50%)" },
-  { left: "27.5%", top: "81%", transform: "translate(-50%, -50%)" },
   { left: "13.5%", top: "37.5%", transform: "translate(-50%, -50%)" },
+  { left: "27.5%", top: "81%", transform: "translate(-50%, -50%)" },
+  { left: "72.5%", top: "81%", transform: "translate(-50%, -50%)" },
+  { left: "86.5%", top: "37.5%", transform: "translate(-50%, -50%)" },
 ];
 
 export function CoreVaidyaSection() {
@@ -3442,8 +3442,8 @@ export function CoreVaidyaSection() {
   // Rotation rotates so that the active highlighted service is ALWAYS positioned directly at the TOP (12 o'clock)
   const currentRotation =
     isDesktop && !reducedMotion
-      ? -scrollProgress * (CORE_VAIDYA_SERVICES.length - 1) * 72
-      : -safeSlideIndex * 72;
+      ? scrollProgress * (CORE_VAIDYA_SERVICES.length - 1) * 72
+      : safeSlideIndex * 72;
 
   const scrollToService = (index: number) => {
     if (isDesktop && !reducedMotion && containerRef.current) {
@@ -3522,7 +3522,7 @@ export function CoreVaidyaSection() {
 
                 {/* Orbiting Elements Container: Rotates clockwise on scroll down */}
                 <div
-                  className="absolute inset-0 transition-transform duration-75 ease-out pointer-events-none"
+                  className="absolute inset-0 transition-transform duration-500 ease-out pointer-events-none"
                   style={{
                     transform: `rotate(${currentRotation}deg)`,
                     willChange: "transform",
@@ -3549,7 +3549,7 @@ export function CoreVaidyaSection() {
                           onClick={() => scrollToService(idx)}
                           onMouseEnter={() => setHoveredId(service.id)}
                           onMouseLeave={() => setHoveredId(null)}
-                          className={`w-full h-full rounded-full p-3.5 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#E67230] focus-visible:ring-offset-2 ${isCurrent
+                          className={`w-full h-full rounded-full p-3.5 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-500 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#E67230] focus-visible:ring-offset-2 ${isCurrent
                               ? "z-40 border-[2.5px] border-white ring-4 ring-[#E67230]/40 shadow-xl opacity-100"
                               : "border border-white/50 opacity-65 hover:opacity-90 hover:scale-103 shadow-md"
                             }`}
