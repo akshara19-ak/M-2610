@@ -1209,7 +1209,7 @@ function RegisterPrimaryButton({
   size = "default",
   onClick,
   disabled = false,
-  type,
+  type = "button",
 }: {
   children?: React.ReactNode;
   className?: string;
@@ -1218,18 +1218,27 @@ function RegisterPrimaryButton({
   disabled?: boolean;
   type?: "button" | "submit" | "reset";
 }) {
+  const navigate = useNavigate();
   const sizeClasses = {
     sm: "h-9 px-4 text-xs font-bold",
     default: "h-11 px-5 text-sm font-bold sm:h-12 sm:px-6 sm:text-sm",
     lg: "h-13 px-7 text-base font-bold sm:h-14 sm:px-8 sm:text-base",
   }[size];
 
+  const handleClick = (e: React.MouseEvent) => {
+    if (onClick) {
+      onClick();
+    } else {
+      navigate({ to: "/register" });
+    }
+  };
+
   return (
     <Button
       type={type}
       disabled={disabled}
-      onClick={onClick}
-      className={`group relative inline-flex items-center justify-center gap-2 rounded-md bg-[#E67230] text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] hover:shadow-[0_8px_24px_-4px_rgba(230,114,48,0.5)] active:translate-y-0 active:shadow-sm disabled:opacity-60 disabled:cursor-not-allowed ${sizeClasses} ${className}`}
+      onClick={handleClick}
+      className={`group relative inline-flex items-center justify-center gap-2 rounded-md bg-[#E67230] text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] hover:shadow-[0_8px_24px_-4px_rgba(230,114,48,0.5)] active:translate-y-0 active:shadow-sm disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer ${sizeClasses} ${className}`}
     >
       <span>{children}</span>
       <ArrowRight
@@ -5202,15 +5211,14 @@ export function MeyvedaDoctorsPage() {
                     >
                       Doctor Sign In
                     </Link>
-                    <RegisterPrimaryButton
-                      className="w-full h-11 text-sm font-bold"
-                      onClick={() => {
-                        setRegisterModalOpen(true);
-                        setMobileMenuOpen(false);
-                      }}
+                    <Link
+                      to="/register"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="w-full h-11 rounded-md bg-[#E67230] hover:bg-[#D15F1F] text-white text-sm font-bold flex items-center justify-center gap-2 shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all"
                     >
-                      Early Bird Registration
-                    </RegisterPrimaryButton>
+                      <span>Early Bird Registration</span>
+                      <ArrowRight className="size-4" />
+                    </Link>
                   </>
                 )}
               </div>
@@ -5532,13 +5540,13 @@ export function MeyvedaDoctorsPage() {
               </div>
 
               <div className="mt-8 flex flex-wrap items-center gap-4">
-                <button
-                  type="button"
-                  
-                  className="inline-flex items-center gap-2 rounded-md bg-[#111111] px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#222222]"
+                <Link
+                  to="/register"
+                  className="inline-flex items-center gap-2 rounded-md bg-[#111111] px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#222222] cursor-pointer"
                 >
                   <span>Register as a Doctor</span>
-                </button>
+                  <ArrowRight className="size-4" />
+                </Link>
               </div>
             </div>
           </div>
