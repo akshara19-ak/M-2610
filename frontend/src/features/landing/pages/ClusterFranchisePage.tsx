@@ -326,7 +326,7 @@ Timestamp: ${d.timestamp}`;
           <div className="max-w-[560px] lg:max-w-[520px] xl:max-w-[560px]">
             {/* Section Eyebrow */}
             <p className="mb-2.5 text-xs font-bold uppercase tracking-wider text-[#E67230]">
-              Exclusive Territory Partnerships · 1 District = 1 Hub
+              Exclusive Partnerships
             </p>
 
             {/* Headline — Refined editorial display font */}
@@ -336,7 +336,7 @@ Timestamp: ${d.timestamp}`;
               style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
             >
               Become a Meyveda <br className="hidden sm:inline" />
-              <span className="text-[#E67230]">Cluster Franchisee</span>
+              <span className="text-[#E67230]">Cluster Partner</span>
             </h1>
 
             {/* Subtitle */}
@@ -365,10 +365,7 @@ Timestamp: ${d.timestamp}`;
 
             {/* Trust & Governance Badges */}
             <div className="mt-8 pt-6 border-t border-[#EBE7DF]/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] text-[#66635D]">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="size-4 text-[#E67230] shrink-0" />
-                <span>Statutory AYUSH Council Alignment</span>
-              </div>
+              
               <div className="flex items-center gap-2">
                 <ShieldCheck className="size-4 text-[#E67230] shrink-0" />
                 <span>100% Refundable Caution Deposit</span>
@@ -397,68 +394,68 @@ Timestamp: ${d.timestamp}`;
               Your role in the territory
             </h2>
             <p className="mt-3 text-sm sm:text-base lg:text-[17px] leading-relaxed text-[#555555]">
-              Cluster franchisees are appointed territory-wise. The smallest territory is at least one district (a 3-digit PIN zone).
+              Secure exclusive territorial rights with a digital demand pipeline that routes AYUSH prescriptions instantly to your fulfillment hub.
             </p>
           </div>
 
           {/* Four Core Feature Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
-            {/* Card 1: Medicine & consumables supply */}
-            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
-              <div>
-                <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
-                  <Truck className="size-5.5" />
-                </div>
-                <h3 className="text-lg sm:text-[19px] font-bold tracking-tight text-[#111111] mb-2.5">
-                  Medicine &amp; consumables supply
-                </h3>
-                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
-                  Own the supply chain for your territory — prescriptions, clinic orders and last-mile delivery to patients.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 2: CME programs */}
-            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
-              <div>
-                <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
-                  <Calendar className="size-5.5" />
-                </div>
-                <h3 className="text-lg sm:text-[19px] font-bold tracking-tight text-[#111111] mb-2.5">
-                  CME programs
-                </h3>
-                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
-                  Coordinate continuing medical education events with AYUSH doctors across your district.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 3: Medical camps */}
-            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
-              <div>
-                <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
-                  <Users className="size-5.5" />
-                </div>
-                <h3 className="text-lg sm:text-[19px] font-bold tracking-tight text-[#111111] mb-2.5">
-                  Medical camps
-                </h3>
-                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
-                  Organise community medical camps and outreach drives with local practitioners.
-                </p>
-              </div>
-            </div>
-
-            {/* Card 4: Doctor touchpoints */}
+            {/* Card 1: AUTOMATED DEMAND PIPELINE */}
             <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
               <div>
                 <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
                   <Network className="size-5.5" />
                 </div>
-                <h3 className="text-lg sm:text-[19px] font-bold tracking-tight text-[#111111] mb-2.5">
-                  Doctor touchpoints
+                <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#111111] mb-2.5 uppercase">
+                  AUTOMATED DEMAND PIPELINE
                 </h3>
                 <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
-                  Onboard practitioners and become the trusted local face of the Meyveda network.
+                  Plug into zero-friction revenue. Prescriptions and clinic restock orders route instantly from the practitioner's dynamicPMS software directly to your fulfillment dashboard, eliminating traditional field sales and slashing customer acquisition costs.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 2: EXCLUSIVE TERRITORIAL RIGHTS */}
+            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
+              <div>
+                <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
+                  <ShieldCheck className="size-5.5" />
+                </div>
+                <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#111111] mb-2.5 uppercase">
+                  EXCLUSIVE TERRITORIAL RIGHTS
+                </h3>
+                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
+                  Claim your regional monopoly. Secure absolute logistics sovereignty over your geographic cluster, guaranteeing that as the independent practitioner network expands, 100% of the local fulfillment volume belongs exclusively to your business.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 3: MEDICINE & CONSUMABLES SUPPLY CHAIN */}
+            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
+              <div>
+                <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
+                  <Truck className="size-5.5" />
+                </div>
+                <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#111111] mb-2.5 uppercase">
+                  MEDICINE &amp; CONSUMABLES SUPPLY CHAIN
+                </h3>
+                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
+                  Master the clinical last mile. Command the rapid fulfillment of zero-inventory AYUSH formulations and daily clinic consumables, capturing high-margin returns across both B2B bulk restocks and D2C patient doorstep deliveries.
+                </p>
+              </div>
+            </div>
+
+            {/* Card 4: MEDICAL CAMPS & PRACTITIONER TOUCHPOINTS */}
+            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-between">
+              <div>
+                <div className="flex size-11 items-center justify-center rounded-xl bg-[#FAF7F2] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
+                  <Users className="size-5.5" />
+                </div>
+                <h3 className="text-base sm:text-[17px] font-bold tracking-tight text-[#111111] mb-2.5 uppercase">
+                  MEDICAL CAMPS &amp; PRACTITIONER TOUCHPOINTS
+                </h3>
+                <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
+                  Anchor community trust. Serve as the physical face of Meyveda by coordinating local health outreach and managing direct, high-value relationships with independent practitioners to drive localized brand identity and patient sourcing.
                 </p>
               </div>
             </div>

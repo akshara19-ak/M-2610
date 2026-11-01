@@ -205,13 +205,29 @@ def register(payload: RegisterRequest, db: Session = Depends(get_db)):
                 detail="Invalid or expired email verification token. Please verify OTP again.",
             )
 
-    # 2. Check for duplicate email
-    existing_user = db.query(User).filter(User.email == payload.email.lower()).first()
+    # 2. Check for duplicate email and phone number (Discipline gate: only one user per email and phone)
+    clean_email = payload.email.lower().strip()
+    existing_user = db.query(User).filter(User.email == clean_email).first()
     if existing_user is not None:
         raise HTTPException(
             status_code=status.HTTP_409_CONFLICT,
-            detail="An account with this email address already exists.",
+            detail="An account with this email address already exists. Only one registration per email is permitted.",
         )
+
+    phone_num = (payload.phone or payload.mobile or "").strip()
+    if phone_num:
+        clean_phone = re.sub(r"\D", "", phone_num)[-10:]
+        if clean_phone:
+            existing_phone_doc = (
+                db.query(Doctor)
+                .filter(func.replace(Doctor.phone, " ", "").like(f"%{clean_phone}"))
+                .first()
+            )
+            if existing_phone_doc is not None:
+                raise HTTPException(
+                    status_code=status.HTTP_409_CONFLICT,
+                    detail="A doctor with this mobile number is already registered. Only one registration per phone number is permitted.",
+                )
 
     # 3. Hash password securely
     hashed_pwd = hash_password(payload.password)

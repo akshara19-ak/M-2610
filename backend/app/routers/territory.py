@@ -556,3 +556,59 @@ async def lookup_territory_pincode(
         matched_manufacturers=matched_mfrs,
     )
 
+
+
+@router.get(
+    "/reports/pincode-doctors",
+    summary="Pincode-wise List of Doctors and Statewise Aggregated Reports",
+    description="Returns doctors grouped by PIN code alongside state-wise summary reports for locked governance.",
+)
+def get_pincode_doctors_and_statewise_report(
+    pincode: Optional[str] = Query(None, description="Filter by specific 6-digit PIN code"),
+    state: Optional[str] = Query(None, description="Filter by state name"),
+    db: Session = Depends(get_db),
+) -> Dict[str, Any]:
+    territory_data = _build_territory_hierarchy(db)
+
+    # 1. Statewise aggregated summary
+    statewise_reports = []
+    pincode_doctor_map: Dict[str, List[Dict[str, Any]]] = {}
+
+    for st in territory_data.territories:
+        if state and st.state.lower() != state.lower().strip():
+            continue
+
+        statewise_reports.append({
+            "state": st.state,
+            "total_doctors": st.total_doctors,
+            "total_districts": len(st.districts),
+            "ayush_board": st.ayush_governance.board_name,
+            "controlling_authority": st.ayush_governance.controlling_authority,
+        })
+
+        for dist in st.districts:
+            for doc in dist.doctors:
+                doc_pin = (doc.pincode or "Unspecified").strip()
+                if pincode and doc_pin != pincode.strip():
+                    continue
+                if doc_pin not in pincode_doctor_map:
+                    pincode_doctor_map[doc_pin] = []
+                pincode_doctor_map[doc_pin].append({
+                    "id": doc.id,
+                    "name": doc.name,
+                    "specialty": doc.specialty,
+                    "qualification": doc.qualification,
+                    "license_number": doc.license_number,
+                    "status": doc.status,
+                    "city": doc.city,
+                    "state": doc.state,
+                    "phone": doc.phone,
+                    "pincode": doc_pin,
+                })
+
+    return {
+        "total_states": len(statewise_reports),
+        "total_pincodes_mapped": len(pincode_doctor_map),
+        "statewise_reports": statewise_reports,
+        "pincode_doctors": pincode_doctor_map,
+    }
