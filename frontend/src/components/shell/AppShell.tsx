@@ -211,7 +211,7 @@ export function AppShell({ children }: { children: ReactNode }) {
       </a>
       <aside
         className={cn(
-          "shell-sidebar motif-corner sticky top-0 hidden h-screen h-dvh min-h-screen min-h-dvh shrink-0 flex-col overflow-hidden p-3 transition-[width] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:flex",
+          "shell-sidebar motif-corner fixed inset-y-0 left-0 z-30 hidden h-screen h-dvh flex-col overflow-hidden p-3 transition-[width] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:flex",
           collapsed ? "w-[var(--sidebar-width-collapsed)]" : "w-[var(--sidebar-width)]",
         )}
       >
@@ -292,7 +292,10 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className={cn(
+        "flex min-w-0 flex-1 flex-col transition-[padding] duration-[var(--duration-base)] ease-[var(--ease-out)]",
+        collapsed ? "lg:pl-[var(--sidebar-width-collapsed)]" : "lg:pl-[var(--sidebar-width)]"
+      )}>
         {/* Mobile menu bar - only rendered on small screens where sidebar is hidden */}
         <div className="flex h-12 items-center justify-between border-b border-border bg-white/95 px-4 backdrop-blur-md lg:hidden">
           <button
