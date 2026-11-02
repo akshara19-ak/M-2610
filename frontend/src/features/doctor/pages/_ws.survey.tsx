@@ -323,11 +323,12 @@ export function SurveyPage() {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {activeSurvey.questions.map((q, idx) => (
-            <div
-              key={q.id || idx}
-              className="rounded-3xl border border-border bg-white p-7 md:p-8 shadow-sm space-y-4"
-            >
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            {activeSurvey.questions.map((q, idx) => (
+              <div
+                key={q.id || idx}
+                className="flex flex-col justify-between rounded-3xl border border-border bg-white p-5 md:p-6 shadow-sm space-y-4 hover:shadow-md transition-shadow"
+              >
               <div className="space-y-1">
                 <label className="text-base sm:text-lg font-bold text-foreground block">
                   <span className="text-primary mr-2">{idx + 1}.</span>
@@ -441,6 +442,7 @@ export function SurveyPage() {
               )}
             </div>
           ))}
+          </div>
 
           <div className="flex items-center justify-between pt-3">
             <button
@@ -512,66 +514,62 @@ export function SurveyPage() {
             <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>
         ) : insights && insights.question_insights && insights.question_insights.length > 0 ? (
-          <div className="space-y-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {insights.question_insights.map((qi, qIdx) => {
               const myTextAnswer = mySubmittedAnswers[qi.question_id];
 
               return (
                 <div
                   key={qi.question_id || qIdx}
-                  className="rounded-3xl border border-border bg-white p-7 md:p-8 shadow-sm space-y-5"
+                  className="flex flex-col justify-between rounded-3xl border border-border bg-white p-5 md:p-6 shadow-sm space-y-4 hover:shadow-md transition-shadow"
                 >
-                  <div className="flex items-start justify-between gap-4">
-                    <h3 className="text-base sm:text-lg font-bold text-foreground">
-                      <span className="text-primary mr-2">Q{qIdx + 1}.</span>
-                      {qi.question_title}
-                    </h3>
-                    <span className="text-xs font-semibold text-muted-foreground shrink-0 bg-muted/40 px-2.5 py-1 rounded-full">
-                      {qi.total_votes} {qi.total_votes === 1 ? "response" : "responses"}
-                    </span>
-                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-start justify-between gap-2">
+                      <h3 className="text-sm sm:text-base font-bold text-foreground leading-snug">
+                        <span className="text-primary mr-1.5 font-extrabold">Q{qIdx + 1}.</span>
+                        {qi.question_title}
+                      </h3>
+                      <span className="text-[11px] font-semibold text-muted-foreground shrink-0 bg-muted/40 px-2 py-0.5 rounded-full">
+                        {qi.total_votes} {qi.total_votes === 1 ? "vote" : "votes"}
+                      </span>
+                    </div>
 
-                  {qi.options && qi.options.length > 0 ? (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
-                      {qi.options.map((optItem, optIdx) => {
-                        const isSelectedByMe = isDoctorSelection(
-                          qi.question_id,
-                          optItem.option,
-                          qi.question_type
-                        );
+                    {qi.options && qi.options.length > 0 ? (
+                      <div className="space-y-3 pt-1">
+                        {qi.options.map((optItem, optIdx) => {
+                          const isSelectedByMe = isDoctorSelection(
+                            qi.question_id,
+                            optItem.option,
+                            qi.question_type
+                          );
 
-                        return (
-                          <div
-                            key={optIdx}
-                            className={`flex flex-col justify-between p-4 rounded-2xl border transition-all ${
-                              isSelectedByMe
-                                ? "border-[#E67230] bg-[#FFF8F3] shadow-xs ring-1 ring-[#E67230]/20"
-                                : "border-[#EBE7DF] bg-[#FAF9F6]/80 hover:bg-[#FAF9F6]"
-                            }`}
-                          >
-                            <div className="space-y-2 mb-3">
-                              <div className="flex items-start justify-between gap-2">
-                                <span className={`text-sm leading-snug break-words ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground font-medium"}`}>
-                                  {optItem.option}
-                                </span>
-                                {isSelectedByMe && (
-                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[#E67230] text-white px-2 py-0.5 text-[11px] font-bold">
-                                    <Check className="size-3 stroke-[3]" /> Selected
+                          return (
+                            <div
+                              key={optIdx}
+                              className={`p-3 rounded-2xl border transition-all ${
+                                isSelectedByMe
+                                  ? "border-[#E67230] bg-[#FFF8F3] shadow-2xs ring-1 ring-[#E67230]/20"
+                                  : "border-transparent bg-[#FAF9F6]/80"
+                              }`}
+                            >
+                              <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
+                                <div className="flex items-center gap-1.5 min-w-0">
+                                  <span className={`text-xs leading-tight truncate ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground font-medium"}`}>
+                                    {optItem.option}
                                   </span>
-                                )}
-                              </div>
-                            </div>
-
-                            <div className="space-y-1.5 mt-auto pt-2 border-t border-[#EBE7DF]/60">
-                              <div className="flex items-center justify-between text-xs">
-                                <span className="text-muted-foreground font-medium">Votes: {optItem.count}</span>
-                                <span className="font-mono text-sm font-extrabold text-[#E67230]">
-                                  {optItem.percentage}%
+                                  {isSelectedByMe && (
+                                    <span className="shrink-0 inline-flex items-center gap-0.5 rounded-full bg-[#E67230] text-white px-1.5 py-0.5 text-[10px] font-bold">
+                                      <Check className="size-2.5 stroke-[3]" /> You
+                                    </span>
+                                  )}
+                                </div>
+                                <span className="font-mono text-xs font-bold text-foreground shrink-0">
+                                  {optItem.percentage}% <span className="text-muted-foreground font-normal text-[10px]">({optItem.count})</span>
                                 </span>
                               </div>
 
                               {/* Bar Graph */}
-                              <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#EBE7DF]">
+                              <div className="h-2 w-full overflow-hidden rounded-full bg-[#EBE7DF]">
                                 <div
                                   className={`h-full rounded-full transition-all duration-500 ease-out ${
                                     isSelectedByMe ? "bg-[#E67230]" : "bg-[#D15F1F]/70"
@@ -580,38 +578,38 @@ export function SurveyPage() {
                                 />
                               </div>
                             </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  ) : qi.text_answers && qi.text_answers.length > 0 ? (
-                    <div className="space-y-3 pt-2">
-                      {myTextAnswer && (
-                        <div className="rounded-2xl border-2 border-[#E67230] bg-[#FFF8F3] p-4 text-sm text-foreground space-y-1.5">
-                          <span className="text-xs font-bold text-[#E67230] uppercase tracking-wider block">
-                            Your Clinical Answer
-                          </span>
-                          <p className="font-medium text-foreground">{myTextAnswer}</p>
-                        </div>
-                      )}
-
-                      <div className="space-y-2 pt-2">
-                        <span className="text-xs font-semibold text-muted-foreground">
-                          All Colleague Responses:
-                        </span>
-                        {qi.text_answers.map((ans, aIdx) => (
-                          <div
-                            key={aIdx}
-                            className="rounded-xl border border-border bg-muted/20 p-4 text-sm text-foreground leading-relaxed"
-                          >
-                            {ans}
-                          </div>
-                        ))}
+                          );
+                        })}
                       </div>
-                    </div>
-                  ) : (
-                    <p className="text-sm text-muted-foreground italic">No responses recorded yet.</p>
-                  )}
+                    ) : qi.text_answers && qi.text_answers.length > 0 ? (
+                      <div className="space-y-2 pt-1">
+                        {myTextAnswer && (
+                          <div className="rounded-xl border border-[#E67230] bg-[#FFF8F3] p-2.5 text-xs text-foreground space-y-1">
+                            <span className="text-[10px] font-bold text-[#E67230] uppercase tracking-wider block">
+                              Your Answer
+                            </span>
+                            <p className="font-medium text-foreground">{myTextAnswer}</p>
+                          </div>
+                        )}
+
+                        <div className="space-y-1.5 pt-1">
+                          <span className="text-[11px] font-semibold text-muted-foreground">
+                            Responses:
+                          </span>
+                          {qi.text_answers.slice(0, 3).map((ans, aIdx) => (
+                            <div
+                              key={aIdx}
+                              className="rounded-lg border border-border bg-muted/20 p-2 text-xs text-foreground leading-snug line-clamp-2"
+                            >
+                              {ans}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="text-xs text-muted-foreground italic">No responses recorded yet.</p>
+                    )}
+                  </div>
                 </div>
               );
             })}
