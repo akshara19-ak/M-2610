@@ -57,7 +57,9 @@ function BrandPanel({ compact }: { compact?: boolean; onNavigate?: () => void })
         compact ? "mx-auto h-11 w-11 p-1.5" : "w-full px-4 py-2",
       )}
     >
-      <Logo compact={compact ?? false} />
+      <div className={cn("flex items-center justify-center", !compact && "-translate-x-1")}>
+        <Logo compact={compact ?? false} />
+      </div>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useParams, useNavigate } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import {
   HelpCircle,
@@ -67,6 +67,10 @@ interface InsightsData {
 
 export function SurveyPage() {
   const doctor = useStore((s) => s.doctor);
+  const params = useParams({ strict: false }) as { surveyId?: string } | undefined;
+  const navigate = useNavigate();
+  const urlSurveyId = params?.surveyId || (typeof window !== "undefined" && window.location.pathname.startsWith("/survey/result/") ? window.location.pathname.replace("/survey/result/", "").trim() : "");
+
   const [surveys, setSurveys] = useState<SurveyItem[]>([]);
   const [completedSurveyIds, setCompletedSurveyIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -105,8 +109,30 @@ export function SurveyPage() {
       );
       const mergedCompleted = Array.from(new Set([...(completedIds || []), ...localCompleted]));
 
-      setSurveys(Array.isArray(surveyList) ? surveyList : []);
+      const activeSurveyList = Array.isArray(surveyList) ? surveyList : [];
+      setSurveys(activeSurveyList);
       setCompletedSurveyIds(mergedCompleted);
+
+      // If URL has survey result ID (e.g. /survey/result/:id), automatically load results
+      const currentParamId = params?.surveyId || (typeof window !== "undefined" && window.location.pathname.startsWith("/survey/result/") ? window.location.pathname.replace("/survey/result/", "").trim() : "");
+      if (currentParamId) {
+        const found = activeSurveyList.find((s) => s.id === currentParamId);
+        if (found) {
+          handleViewResults(found, undefined, false);
+        } else {
+          // If not in survey list, create minimal item to load insights
+          handleViewResults({
+            id: currentParamId,
+            title: "Survey Results",
+            description: "",
+            category: "Clinical",
+            reward_points: 0,
+            status: "active",
+            questions: [],
+            total_responses: 0,
+          }, undefined, false);
+        }
+      }
     } catch (err) {
       console.error("Failed to load surveys:", err);
       toast.error("Could not load surveys.");
@@ -121,10 +147,14 @@ export function SurveyPage() {
     setAnswers({});
   };
 
-  const handleViewResults = async (survey: SurveyItem, existingAnswers?: Record<string, any>) => {
+  const handleViewResults = async (survey: SurveyItem, existingAnswers?: Record<string, any>, updateUrl = true) => {
     setActiveSurvey(survey);
     setViewMode("results");
     setLoadingInsights(true);
+
+    if (updateUrl && typeof window !== "undefined") {
+      window.history.pushState(null, "", `/survey/result/${survey.id}`);
+    }
 
     if (existingAnswers) {
       setMySubmittedAnswers(existingAnswers);
@@ -166,6 +196,9 @@ export function SurveyPage() {
     setAnswers({});
     setInsights(null);
     setMySubmittedAnswers({});
+    if (typeof window !== "undefined") {
+      window.history.pushState(null, "", "/survey");
+    }
     loadSurveysAndStatus();
   };
 
@@ -308,29 +341,29 @@ export function SurveyPage() {
 
               {/* RADIO */}
               {q.type === "radio" && (
-                <div className="space-y-2.5 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
                   {q.options.map((opt, optIdx) => {
                     const isSelected = answers[q.id] === opt;
                     return (
                       <label
                         key={optIdx}
                         onClick={() => handleOptionSelect(q.id, opt, false)}
-                        className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border p-4 text-sm transition-colors ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm transition-all ${
                           isSelected
-                            ? "border-primary bg-primary-soft text-foreground font-bold"
-                            : "border-border bg-card text-foreground hover:bg-muted/40"
+                            ? "border-[#E67230] bg-[#FFF8F3] text-foreground font-bold shadow-xs ring-1 ring-[#E67230]/30"
+                            : "border-border bg-card text-foreground hover:bg-[#FAF9F6]"
                         }`}
                       >
                         <div
                           className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${
                             isSelected
-                              ? "border-primary bg-primary text-white"
+                              ? "border-[#E67230] bg-[#E67230] text-white"
                               : "border-muted-foreground/40 bg-white"
                           }`}
                         >
                           {isSelected && <div className="size-2 rounded-full bg-white" />}
                         </div>
-                        <span className="text-sm">{opt}</span>
+                        <span className="text-sm leading-snug">{opt}</span>
                       </label>
                     );
                   })}
@@ -339,7 +372,7 @@ export function SurveyPage() {
 
               {/* CHECKBOX */}
               {q.type === "checkbox" && (
-                <div className="space-y-2.5 pt-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-2">
                   {q.options.map((opt, optIdx) => {
                     const current = (answers[q.id] as string[]) || [];
                     const isSelected = current.includes(opt);
@@ -347,22 +380,22 @@ export function SurveyPage() {
                       <label
                         key={optIdx}
                         onClick={() => handleOptionSelect(q.id, opt, true)}
-                        className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border p-4 text-sm transition-colors ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-2xl border p-4 text-sm transition-all ${
                           isSelected
-                            ? "border-primary bg-primary-soft text-foreground font-bold"
-                            : "border-border bg-card text-foreground hover:bg-muted/40"
+                            ? "border-[#E67230] bg-[#FFF8F3] text-foreground font-bold shadow-xs ring-1 ring-[#E67230]/30"
+                            : "border-border bg-card text-foreground hover:bg-[#FAF9F6]"
                         }`}
                       >
                         <div
                           className={`flex size-5 shrink-0 items-center justify-center rounded-lg border ${
                             isSelected
-                              ? "border-primary bg-primary text-white"
+                              ? "border-[#E67230] bg-[#E67230] text-white"
                               : "border-muted-foreground/40 bg-white"
                           }`}
                         >
                           {isSelected && <Check className="size-3.5 stroke-[3]" />}
                         </div>
-                        <span className="text-sm">{opt}</span>
+                        <span className="text-sm leading-snug">{opt}</span>
                       </label>
                     );
                   })}
@@ -499,7 +532,7 @@ export function SurveyPage() {
                   </div>
 
                   {qi.options && qi.options.length > 0 ? (
-                    <div className="space-y-3.5 pt-2">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5 pt-2">
                       {qi.options.map((optItem, optIdx) => {
                         const isSelectedByMe = isDoctorSelection(
                           qi.question_id,
@@ -510,36 +543,42 @@ export function SurveyPage() {
                         return (
                           <div
                             key={optIdx}
-                            className={`p-4 rounded-2xl border transition-all ${
+                            className={`flex flex-col justify-between p-4 rounded-2xl border transition-all ${
                               isSelectedByMe
-                                ? "border-[#E67230] bg-[#FFF8F3]"
-                                : "border-transparent bg-[#FAF9F6]/60"
+                                ? "border-[#E67230] bg-[#FFF8F3] shadow-xs ring-1 ring-[#E67230]/20"
+                                : "border-[#EBE7DF] bg-[#FAF9F6]/80 hover:bg-[#FAF9F6]"
                             }`}
                           >
-                            <div className="flex items-center justify-between text-sm mb-2">
-                              <div className="flex items-center gap-2.5 max-w-[80%]">
-                                <span className={`text-sm ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground font-medium"}`}>
+                            <div className="space-y-2 mb-3">
+                              <div className="flex items-start justify-between gap-2">
+                                <span className={`text-sm leading-snug break-words ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground font-medium"}`}>
                                   {optItem.option}
                                 </span>
                                 {isSelectedByMe && (
-                                  <span className="inline-flex items-center gap-1 rounded-full bg-[#E67230] text-white px-2.5 py-0.5 text-xs font-bold">
-                                    <Check className="size-3 stroke-[3]" /> Your Selection
+                                  <span className="shrink-0 inline-flex items-center gap-1 rounded-full bg-[#E67230] text-white px-2 py-0.5 text-[11px] font-bold">
+                                    <Check className="size-3 stroke-[3]" /> Selected
                                   </span>
                                 )}
                               </div>
-                              <span className="font-mono text-sm font-bold text-foreground shrink-0">
-                                {optItem.percentage}% <span className="text-muted-foreground font-normal text-xs">({optItem.count})</span>
-                              </span>
                             </div>
 
-                            {/* Bar Graph */}
-                            <div className="h-3.5 w-full overflow-hidden rounded-full bg-[#EBE7DF]">
-                              <div
-                                className={`h-full rounded-full transition-all duration-500 ease-out ${
-                                  isSelectedByMe ? "bg-[#E67230]" : "bg-[#D15F1F]/70"
-                                }`}
-                                style={{ width: `${optItem.percentage}%` }}
-                              />
+                            <div className="space-y-1.5 mt-auto pt-2 border-t border-[#EBE7DF]/60">
+                              <div className="flex items-center justify-between text-xs">
+                                <span className="text-muted-foreground font-medium">Votes: {optItem.count}</span>
+                                <span className="font-mono text-sm font-extrabold text-[#E67230]">
+                                  {optItem.percentage}%
+                                </span>
+                              </div>
+
+                              {/* Bar Graph */}
+                              <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#EBE7DF]">
+                                <div
+                                  className={`h-full rounded-full transition-all duration-500 ease-out ${
+                                    isSelectedByMe ? "bg-[#E67230]" : "bg-[#D15F1F]/70"
+                                  }`}
+                                  style={{ width: `${optItem.percentage}%` }}
+                                />
+                              </div>
                             </div>
                           </div>
                         );

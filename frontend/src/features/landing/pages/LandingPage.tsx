@@ -4053,6 +4053,17 @@ export function MeyvedaDoctorsPage() {
   // Authentication Context Hook
   const { user, isAuthenticated, logout, login, register: authRegister } = useAuth();
 
+  // Session detection for returning doctors/users
+  const localAuthToken = typeof localStorage !== "undefined" ? (localStorage.getItem("meyveda_auth_token") || localStorage.getItem("meyveda_access_token")) : null;
+  const localUserEmail = typeof localStorage !== "undefined" ? localStorage.getItem("meyveda_user_email") : null;
+  const localUserName = typeof localStorage !== "undefined" ? localStorage.getItem("meyveda_user_name") : null;
+  const isDoctorSessionActive = Boolean(
+    isAuthenticated ||
+    user ||
+    localAuthToken
+  );
+  const activeDoctorDisplayName = user?.doctor_profile?.full_name || localUserName || (localUserEmail ? localUserEmail.split("@")[0] : "Dr. Vaidya");
+
   const handleExploreDoctorDashboard = () => {
     const token =
       localStorage.getItem("meyveda_access_token") ||
@@ -4827,21 +4838,21 @@ export function MeyvedaDoctorsPage() {
 
           {/* RIGHT: CTAs (Sign In + Register Modal Triggers or Authenticated User) */}
           <div className="flex items-center gap-3 sm:gap-4">
-            {isAuthenticated && user ? (
+            {isDoctorSessionActive ? (
               <div className="flex items-center gap-2 sm:gap-3">
                 <Link
                   to="/dashboard"
                   className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FAF9F6] border border-[#EBE7DF] hover:border-[#E67230]/40 transition-colors"
                 >
                   <span className="size-6 sm:size-7 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
-                    {(user.doctor_profile?.full_name || user.email)[0]?.toUpperCase()}
+                    {activeDoctorDisplayName[0]?.toUpperCase() || "D"}
                   </span>
                   <div className="hidden sm:block text-left">
                     <p className="text-xs font-bold text-[#111111] leading-tight line-clamp-1">
-                      {user.doctor_profile?.full_name || user.email.split("@")[0]}
+                      {activeDoctorDisplayName}
                     </p>
                     <p className="text-[10px] text-[#777777] font-semibold leading-tight capitalize">
-                      {user.role} · Active
+                      Doctor · Active
                     </p>
                   </div>
                 </Link>
@@ -4849,12 +4860,16 @@ export function MeyvedaDoctorsPage() {
                   to="/dashboard"
                   className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#E67230] hover:bg-[#D15F1F] text-white text-xs font-bold transition-all shadow-xs"
                 >
-                  <span>My Workspace</span>
+                  <span>Dashboard</span>
                   <ArrowRight className="size-3.5" />
                 </Link>
                 <button
                   type="button"
                   onClick={() => {
+                    localStorage.removeItem("meyveda_auth_token");
+                    localStorage.removeItem("meyveda_access_token");
+                    localStorage.removeItem("meyveda_user_email");
+                    localStorage.removeItem("meyveda_user_role");
                     logout();
                     toast.info("Signed out of your session.");
                   }}
@@ -4951,17 +4966,17 @@ export function MeyvedaDoctorsPage() {
                 );
               })}
               <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-2.5">
-                {isAuthenticated && user ? (
+                {isDoctorSessionActive ? (
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-[#FAF9F6] border border-[#EBE7DF]">
                       <span className="size-8 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
-                        {(user.doctor_profile?.full_name || user.email)[0]?.toUpperCase()}
+                        {activeDoctorDisplayName[0]?.toUpperCase() || "D"}
                       </span>
                       <div className="text-left">
                         <p className="text-sm font-bold text-[#111111]">
-                          {user.doctor_profile?.full_name || user.email}
+                          {activeDoctorDisplayName}
                         </p>
-                        <p className="text-xs text-[#666666] capitalize">{user.role} · Active</p>
+                        <p className="text-xs text-[#666666] capitalize">Doctor · Active</p>
                       </div>
                     </div>
                     <Link
@@ -4969,11 +4984,15 @@ export function MeyvedaDoctorsPage() {
                       onClick={() => setMobileMenuOpen(false)}
                       className="w-full rounded-md bg-[#E67230] hover:bg-[#D15F1F] text-white py-2.5 text-center text-sm font-bold shadow-xs transition-colors"
                     >
-                      Open Practitioner Dashboard
+                      Dashboard
                     </Link>
                     <button
                       type="button"
                       onClick={() => {
+                        localStorage.removeItem("meyveda_auth_token");
+                        localStorage.removeItem("meyveda_access_token");
+                        localStorage.removeItem("meyveda_user_email");
+                        localStorage.removeItem("meyveda_user_role");
                         logout();
                         setMobileMenuOpen(false);
                         toast.info("Signed out.");
