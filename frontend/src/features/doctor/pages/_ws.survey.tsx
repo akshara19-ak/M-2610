@@ -126,11 +126,9 @@ export function SurveyPage() {
     setViewMode("results");
     setLoadingInsights(true);
 
-    // If answers were passed in directly from form submission, use them
     if (existingAnswers) {
       setMySubmittedAnswers(existingAnswers);
     } else {
-      // Otherwise, check localStorage first or fetch from server
       const localMap: Record<string, any> = JSON.parse(
         localStorage.getItem(`meyveda_survey_ans_${survey.id}`) || "{}"
       );
@@ -260,7 +258,7 @@ export function SurveyPage() {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-5xl flex-col items-center justify-center p-8">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        <p className="mt-3 text-xs font-medium text-muted-foreground">Loading surveys...</p>
+        <p className="mt-3 text-sm font-medium text-muted-foreground">Loading surveys...</p>
       </div>
     );
   }
@@ -270,69 +268,69 @@ export function SurveyPage() {
   // ---------------------------------------------------------------------------
   if (activeSurvey && viewMode === "fill") {
     return (
-      <div className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8 space-y-6">
+      <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 space-y-8">
         <button
           type="button"
           onClick={handleBackToList}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
-          <ArrowLeft className="size-3.5" />
+          <ArrowLeft className="size-4" />
           <span>Back to Surveys</span>
         </button>
 
-        <div className="space-y-1">
-          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        <div className="space-y-2">
+          <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
             {activeSurvey.title}
           </h1>
           {activeSurvey.description && (
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+            <p className="text-base text-muted-foreground leading-relaxed max-w-4xl">
               {activeSurvey.description}
             </p>
           )}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-6">
           {activeSurvey.questions.map((q, idx) => (
             <div
               key={q.id || idx}
-              className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-3"
+              className="rounded-3xl border border-border bg-white p-7 md:p-8 shadow-sm space-y-4"
             >
-              <div className="space-y-0.5">
-                <label className="text-sm font-bold text-foreground">
-                  <span className="text-primary mr-1.5">{idx + 1}.</span>
+              <div className="space-y-1">
+                <label className="text-base sm:text-lg font-bold text-foreground block">
+                  <span className="text-primary mr-2">{idx + 1}.</span>
                   {q.title}
                   {q.required && <span className="ml-1 text-red-500 font-bold">*</span>}
                 </label>
                 {q.helpText && (
-                  <p className="text-xs text-muted-foreground">{q.helpText}</p>
+                  <p className="text-sm text-muted-foreground">{q.helpText}</p>
                 )}
               </div>
 
               {/* RADIO */}
               {q.type === "radio" && (
-                <div className="space-y-2 pt-1">
+                <div className="space-y-2.5 pt-2">
                   {q.options.map((opt, optIdx) => {
                     const isSelected = answers[q.id] === opt;
                     return (
                       <label
                         key={optIdx}
                         onClick={() => handleOptionSelect(q.id, opt, false)}
-                        className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-xs transition-colors ${
+                        className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border p-4 text-sm transition-colors ${
                           isSelected
-                            ? "border-primary bg-primary-soft text-foreground font-semibold"
+                            ? "border-primary bg-primary-soft text-foreground font-bold"
                             : "border-border bg-card text-foreground hover:bg-muted/40"
                         }`}
                       >
                         <div
-                          className={`flex size-4 shrink-0 items-center justify-center rounded-full border ${
+                          className={`flex size-5 shrink-0 items-center justify-center rounded-full border ${
                             isSelected
                               ? "border-primary bg-primary text-white"
                               : "border-muted-foreground/40 bg-white"
                           }`}
                         >
-                          {isSelected && <div className="size-1.5 rounded-full bg-white" />}
+                          {isSelected && <div className="size-2 rounded-full bg-white" />}
                         </div>
-                        <span>{opt}</span>
+                        <span className="text-sm">{opt}</span>
                       </label>
                     );
                   })}
@@ -341,7 +339,7 @@ export function SurveyPage() {
 
               {/* CHECKBOX */}
               {q.type === "checkbox" && (
-                <div className="space-y-2 pt-1">
+                <div className="space-y-2.5 pt-2">
                   {q.options.map((opt, optIdx) => {
                     const current = (answers[q.id] as string[]) || [];
                     const isSelected = current.includes(opt);
@@ -349,22 +347,22 @@ export function SurveyPage() {
                       <label
                         key={optIdx}
                         onClick={() => handleOptionSelect(q.id, opt, true)}
-                        className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-xs transition-colors ${
+                        className={`flex cursor-pointer items-center gap-3.5 rounded-2xl border p-4 text-sm transition-colors ${
                           isSelected
-                            ? "border-primary bg-primary-soft text-foreground font-semibold"
+                            ? "border-primary bg-primary-soft text-foreground font-bold"
                             : "border-border bg-card text-foreground hover:bg-muted/40"
                         }`}
                       >
                         <div
-                          className={`flex size-4 shrink-0 items-center justify-center rounded-md border ${
+                          className={`flex size-5 shrink-0 items-center justify-center rounded-lg border ${
                             isSelected
                               ? "border-primary bg-primary text-white"
                               : "border-muted-foreground/40 bg-white"
                           }`}
                         >
-                          {isSelected && <Check className="size-3 stroke-[3]" />}
+                          {isSelected && <Check className="size-3.5 stroke-[3]" />}
                         </div>
-                        <span>{opt}</span>
+                        <span className="text-sm">{opt}</span>
                       </label>
                     );
                   })}
@@ -373,8 +371,8 @@ export function SurveyPage() {
 
               {/* RATING */}
               {q.type === "rating" && (
-                <div className="pt-1">
-                  <div className="flex items-center gap-2">
+                <div className="pt-2">
+                  <div className="flex items-center gap-3">
                     {[1, 2, 3, 4, 5].map((num) => {
                       const isSelected = answers[q.id] === num.toString();
                       return (
@@ -382,7 +380,7 @@ export function SurveyPage() {
                           type="button"
                           key={num}
                           onClick={() => handleRatingSelect(q.id, num)}
-                          className={`flex size-10 items-center justify-center rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                          className={`flex size-12 items-center justify-center rounded-2xl border text-sm font-bold transition-all cursor-pointer ${
                             isSelected
                               ? "border-primary bg-primary text-white shadow-xs"
                               : "border-border bg-card text-foreground hover:border-primary hover:text-primary"
@@ -398,31 +396,31 @@ export function SurveyPage() {
 
               {/* TEXT */}
               {q.type === "text" && (
-                <div className="pt-1">
+                <div className="pt-2">
                   <textarea
-                    rows={3}
+                    rows={4}
                     placeholder="Type your clinical feedback here..."
                     value={answers[q.id] || ""}
                     onChange={(e) => handleTextChange(q.id, e.target.value)}
-                    className="w-full rounded-xl border border-border bg-card p-3 text-xs text-foreground focus:border-primary focus:bg-white focus:outline-none placeholder:text-muted-foreground"
+                    className="w-full rounded-2xl border border-border bg-card p-4 text-sm text-foreground focus:border-primary focus:bg-white focus:outline-none placeholder:text-muted-foreground"
                   />
                 </div>
               )}
             </div>
           ))}
 
-          <div className="flex items-center justify-between pt-2">
+          <div className="flex items-center justify-between pt-3">
             <button
               type="button"
               onClick={handleBackToList}
-              className="text-xs font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
+              className="text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-9 py-3.5 text-sm font-bold text-white shadow-soft hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
             >
               {submitting ? (
                 <span>Submitting...</span>
@@ -446,31 +444,31 @@ export function SurveyPage() {
     const hasMyAnswers = Object.keys(mySubmittedAnswers).length > 0;
 
     return (
-      <div className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8 space-y-6">
+      <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 space-y-8">
         <button
           type="button"
           onClick={handleBackToList}
-          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          className="inline-flex items-center gap-2 text-sm font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
-          <ArrowLeft className="size-3.5" />
+          <ArrowLeft className="size-4" />
           <span>Back to Surveys</span>
         </button>
 
-        <div className="space-y-1">
+        <div className="space-y-2">
           <div className="flex items-center gap-2">
-            <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            <h1 className="text-3xl font-extrabold tracking-tight text-foreground">
               {activeSurvey.title} — Live Peer Results
             </h1>
           </div>
           {activeSurvey.description && (
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+            <p className="text-base text-muted-foreground leading-relaxed max-w-4xl">
               {activeSurvey.description}
             </p>
           )}
 
           {hasMyAnswers && (
-            <p className="text-xs text-muted-foreground pt-1 flex items-center gap-1.5 font-medium">
-              <span className="inline-block size-2 rounded-full bg-[#E67230]" />
+            <p className="text-sm text-muted-foreground pt-1 flex items-center gap-2 font-medium">
+              <span className="inline-block size-2.5 rounded-full bg-[#E67230]" />
               Highlighted with <strong className="text-primary font-bold">Your Response</strong> indicates your chosen answers compared to peer practitioner percentages.
             </p>
           )}
@@ -481,27 +479,27 @@ export function SurveyPage() {
             <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>
         ) : insights && insights.question_insights && insights.question_insights.length > 0 ? (
-          <div className="space-y-5">
+          <div className="space-y-6">
             {insights.question_insights.map((qi, qIdx) => {
               const myTextAnswer = mySubmittedAnswers[qi.question_id];
 
               return (
                 <div
                   key={qi.question_id || qIdx}
-                  className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-4"
+                  className="rounded-3xl border border-border bg-white p-7 md:p-8 shadow-sm space-y-5"
                 >
-                  <div className="flex items-start justify-between gap-3">
-                    <h3 className="text-sm font-bold text-foreground">
-                      <span className="text-primary mr-1.5">Q{qIdx + 1}.</span>
+                  <div className="flex items-start justify-between gap-4">
+                    <h3 className="text-base sm:text-lg font-bold text-foreground">
+                      <span className="text-primary mr-2">Q{qIdx + 1}.</span>
                       {qi.question_title}
                     </h3>
-                    <span className="text-[11px] font-medium text-muted-foreground shrink-0">
+                    <span className="text-xs font-semibold text-muted-foreground shrink-0 bg-muted/40 px-2.5 py-1 rounded-full">
                       {qi.total_votes} {qi.total_votes === 1 ? "response" : "responses"}
                     </span>
                   </div>
 
                   {qi.options && qi.options.length > 0 ? (
-                    <div className="space-y-3 pt-1">
+                    <div className="space-y-3.5 pt-2">
                       {qi.options.map((optItem, optIdx) => {
                         const isSelectedByMe = isDoctorSelection(
                           qi.question_id,
@@ -512,30 +510,30 @@ export function SurveyPage() {
                         return (
                           <div
                             key={optIdx}
-                            className={`p-3 rounded-xl border transition-all ${
+                            className={`p-4 rounded-2xl border transition-all ${
                               isSelectedByMe
                                 ? "border-[#E67230] bg-[#FFF8F3]"
-                                : "border-transparent bg-transparent"
+                                : "border-transparent bg-[#FAF9F6]/60"
                             }`}
                           >
-                            <div className="flex items-center justify-between text-xs mb-1.5">
-                              <div className="flex items-center gap-2 max-w-[80%]">
-                                <span className={`font-medium ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground"}`}>
+                            <div className="flex items-center justify-between text-sm mb-2">
+                              <div className="flex items-center gap-2.5 max-w-[80%]">
+                                <span className={`text-sm ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground font-medium"}`}>
                                   {optItem.option}
                                 </span>
                                 {isSelectedByMe && (
-                                  <span className="inline-flex items-center gap-1 rounded-full bg-[#E67230] text-white px-2 py-0.5 text-[10px] font-bold">
-                                    <Check className="size-2.5 stroke-[3]" /> Your Selection
+                                  <span className="inline-flex items-center gap-1 rounded-full bg-[#E67230] text-white px-2.5 py-0.5 text-xs font-bold">
+                                    <Check className="size-3 stroke-[3]" /> Your Selection
                                   </span>
                                 )}
                               </div>
-                              <span className="font-mono text-xs font-bold text-foreground shrink-0">
-                                {optItem.percentage}% <span className="text-muted-foreground font-normal text-[11px]">({optItem.count})</span>
+                              <span className="font-mono text-sm font-bold text-foreground shrink-0">
+                                {optItem.percentage}% <span className="text-muted-foreground font-normal text-xs">({optItem.count})</span>
                               </span>
                             </div>
 
                             {/* Bar Graph */}
-                            <div className="h-3 w-full overflow-hidden rounded-full bg-[#F4F1EA]">
+                            <div className="h-3.5 w-full overflow-hidden rounded-full bg-[#EBE7DF]">
                               <div
                                 className={`h-full rounded-full transition-all duration-500 ease-out ${
                                   isSelectedByMe ? "bg-[#E67230]" : "bg-[#D15F1F]/70"
@@ -548,24 +546,24 @@ export function SurveyPage() {
                       })}
                     </div>
                   ) : qi.text_answers && qi.text_answers.length > 0 ? (
-                    <div className="space-y-2 pt-1">
+                    <div className="space-y-3 pt-2">
                       {myTextAnswer && (
-                        <div className="rounded-xl border border-[#E67230] bg-[#FFF8F3] p-3 text-xs text-foreground space-y-1">
-                          <span className="text-[10px] font-bold text-[#E67230] uppercase tracking-wider block">
+                        <div className="rounded-2xl border-2 border-[#E67230] bg-[#FFF8F3] p-4 text-sm text-foreground space-y-1.5">
+                          <span className="text-xs font-bold text-[#E67230] uppercase tracking-wider block">
                             Your Clinical Answer
                           </span>
                           <p className="font-medium text-foreground">{myTextAnswer}</p>
                         </div>
                       )}
 
-                      <div className="space-y-1.5 pt-1">
-                        <span className="text-[11px] font-semibold text-muted-foreground">
+                      <div className="space-y-2 pt-2">
+                        <span className="text-xs font-semibold text-muted-foreground">
                           All Colleague Responses:
                         </span>
                         {qi.text_answers.map((ans, aIdx) => (
                           <div
                             key={aIdx}
-                            className="rounded-lg border border-border bg-muted/20 p-3 text-xs text-foreground leading-relaxed"
+                            className="rounded-xl border border-border bg-muted/20 p-4 text-sm text-foreground leading-relaxed"
                           >
                             {ans}
                           </div>
@@ -573,15 +571,15 @@ export function SurveyPage() {
                       </div>
                     </div>
                   ) : (
-                    <p className="text-xs text-muted-foreground italic">No responses recorded yet.</p>
+                    <p className="text-sm text-muted-foreground italic">No responses recorded yet.</p>
                   )}
                 </div>
               );
             })}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-border bg-white p-8 text-center">
-            <p className="text-xs font-semibold text-muted-foreground">
+          <div className="rounded-3xl border border-dashed border-border bg-white p-10 text-center">
+            <p className="text-sm font-semibold text-muted-foreground">
               No results recorded yet.
             </p>
           </div>
@@ -594,23 +592,23 @@ export function SurveyPage() {
   // VIEW 3: SURVEY DASHBOARD (NEW VS OLD TABS)
   // ---------------------------------------------------------------------------
   return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8 space-y-6">
+    <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12 space-y-8">
       {/* Top Header */}
-      <div className="space-y-1">
-        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+      <div className="space-y-2">
+        <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
           Surveys
         </h1>
-        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+        <p className="text-base text-muted-foreground leading-relaxed max-w-3xl">
           Participate in practitioner feedback surveys or view live peer results and answer comparisons.
         </p>
       </div>
 
       {/* Tabs: New vs Old */}
-      <div className="flex items-center gap-2 border-b border-border pb-3">
+      <div className="flex items-center gap-3 border-b border-border pb-4">
         <button
           type="button"
           onClick={() => setActiveTab("new")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
             activeTab === "new"
               ? "bg-[#E67230] text-white shadow-xs"
               : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -618,7 +616,7 @@ export function SurveyPage() {
         >
           <span>New Q&A</span>
           <span
-            className={`rounded-full px-2 py-0.5 text-[10px] ${
+            className={`rounded-full px-2.5 py-0.5 text-xs ${
               activeTab === "new" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground font-semibold"
             }`}
           >
@@ -629,7 +627,7 @@ export function SurveyPage() {
         <button
           type="button"
           onClick={() => setActiveTab("old")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-colors cursor-pointer ${
+          className={`flex items-center gap-2.5 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
             activeTab === "old"
               ? "bg-[#E67230] text-white shadow-xs"
               : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
@@ -637,7 +635,7 @@ export function SurveyPage() {
         >
           <span>Old (Completed)</span>
           <span
-            className={`rounded-full px-2 py-0.5 text-[10px] ${
+            className={`rounded-full px-2.5 py-0.5 text-xs ${
               activeTab === "old" ? "bg-white/20 text-white" : "bg-muted text-muted-foreground font-semibold"
             }`}
           >
@@ -648,12 +646,12 @@ export function SurveyPage() {
 
       {/* Tab 1: NEW (Uncompleted surveys) */}
       {activeTab === "new" && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {newSurveys.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border bg-white p-10 text-center space-y-2">
-              <CheckCircle2 className="mx-auto size-8 text-emerald-600" />
-              <p className="text-sm font-bold text-foreground">You are all caught up!</p>
-              <p className="text-xs text-muted-foreground max-w-md mx-auto">
+            <div className="rounded-3xl border border-dashed border-border bg-white p-12 text-center space-y-3">
+              <CheckCircle2 className="mx-auto size-10 text-emerald-600" />
+              <p className="text-base font-bold text-foreground">You are all caught up!</p>
+              <p className="text-sm text-muted-foreground max-w-lg mx-auto leading-relaxed">
                 You have completed all active practitioner questionnaires. Switch to the <strong>Old (Completed)</strong> tab to view live peer comparison results.
               </p>
             </div>
@@ -661,18 +659,18 @@ export function SurveyPage() {
             newSurveys.map((survey) => (
               <div
                 key={survey.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 rounded-2xl border border-border bg-white p-6 shadow-soft transition-colors hover:border-primary/40"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-3xl border border-border bg-white p-7 md:p-8 shadow-sm transition-colors hover:border-primary/40"
               >
-                <div className="space-y-1 flex-1">
-                  <h2 className="text-base sm:text-lg font-bold text-foreground">
+                <div className="space-y-2 flex-1">
+                  <h2 className="text-lg sm:text-xl font-bold text-foreground">
                     {survey.title}
                   </h2>
                   {survey.description && (
-                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                       {survey.description}
                     </p>
                   )}
-                  <p className="text-[11px] text-muted-foreground pt-1">
+                  <p className="text-xs text-muted-foreground pt-1">
                     {survey.questions.length} questions • Answer to unlock peer insights
                   </p>
                 </div>
@@ -681,10 +679,10 @@ export function SurveyPage() {
                   <button
                     type="button"
                     onClick={() => handleStartSurvey(survey)}
-                    className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 rounded-xl bg-primary px-6 py-3 text-sm font-bold text-white shadow-soft hover:bg-primary-dark transition-colors cursor-pointer"
                   >
                     <span>Start Survey</span>
-                    <ArrowRight className="size-3.5" />
+                    <ArrowRight className="size-4" />
                   </button>
                 </div>
               </div>
@@ -695,12 +693,12 @@ export function SurveyPage() {
 
       {/* Tab 2: OLD (Completed surveys with view results & comparison) */}
       {activeTab === "old" && (
-        <div className="space-y-4">
+        <div className="space-y-5">
           {oldSurveys.length === 0 ? (
-            <div className="rounded-2xl border border-dashed border-border bg-white p-10 text-center space-y-2">
-              <BarChart3 className="mx-auto size-8 text-muted-foreground/60" />
-              <p className="text-sm font-bold text-foreground">No completed surveys yet</p>
-              <p className="text-xs text-muted-foreground max-w-md mx-auto">
+            <div className="rounded-3xl border border-dashed border-border bg-white p-12 text-center space-y-3">
+              <BarChart3 className="mx-auto size-10 text-muted-foreground/60" />
+              <p className="text-base font-bold text-foreground">No completed surveys yet</p>
+              <p className="text-sm text-muted-foreground max-w-lg mx-auto leading-relaxed">
                 Once you complete a survey in the <strong>New Q&A</strong> tab, you will be able to view how other doctors answered and compare selections here.
               </p>
             </div>
@@ -708,23 +706,23 @@ export function SurveyPage() {
             oldSurveys.map((survey) => (
               <div
                 key={survey.id}
-                className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 rounded-2xl border border-border bg-white p-6 shadow-soft transition-colors hover:border-primary/40"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 rounded-3xl border border-border bg-white p-7 md:p-8 shadow-sm transition-colors hover:border-primary/40"
               >
-                <div className="space-y-1 flex-1">
-                  <div className="flex items-center gap-2">
-                    <h2 className="text-base sm:text-lg font-bold text-foreground">
+                <div className="space-y-2 flex-1">
+                  <div className="flex items-center gap-2.5">
+                    <h2 className="text-lg sm:text-xl font-bold text-foreground">
                       {survey.title}
                     </h2>
-                    <span className="text-[11px] font-semibold text-emerald-600 flex items-center gap-1">
+                    <span className="text-xs font-semibold text-emerald-600 flex items-center gap-1 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                       <CheckCircle2 className="size-3.5" /> Answered
                     </span>
                   </div>
                   {survey.description && (
-                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+                    <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
                       {survey.description}
                     </p>
                   )}
-                  <p className="text-[11px] text-muted-foreground pt-1">
+                  <p className="text-xs text-muted-foreground pt-1">
                     {survey.total_responses} doctor responses recorded
                   </p>
                 </div>
@@ -733,11 +731,11 @@ export function SurveyPage() {
                   <button
                     type="button"
                     onClick={() => handleViewResults(survey)}
-                    className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-bold text-foreground hover:border-primary hover:text-primary transition-colors cursor-pointer"
+                    className="inline-flex items-center gap-2 rounded-xl border border-border bg-card px-6 py-3 text-sm font-bold text-foreground hover:border-primary hover:text-primary transition-colors cursor-pointer"
                   >
-                    <BarChart3 className="size-3.5 text-primary" />
+                    <BarChart3 className="size-4 text-primary" />
                     <span>View Results Comparison</span>
-                    <ArrowRight className="size-3.5" />
+                    <ArrowRight className="size-4" />
                   </button>
                 </div>
               </div>
