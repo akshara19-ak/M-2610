@@ -155,8 +155,30 @@ def get_practitioner_surveys(db: Session = Depends(get_db)):
 def get_my_completed_surveys(doctor_email: Optional[str] = None, db: Session = Depends(get_db)):
     if not doctor_email:
         return []
-    responses = db.query(ClinicalSurveyResponse.survey_id).filter(ClinicalSurveyResponse.doctor_email == doctor_email).all()
+    clean_email = doctor_email.strip().lower()
+    responses = db.query(ClinicalSurveyResponse.survey_id).filter(ClinicalSurveyResponse.doctor_email == clean_email).all()
     return [r[0] for r in responses]
+
+@router.get("/my-answers/{survey_id}", summary="Get doctor's own submitted answers for a specific survey")
+def get_my_survey_answers(survey_id: str, doctor_email: Optional[str] = None, db: Session = Depends(get_db)):
+    if not doctor_email:
+        return {"answers": {}}
+    clean_email = doctor_email.strip().lower()
+    resp = (
+        db.query(ClinicalSurveyResponse)
+        .filter(
+            ClinicalSurveyResponse.survey_id == survey_id,
+            ClinicalSurveyResponse.doctor_email == clean_email
+        )
+        .order_by(ClinicalSurveyResponse.submitted_at.desc())
+        .first()
+    )
+    if not resp:
+        return {"answers": {}}
+    return {
+        "answers": resp.answers or {},
+        "submitted_at": resp.submitted_at.isoformat() if resp.submitted_at else None
+    }
 
 @router.get("/manage/all", summary="Get all surveys for Content Manager with detailed completion metrics")
 def get_all_surveys_for_manager(db: Session = Depends(get_db)):
