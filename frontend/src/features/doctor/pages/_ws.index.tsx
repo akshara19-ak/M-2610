@@ -11,7 +11,10 @@ import {
   Users2,
   Sparkles,
   Layers,
+  Download,
+  QrCode,
 } from "lucide-react";
+import QRCode from "qrcode";
 import { useStore, getState } from "@/lib/store";
 import { seo } from "@/lib/seo";
 import { apiClient } from "@/services/apiClient";
@@ -49,6 +52,7 @@ export function Home() {
   const [inviteCode, setInviteCode] = useState<string>(defaultCode);
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
 
   useEffect(() => {
     let active = true;
@@ -77,6 +81,21 @@ export function Home() {
   const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:5173";
   const fullInviteUrl = `${origin}/register?ref=${inviteCode}`;
 
+  // Generate QR Code for fullInviteUrl
+  useEffect(() => {
+    if (!fullInviteUrl) return;
+    QRCode.toDataURL(fullInviteUrl, {
+      width: 260,
+      margin: 1.5,
+      color: {
+        dark: "#111111",
+        light: "#FFFFFF",
+      },
+    })
+      .then((url) => setQrCodeDataUrl(url))
+      .catch((err) => console.error("QR Code error:", err));
+  }, [fullInviteUrl]);
+
   const handleCopyLink = async () => {
     const success = await copyToClipboard(fullInviteUrl);
     if (success) {
@@ -97,6 +116,17 @@ export function Home() {
     } else {
       toast.error("Could not copy code to clipboard. Please copy manually.");
     }
+  };
+
+  const handleDownloadQr = () => {
+    if (!qrCodeDataUrl) return;
+    const a = document.createElement("a");
+    a.href = qrCodeDataUrl;
+    a.download = `meyveda-invite-qr-${inviteCode}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast.success("QR Code downloaded!");
   };
 
   const shareText = encodeURIComponent(
@@ -243,12 +273,12 @@ export function Home() {
         </div>
       </section>
 
-      {/* 5. Referral Link Only (No Dashboard) */}
+      {/* 5. Referral Link & QR Code */}
       <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-6">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE7DF] pb-5">
           <div>
-            <h3 className="text-lg font-bold text-[#111111]">
-              Your Referral Link
+            <h3 className="text-xl font-bold text-[#111111]">
+              Your Referral Link &amp; QR Code
             </h3>
             <p className="text-sm text-[#777777] mt-1">
               Invite verified AYUSH colleagues (BAMS, BSMS, BNYS, BHMS, BUMS) to join early access.
@@ -272,40 +302,85 @@ export function Home() {
           </div>
         </div>
 
-        {/* Copy Link Input & WhatsApp Share */}
-        <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 pt-1">
-          <input
-            type="text"
-            readOnly
-            value={fullInviteUrl}
-            className="w-full flex-1 rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 font-mono text-sm text-[#222222] focus:outline-none select-all"
-          />
+        {/* Split layout: Link and Actions on Left, QR Code on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-1">
+          {/* Left Column: Input and Action buttons */}
+          <div className="lg:col-span-8 space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-[#111111]">Direct Registration URL:</label>
+              <input
+                type="text"
+                readOnly
+                value={fullInviteUrl}
+                className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 font-mono text-sm text-[#222222] focus:outline-none select-all"
+              />
+            </div>
 
-          <div className="flex gap-3 shrink-0">
-            <button
-              type="button"
-              onClick={handleCopyLink}
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors cursor-pointer"
-            >
-              {copiedLink ? (
-                <>
-                  <Check className="h-4 w-4" /> Copied
-                </>
-              ) : (
-                <>
-                  <Copy className="h-4 w-4" /> Copy Link
-                </>
+            <div className="flex flex-wrap gap-3 pt-1">
+              <button
+                type="button"
+                onClick={handleCopyLink}
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors cursor-pointer"
+              >
+                {copiedLink ? (
+                  <>
+                    <Check className="h-4 w-4" /> Copied Link
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4" /> Copy Link
+                  </>
+                )}
+              </button>
+
+              <a
+                href={whatsappShareUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors cursor-pointer"
+              >
+                <MessageCircle className="h-4 w-4" /> Share on WhatsApp
+              </a>
+
+              {qrCodeDataUrl && (
+                <button
+                  type="button"
+                  onClick={handleDownloadQr}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-[#EBE7DF] bg-white px-5 py-3 text-sm font-bold text-[#111111] hover:border-[#E67230] hover:text-[#E67230] transition-colors cursor-pointer"
+                >
+                  <Download className="h-4 w-4" /> Download QR
+                </button>
               )}
-            </button>
+            </div>
 
-            <a
-              href={whatsappShareUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors cursor-pointer"
-            >
-              <MessageCircle className="h-4 w-4" /> Share on WhatsApp
-            </a>
+            <p className="text-xs text-[#777777] leading-relaxed pt-1">
+              Colleagues can scan the QR code using any smartphone camera or tap the direct link to register with your referral code.
+            </p>
+          </div>
+
+          {/* Right Column: QR Code Display Card */}
+          <div className="lg:col-span-4 flex flex-col items-center justify-center p-5 rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6]">
+            <div className="rounded-2xl bg-white p-3.5 shadow-sm border border-[#EBE7DF]">
+              {qrCodeDataUrl ? (
+                <img
+                  src={qrCodeDataUrl}
+                  alt={`Meyveda Referral QR Code for ${inviteCode}`}
+                  className="w-40 h-40 sm:w-44 sm:h-44 object-contain"
+                />
+              ) : (
+                <div className="w-40 h-40 flex items-center justify-center text-xs text-muted-foreground">
+                  Generating QR...
+                </div>
+              )}
+            </div>
+
+            <div className="text-center mt-2.5">
+              <p className="text-xs font-bold text-[#111111] flex items-center justify-center gap-1.5">
+                <QrCode className="h-3.5 w-3.5 text-[#E67230]" />
+                Scan to Register
+              </p>
+              <p className="text-[11px] text-muted-foreground">Code: {inviteCode}</p>
+            </div>
           </div>
         </div>
       </section>
