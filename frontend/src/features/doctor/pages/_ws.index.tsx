@@ -114,9 +114,17 @@ export function Home() {
       <section className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white p-6 md:p-8 shadow-sm">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-4 flex-1">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
-              Greetings! Dr. {getDoctorDisplayName(doctor.name)}
-            </h1>
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
+                Greetings! Dr. {getDoctorDisplayName(doctor.name)}
+              </h1>
+              <p className="text-xs text-[#777777] mt-1 font-medium">
+                Verification status:{" "}
+                <span className={doctor.verification === "Verified" ? "text-emerald-700 font-semibold" : "text-[#D15F1F] font-semibold"}>
+                  {doctor.verification || "Pending Verification"}
+                </span>
+              </p>
+            </div>
 
             <p className="text-base text-[#444444] font-medium leading-relaxed">
               Your early-bird registration is confirmed. Welcome to the pioneer group redefining AYUSH digital infrastructure.
