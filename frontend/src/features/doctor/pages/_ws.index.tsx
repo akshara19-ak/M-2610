@@ -11,15 +11,13 @@ import {
   Users2,
   Sparkles,
   Layers,
-  CheckCircle2,
 } from "lucide-react";
-import { VerificationBadge } from "@/components/ui-kit";
 import { useStore, getState } from "@/lib/store";
 import { seo } from "@/lib/seo";
 import { apiClient } from "@/services/apiClient";
 import { toast } from "sonner";
 import { copyToClipboard } from "@/lib/clipboard";
-import dhanvantari from "@/assets/Dhanvantari2.png";
+import { Mascot } from "@/components/ui/mascot";
 
 export const Route = createFileRoute("/_ws/")({
   beforeLoad: () => {
@@ -114,15 +112,8 @@ export function Home() {
     <div className="mx-auto w-full max-w-4xl px-4 py-8 md:px-8 md:py-10 space-y-8 text-[#111111]">
       {/* 1. Greeting & Early-Bird Welcome Header */}
       <section className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white p-6 md:p-8 shadow-sm">
-        <div className="flex flex-col md:flex-row md:items-start justify-between gap-6">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-4 flex-1">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E67230]/10 px-3 py-1 text-xs font-semibold text-[#E67230]">
-                <CheckCircle2 className="h-3.5 w-3.5" /> Early-Bird Access Confirmed
-              </span>
-              <VerificationBadge status={doctor.verification} />
-            </div>
-
             <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
               Greetings! Dr. {getDoctorDisplayName(doctor.name)}
             </h1>
@@ -136,13 +127,14 @@ export function Home() {
             </p>
           </div>
 
-          {/* Lord Dhanvantari Icon */}
-          <div className="relative flex shrink-0 items-center justify-center self-center md:self-start pointer-events-none select-none">
-            <img
-              src={dhanvantari}
-              alt="Lord Dhanvantari"
-              className="h-28 w-28 md:h-32 md:w-32 object-contain drop-shadow-sm"
-              loading="eager"
+          {/* Interactive Doctor Mascot */}
+          <div className="relative flex shrink-0 items-center justify-center self-center pointer-events-none select-none">
+            <Mascot
+              directions="/mascots/meyveda-doctor-directions.webp"
+              reactions="/mascots/meyveda-doctor-reactions.webp"
+              size={140}
+              label="Meyveda AYUSH Doctor Mascot"
+              className="select-none drop-shadow-sm pointer-events-auto"
             />
           </div>
         </div>
