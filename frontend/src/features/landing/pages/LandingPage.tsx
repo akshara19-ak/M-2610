@@ -4839,29 +4839,24 @@ export function MeyvedaDoctorsPage() {
           {/* RIGHT: CTAs (Sign In + Register Modal Triggers or Authenticated User) */}
           <div className="flex items-center gap-3 sm:gap-4">
             {isDoctorSessionActive ? (
-              <div className="flex items-center gap-2 sm:gap-3">
+              <div className="flex items-center gap-3 sm:gap-4">
                 <Link
                   to="/dashboard"
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FAF9F6] border border-[#EBE7DF] hover:border-[#E67230]/40 transition-colors"
+                  className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#FAF9F6] border border-[#EBE7DF] hover:border-[#E67230]/50 transition-colors"
                 >
-                  <span className="size-6 sm:size-7 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
+                  <span className="size-8 rounded-full bg-[#E67230] text-white flex items-center justify-center text-sm font-bold shadow-xs">
                     {activeDoctorDisplayName[0]?.toUpperCase() || "D"}
                   </span>
-                  <div className="hidden sm:block text-left">
-                    <p className="text-xs font-bold text-[#111111] leading-tight line-clamp-1">
-                      {activeDoctorDisplayName}
-                    </p>
-                    <p className="text-[10px] text-[#777777] font-semibold leading-tight capitalize">
-                      Doctor · Active
-                    </p>
-                  </div>
+                  <span className="text-sm font-bold text-[#111111] leading-none">
+                    {activeDoctorDisplayName}
+                  </span>
                 </Link>
                 <Link
                   to="/dashboard"
-                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#E67230] hover:bg-[#D15F1F] text-white text-xs font-bold transition-all shadow-xs"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white text-sm font-bold transition-all shadow-sm hover:shadow-md"
                 >
                   <span>Dashboard</span>
-                  <ArrowRight className="size-3.5" />
+                  <ArrowRight className="size-4" />
                 </Link>
                 <button
                   type="button"
@@ -4873,7 +4868,7 @@ export function MeyvedaDoctorsPage() {
                     logout();
                     toast.info("Signed out of your session.");
                   }}
-                  className="text-xs font-semibold text-[#666666] hover:text-[#E67230] px-2 py-1.5 transition-colors cursor-pointer"
+                  className="text-sm font-semibold text-[#666666] hover:text-[#E67230] px-2 py-2 transition-colors cursor-pointer"
                 >
                   Sign Out
                 </button>
@@ -4967,24 +4962,22 @@ export function MeyvedaDoctorsPage() {
               })}
               <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-2.5">
                 {isDoctorSessionActive ? (
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-[#FAF9F6] border border-[#EBE7DF]">
-                      <span className="size-8 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF9F6] border border-[#EBE7DF]">
+                      <span className="size-9 rounded-full bg-[#E67230] text-white flex items-center justify-center text-sm font-bold shadow-xs">
                         {activeDoctorDisplayName[0]?.toUpperCase() || "D"}
                       </span>
-                      <div className="text-left">
-                        <p className="text-sm font-bold text-[#111111]">
-                          {activeDoctorDisplayName}
-                        </p>
-                        <p className="text-xs text-[#666666] capitalize">Doctor · Active</p>
-                      </div>
+                      <p className="text-base font-bold text-[#111111]">
+                        {activeDoctorDisplayName}
+                      </p>
                     </div>
                     <Link
                       to="/dashboard"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="w-full rounded-md bg-[#E67230] hover:bg-[#D15F1F] text-white py-2.5 text-center text-sm font-bold shadow-xs transition-colors"
+                      className="w-full rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white py-3 text-center text-base font-bold shadow-sm transition-colors flex items-center justify-center gap-2"
                     >
-                      Dashboard
+                      <span>Dashboard</span>
+                      <ArrowRight className="size-4" />
                     </Link>
                     <button
                       type="button"
@@ -4997,7 +4990,7 @@ export function MeyvedaDoctorsPage() {
                         setMobileMenuOpen(false);
                         toast.info("Signed out.");
                       }}
-                      className="w-full rounded-md border border-[#EBE7DF] bg-white py-2 text-center text-sm font-bold text-[#666666] hover:text-[#E67230]"
+                      className="w-full rounded-xl border border-[#EBE7DF] bg-white py-2.5 text-center text-sm font-semibold text-[#666666] hover:text-[#E67230]"
                     >
                       Sign Out
                     </button>
