@@ -1,4 +1,5 @@
 import uuid
+from typing import Optional
 from datetime import date, datetime, timezone
 from sqlalchemy import String, Integer, DateTime, Date, Enum, ForeignKey, Text, JSON, UniqueConstraint, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -451,3 +452,38 @@ class BlogPost(Base):
     updated_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False
     )
+
+class ClinicalSurvey(Base):
+    """
+    Survey definitions created by Content Managers (Google Forms style).
+    Contains multi-format question schemas and gamification points.
+    """
+    __tablename__ = "clinical_surveys"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    title: Mapped[str] = mapped_column(String(255), nullable=False)
+    description: Mapped[str] = mapped_column(Text, nullable=False)
+    category: Mapped[str] = mapped_column(String(100), default="AYUSH Clinical Practice", nullable=False)
+    reward_points: Mapped[int] = mapped_column(Integer, default=50, nullable=False)
+    status: Mapped[str] = mapped_column(String(50), default="active", nullable=False, index=True) # active, draft, closed
+    questions: Mapped[list] = mapped_column(JSON, default=list, nullable=False) # List of Google Form questions
+    created_by_email: Mapped[str] = mapped_column(String(255), default="content@meyveda.com", nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False)
+
+
+class ClinicalSurveyResponse(Base):
+    """
+    Individual doctor survey submissions.
+    """
+    __tablename__ = "clinical_survey_responses"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    survey_id: Mapped[str] = mapped_column(String(36), ForeignKey("clinical_surveys.id", ondelete="CASCADE"), nullable=False, index=True)
+    doctor_id: Mapped[Optional[str]] = mapped_column(String(36), ForeignKey("doctors.id", ondelete="SET NULL"), nullable=True, index=True)
+    doctor_email: Mapped[str] = mapped_column(String(255), nullable=False, index=True)
+    doctor_name: Mapped[str] = mapped_column(String(255), default="Verified Doctor", nullable=False)
+    answers: Mapped[dict] = mapped_column(JSON, default=dict, nullable=False) # { question_id: answer_value }
+    reward_points_awarded: Mapped[int] = mapped_column(Integer, default=50, nullable=False)
+    submitted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+

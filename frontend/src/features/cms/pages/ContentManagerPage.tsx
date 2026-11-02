@@ -21,6 +21,17 @@ import {
   Calendar,
   X,
   RefreshCw,
+  ClipboardList,
+  BarChart3,
+  CheckSquare,
+  Radio,
+  Star,
+  ListPlus,
+  Trophy,
+  HelpCircle,
+  Check,
+  TrendingUp,
+  Users,
 } from "lucide-react";
 import meyvedaLogo from "@/assets/meyvedalogo.png";
 import { apiClient } from "@/services/apiClient";
@@ -41,6 +52,51 @@ interface PRItem {
   status: string;
   created_at?: string;
   updated_at?: string;
+}
+
+interface SurveyQuestion {
+  id: string;
+  title: string;
+  type: "radio" | "checkbox" | "rating" | "text";
+  options: string[];
+  required: boolean;
+  helpText?: string;
+}
+
+interface SurveyItem {
+  id: string;
+  title: string;
+  description: string;
+  category: string;
+  reward_points: number;
+  status: string;
+  questions: SurveyQuestion[];
+  created_by_email: string;
+  response_count: number;
+  created_at?: string;
+  updated_at?: string;
+}
+
+interface QuestionInsight {
+  question_id: string;
+  question_title: string;
+  question_type: string;
+  total_votes: number;
+  options: {
+    option: string;
+    count: number;
+    percentage: number;
+  }[];
+  text_answers?: string[];
+}
+
+interface SurveyAnalytics {
+  survey_id: string;
+  title: string;
+  reward_points: number;
+  total_responses: number;
+  question_insights: QuestionInsight[];
+  recent_responses?: any[];
 }
 
 interface BlogItem {
@@ -75,7 +131,7 @@ interface OverviewData {
 
 export function ContentManagerPage() {
   const navigate = useNavigate();
-  const [activeTab, setActiveTab] = useState<"pr" | "blogs">("pr");
+  const [activeTab, setActiveTab] = useState<"pr" | "blogs" | "surveys">("pr");
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
 
@@ -100,8 +156,69 @@ export function ContentManagerPage() {
   const [blogModalOpen, setBlogModalOpen] = useState(false);
   const [editingBlog, setEditingBlog] = useState<BlogItem | null>(null);
 
+// Survey states
+  const [surveys, setSurveys] = useState<SurveyItem[]>([]);
+  const [surveyModalOpen, setSurveyModalOpen] = useState(false);
+  const [editingSurvey, setEditingSurvey] = useState<SurveyItem | null>(null);
+  const [surveyAnalyticsModalOpen, setSurveyAnalyticsModalOpen] = useState(false);
+  const [activeAnalytics, setActiveAnalytics] = useState<SurveyAnalytics | null>(null);
+  const [loadingAnalytics, setLoadingAnalytics] = useState(false);
+
+  // Google Forms Survey Builder Form State
+  const [surveyForm, setSurveyForm] = useState({
+    title: "Practitioner Clinical Intelligence and Practice Survey",
+    description: "Help refine AYUSH formulation guidelines, clinical monographs, and drug interaction research.",
+    category: "AYUSH Clinical Practice",
+    reward_points: 50,
+    status: "active",
+    questions: [
+      {
+        id: "q_need_1",
+        title: "Which primary clinical challenge requires the most immediate assistance in your daily practice?",
+        type: "radio" as const,
+        options: [
+          "Standardized, batch-tested authentic classical medicines",
+          "Predictable patient adherence and repeat refill compliance",
+          "Rapid clinical monograph and drug-drug herb interaction references",
+          "Transparent, ethical AYUSH digital prescription toolkit"
+        ],
+        required: true,
+        helpText: "Select the single most pressing operational or clinical bottleneck."
+      },
+      {
+        id: "q_need_2",
+        title: "What critical services should Meyveda prioritize for your clinic desk?",
+        type: "checkbox" as const,
+        options: [
+          "Direct manufacturer lab testing certificates (COA and Heavy Metal assays)",
+          "Formulary sample access and trial dispensing kits",
+          "Integrated digital clinic notes and Ayur-pharmacopeia search",
+          "Peer case exchange and clinical discussions with fellow Vaidyas"
+        ],
+        required: true,
+        helpText: "Select all areas you wish to see supported first."
+      },
+      {
+        id: "q_need_3",
+        title: "How critical is verified heavy metal and microbiology certification on every formulation batch?",
+        type: "rating" as const,
+        options: ["1", "2", "3", "4", "5"],
+        required: true,
+        helpText: "Scale from 1 (Not Critical) to 5 (Absolute Requirement)"
+      },
+      {
+        id: "q_need_4",
+        title: "What is one specific classical formulation or clinical workflow you wish was easier to access?",
+        type: "text" as const,
+        options: [],
+        required: false,
+        helpText: "Share any specific classical Taila, Gritha, Bhasma or clinical documentation hurdle."
+      }
+    ] as SurveyQuestion[]
+  });
+
   const [deleteConfirm, setDeleteConfirm] = useState<{
-    type: "pr" | "blog";
+    type: "pr" | "blog" | "survey";
     id: string;
     title: string;
   } | null>(null);
@@ -155,6 +272,14 @@ export function ContentManagerPage() {
     try {
       const res = await apiClient.get<OverviewData>("/content/manage/all");
       setData(res);
+      // Load Surveys for Content Manager
+      try {
+        const surveyRes = await apiClient.get<SurveyItem[]>("/content/surveys/manage/all");
+        setSurveys(surveyRes);
+      } catch (sErr) {
+        console.warn("Surveys fetch warning:", sErr);
+      }
+
     } catch (err: any) {
       console.warn("Failed to load /content/manage/all, loading public endpoints:", err);
       // Fallback: load public PR and blogs
@@ -195,6 +320,166 @@ export function ContentManagerPage() {
     localStorage.removeItem("meyveda_user_email");
     toast.success("Signed out of Content Management Desk.");
     window.location.href = "/login";
+  };
+
+  // --- Survey Operations (Google Forms Style Builder) ---
+
+  const openNewSurveyModal = () => {
+    setEditingSurvey(null);
+    setSurveyForm({
+      title: "AYUSH Practitioner Clinical Requirements Survey",
+      description: "Gather feedback on dispensing preferences, clinical tools, and classical pharmacy standards.",
+      category: "AYUSH Clinical Practice",
+      reward_points: 50,
+      status: "active",
+      questions: [
+        {
+          id: `q_${Date.now()}_1`,
+          title: "What is the biggest challenge you face with AYUSH medicine sourcing?",
+          type: "radio",
+          options: ["Inconsistent quality / lack of lab reports", "High costs & unverified stock", "Patient trust and adherence", "Lack of dosage clarity"],
+          required: true,
+          helpText: "Choose the primary barrier in clinical practice."
+        },
+        {
+          id: `q_${Date.now()}_2`,
+          title: "Which digital desk features would you find most valuable?",
+          type: "checkbox",
+          options: ["Fast Ayur-pharmacopeia search", "Automated refill reminders for patients", "Direct heavy-metal batch COA download", "Interactive dosage converter"],
+          required: true,
+          helpText: "Select all that apply."
+        }
+      ]
+    });
+    setSurveyModalOpen(true);
+  };
+
+  const openEditSurveyModal = (item: SurveyItem) => {
+    setEditingSurvey(item);
+    setSurveyForm({
+      title: item.title,
+      description: item.description,
+      category: item.category,
+      reward_points: item.reward_points,
+      status: item.status,
+      questions: item.questions || []
+    });
+    setSurveyModalOpen(true);
+  };
+
+  const handleAddQuestion = () => {
+    const newQ: SurveyQuestion = {
+      id: `q_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
+      title: "Untitled Question",
+      type: "radio",
+      options: ["Option 1", "Option 2"],
+      required: true,
+      helpText: ""
+    };
+    setSurveyForm(prev => ({
+      ...prev,
+      questions: [...prev.questions, newQ]
+    }));
+  };
+
+  const handleRemoveQuestion = (idx: number) => {
+    setSurveyForm(prev => ({
+      ...prev,
+      questions: prev.questions.filter((_, i) => i !== idx)
+    }));
+  };
+
+  const handleUpdateQuestion = (idx: number, field: keyof SurveyQuestion, value: any) => {
+    setSurveyForm(prev => {
+      const updated = [...prev.questions];
+      const cur = { ...updated[idx], [field]: value };
+      if (field === "type") {
+        if (value === "radio" || value === "checkbox") {
+          if (!cur.options || cur.options.length === 0) cur.options = ["Option 1", "Option 2"];
+        } else if (value === "rating") {
+          cur.options = ["1", "2", "3", "4", "5"];
+        } else if (value === "text") {
+          cur.options = [];
+        }
+      }
+      updated[idx] = cur;
+      return { ...prev, questions: updated };
+    });
+  };
+
+  const handleAddOption = (qIdx: number) => {
+    setSurveyForm(prev => {
+      const updated = [...prev.questions];
+      const q = updated[qIdx];
+      const newOption = `Option ${(q.options?.length || 0) + 1}`;
+      updated[qIdx] = {
+        ...q,
+        options: [...(q.options || []), newOption]
+      };
+      return { ...prev, questions: updated };
+    });
+  };
+
+  const handleUpdateOption = (qIdx: number, optIdx: number, val: string) => {
+    setSurveyForm(prev => {
+      const updated = [...prev.questions];
+      const q = updated[qIdx];
+      const opts = [...(q.options || [])];
+      opts[optIdx] = val;
+      updated[qIdx] = { ...q, options: opts };
+      return { ...prev, questions: updated };
+    });
+  };
+
+  const handleRemoveOption = (qIdx: number, optIdx: number) => {
+    setSurveyForm(prev => {
+      const updated = [...prev.questions];
+      const q = updated[qIdx];
+      const opts = [...(q.options || [])].filter((_, i) => i !== optIdx);
+      updated[qIdx] = { ...q, options: opts };
+      return { ...prev, questions: updated };
+    });
+  };
+
+  const handleSaveSurvey = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!surveyForm.title.trim()) {
+      toast.error("Please enter a survey title.");
+      return;
+    }
+    if (surveyForm.questions.length === 0) {
+      toast.error("Please add at least one survey question.");
+      return;
+    }
+
+    try {
+      if (editingSurvey) {
+        await apiClient.put(`/content/surveys/manage/${editingSurvey.id}`, surveyForm);
+        toast.success("Survey updated successfully!");
+      } else {
+        await apiClient.post("/content/surveys/manage/create", surveyForm);
+        toast.success("New Google Forms style survey published!");
+      }
+      setSurveyModalOpen(false);
+      loadData(true);
+    } catch (err: any) {
+      console.error("Failed to save survey:", err);
+      toast.error(err.response?.data?.detail || "Failed to save survey.");
+    }
+  };
+
+  const openAnalyticsModal = async (surveyItem: SurveyItem) => {
+    setLoadingAnalytics(true);
+    setSurveyAnalyticsModalOpen(true);
+    try {
+      const res = await apiClient.get<SurveyAnalytics>(`/content/surveys/insights/${surveyItem.id}`);
+      setActiveAnalytics(res);
+    } catch (err) {
+      console.error("Failed to load survey analytics:", err);
+      toast.error("Could not load survey analytics.");
+    } finally {
+      setLoadingAnalytics(false);
+    }
   };
 
   // --- PR Operations ---
@@ -419,6 +704,15 @@ export function ContentManagerPage() {
               <span>View Blogs</span>
               <ArrowUpRight className="size-3.5" />
             </Link>
+            <Link
+              to="/survey"
+              target="_blank"
+              className="hidden sm:inline-flex items-center gap-1 text-xs font-bold text-[#E67230] hover:text-[#D15F1F]"
+            >
+              <Sparkles className="size-3.5" />
+              <span>Live Doctor Survey</span>
+              <ArrowUpRight className="size-3.5" />
+            </Link>
 
             <button
               onClick={() => loadData(true)}
@@ -537,6 +831,18 @@ export function ContentManagerPage() {
               <BookOpen className="size-4" />
               <span>Clinical Blogs ({data.blogs.length})</span>
             </button>
+
+            <button
+              onClick={() => setActiveTab("surveys")}
+              className={`inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-bold transition-all ${
+                activeTab === "surveys"
+                  ? "bg-[#111111] text-white shadow-sm"
+                  : "bg-white text-[#555555] border border-[#E5E0D5] hover:bg-[#FAF9F6]"
+              }`}
+            >
+              <BarChart3 className="size-4 text-[#E67230]" />
+              <span>Clinical Surveys ({surveys.length})</span>
+            </button>
           </div>
 
           <div className="flex flex-wrap items-center gap-3">
@@ -551,7 +857,7 @@ export function ContentManagerPage() {
               />
             </div>
 
-            {activeTab === "pr" ? (
+            {activeTab === "pr" && (
               <button
                 onClick={openNewPrModal}
                 className="inline-flex items-center gap-1.5 rounded-md bg-[#E67230] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
@@ -559,13 +865,23 @@ export function ContentManagerPage() {
                 <Plus className="size-4" />
                 <span>New Press Release</span>
               </button>
-            ) : (
+            )}
+            {activeTab === "blogs" && (
               <button
                 onClick={openNewBlogModal}
                 className="inline-flex items-center gap-1.5 rounded-md bg-[#E67230] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
               >
                 <Plus className="size-4" />
                 <span>New Blog Post</span>
+              </button>
+            )}
+            {activeTab === "surveys" && (
+              <button
+                onClick={openNewSurveyModal}
+                className="inline-flex items-center gap-1.5 rounded-md bg-[#E67230] px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
+              >
+                <Plus className="size-4" />
+                <span>Create Survey (Form Builder)</span>
               </button>
             )}
           </div>
@@ -763,7 +1079,467 @@ export function ContentManagerPage() {
             )}
           </div>
         )}
+
+        {/* ------------------------------------------------------------------ */}
+        {/* TAB 3: CLINICAL SURVEYS & GOOGLE FORMS DESK                        */}
+        {/* ------------------------------------------------------------------ */}
+        {activeTab === "surveys" && (
+          <div className="mt-6 space-y-4">
+            <div className="flex flex-col gap-2 rounded-2xl border border-[#E5E0D5] bg-white p-5 shadow-2xs sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h3 className="text-base font-bold text-[#111111] flex items-center gap-2">
+                  <BarChart3 className="size-5 text-[#E67230]" />
+                  Practitioner Feedback & Google Forms Survey Builder
+                </h3>
+                <p className="text-xs text-[#666666] mt-0.5">
+                  Content Managers can design multi-format questionnaires, configure gamification points, and analyze live doctor response bar graphs.
+                </p>
+              </div>
+              <button
+                onClick={openNewSurveyModal}
+                className="inline-flex items-center gap-2 rounded-lg bg-[#E67230] px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all"
+              >
+                <Plus className="size-4" />
+                <span>Build New Survey</span>
+              </button>
+            </div>
+
+            {surveys.length === 0 ? (
+              <div className="rounded-xl border border-[#E5E0D5] bg-white p-12 text-center">
+                <BarChart3 className="mx-auto size-12 text-[#999999]" />
+                <h4 className="mt-3 text-sm font-bold text-[#111111]">No Surveys Created Yet</h4>
+                <p className="mt-1 text-xs text-[#666666]">
+                  Click the button above to build an interactive Google Forms style clinical survey.
+                </p>
+              </div>
+            ) : (
+              <div className="overflow-hidden rounded-xl border border-[#E5E0D5] bg-white shadow-2xs">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-xs">
+                    <thead className="border-b border-[#E5E0D5] bg-[#FAF9F6] text-[#777777]">
+                      <tr>
+                        <th className="px-4 py-3 font-semibold">Survey Title</th>
+                        <th className="px-4 py-3 font-semibold">Category</th>
+                        <th className="px-4 py-3 font-semibold">Questions</th>
+                        <th className="px-4 py-3 font-semibold">Gamified Reward</th>
+                        <th className="px-4 py-3 font-semibold">Doctor Responses</th>
+                        <th className="px-4 py-3 font-semibold">Status</th>
+                        <th className="px-4 py-3 text-right font-semibold">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-[#EBE7DF]">
+                      {surveys.map((item) => (
+                        <tr key={item.id} className="hover:bg-[#FAF9F6] transition-colors">
+                          <td className="px-4 py-3 font-bold text-[#111111]">
+                            <p className="max-w-md truncate" title={item.title}>{item.title}</p>
+                            <p className="text-[11px] font-normal text-[#777777] line-clamp-1">{item.description}</p>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="rounded-full bg-[#FAF4ED] px-2.5 py-0.5 text-[11px] font-semibold text-[#A4521D]">
+                              {item.category}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 font-mono font-bold text-[#111111]">
+                            {item.questions?.length || 0} Questions
+                          </td>
+                          <td className="px-4 py-3">
+                            <span className="inline-flex items-center gap-1 font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded border border-amber-200">
+                              <Trophy className="size-3" />
+                              +{item.reward_points} pts
+                            </span>
+                          </td>
+                          <td className="px-4 py-3">
+                            <button
+                              onClick={() => openAnalyticsModal(item)}
+                              className="inline-flex items-center gap-1.5 font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1 rounded-md transition-colors"
+                            >
+                              <Users className="size-3.5" />
+                              <span>{item.response_count} Responses</span>
+                              <BarChart3 className="size-3.5 ml-0.5" />
+                            </button>
+                          </td>
+                          <td className="px-4 py-3">
+                            <span
+                              className={`rounded-full px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider ${
+                                item.status === "active"
+                                  ? "bg-emerald-50 text-emerald-700 border border-emerald-200"
+                                  : "bg-gray-100 text-gray-700"
+                              }`}
+                            >
+                              {item.status}
+                            </span>
+                          </td>
+                          <td className="px-4 py-3 text-right">
+                            <div className="flex items-center justify-end gap-1">
+                              <button
+                                onClick={() => openAnalyticsModal(item)}
+                                className="rounded p-1.5 text-blue-600 hover:bg-blue-50"
+                                title="View Bar Graphs & Insights"
+                              >
+                                <BarChart3 className="size-4" />
+                              </button>
+                              <button
+                                onClick={() => openEditSurveyModal(item)}
+                                className="rounded p-1.5 text-[#555555] hover:bg-[#FAF4ED] hover:text-[#E67230]"
+                                title="Edit Form"
+                              >
+                                <Edit2 className="size-4" />
+                              </button>
+                              <button
+                                onClick={() =>
+                                  setDeleteConfirm({
+                                    type: "survey",
+                                    id: item.id,
+                                    title: item.title,
+                                  })
+                                }
+                                className="rounded p-1.5 text-[#555555] hover:bg-red-50 hover:text-red-600"
+                                title="Delete Survey"
+                              >
+                                <Trash2 className="size-4" />
+                              </button>
+                            </div>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </main>
+
+      {/* -------------------------------------------------------------------- */}
+      {/* GOOGLE FORMS STYLE SURVEY BUILDER MODAL                              */}
+      {/* -------------------------------------------------------------------- */}
+      {surveyModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white p-6 sm:p-8 shadow-2xl">
+            <button
+              onClick={() => setSurveyModalOpen(false)}
+              className="absolute right-6 top-6 rounded-full p-2 text-[#777777] hover:bg-[#FAF9F6] hover:text-[#111111]"
+            >
+              <X className="size-5" />
+            </button>
+
+            {/* Google Form Style Header */}
+            <div className="border-b border-[#E5E0D5] pb-5">
+              <div className="flex items-center gap-2">
+                <div className="flex size-9 items-center justify-center rounded-lg bg-[#E67230] text-white">
+                  <ClipboardList className="size-5" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-[#111111]">
+                    {editingSurvey ? "Edit Clinical Survey Form" : "Google Forms Style Survey Builder"}
+                  </h2>
+                  <p className="text-xs text-[#666666]">
+                    Configure multi-format questions (Radio, Checkbox, Rating, Text) and gamification rewards for AYUSH practitioners.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <form onSubmit={handleSaveSurvey} className="mt-6 space-y-6">
+              {/* Form Metadata Section */}
+              <div className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] p-5 space-y-4">
+                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <label className="text-xs font-bold text-[#111111]">Survey Title *</label>
+                    <input
+                      type="text"
+                      required
+                      value={surveyForm.title}
+                      onChange={(e) => setSurveyForm({ ...surveyForm, title: e.target.value })}
+                      placeholder="e.g. Practitioner Clinical Intelligence & Formulary Usage Survey"
+                      className="mt-1 w-full rounded-lg border border-[#D5CFBF] bg-white p-2.5 text-xs text-[#111111] focus:border-[#E67230] focus:outline-none"
+                    />
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="text-xs font-bold text-[#111111]">Description & Clinical Context *</label>
+                    <textarea
+                      rows={2}
+                      required
+                      value={surveyForm.description}
+                      onChange={(e) => setSurveyForm({ ...surveyForm, description: e.target.value })}
+                      placeholder="Explain to Vaidyas why this clinical feedback is requested and how it will improve AYUSH standards."
+                      className="mt-1 w-full rounded-lg border border-[#D5CFBF] bg-white p-2.5 text-xs text-[#111111] focus:border-[#E67230] focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-[#111111]">Clinical Category</label>
+                    <input
+                      type="text"
+                      value={surveyForm.category}
+                      onChange={(e) => setSurveyForm({ ...surveyForm, category: e.target.value })}
+                      className="mt-1 w-full rounded-lg border border-[#D5CFBF] bg-white p-2.5 text-xs text-[#111111] focus:border-[#E67230] focus:outline-none"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="text-xs font-bold text-[#111111]">Gamified Reward Points (per completion)</label>
+                    <div className="mt-1 flex items-center gap-2">
+                      <input
+                        type="number"
+                        min={10}
+                        max={500}
+                        value={surveyForm.reward_points}
+                        onChange={(e) => setSurveyForm({ ...surveyForm, reward_points: parseInt(e.target.value) || 50 })}
+                        className="w-full rounded-lg border border-[#D5CFBF] bg-white p-2.5 text-xs font-bold text-amber-700 focus:border-[#E67230] focus:outline-none"
+                      />
+                      <span className="text-xs font-semibold text-amber-600 shrink-0">Points</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Questions List (Google Form Cards) */}
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <h3 className="text-sm font-bold text-[#111111]">
+                    Survey Questions ({surveyForm.questions.length})
+                  </h3>
+                  <button
+                    type="button"
+                    onClick={handleAddQuestion}
+                    className="inline-flex items-center gap-1.5 rounded-lg border border-[#E67230] bg-[#FAF4ED] px-3 py-1.5 text-xs font-bold text-[#E67230] hover:bg-[#E67230] hover:text-white transition-colors"
+                  >
+                    <Plus className="size-3.5" />
+                    <span>Add Question Card</span>
+                  </button>
+                </div>
+
+                {surveyForm.questions.map((q, qIdx) => (
+                  <div
+                    key={q.id || qIdx}
+                    className="relative rounded-xl border-2 border-[#E5E0D5] bg-white p-5 shadow-xs space-y-4 transition-all hover:border-[#D0C9BA]"
+                  >
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div className="flex items-center gap-2 flex-1">
+                        <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#111111] text-[11px] font-bold text-white">
+                          {qIdx + 1}
+                        </span>
+                        <input
+                          type="text"
+                          value={q.title}
+                          onChange={(e) => handleUpdateQuestion(qIdx, "title", e.target.value)}
+                          placeholder="Question Title / Prompt"
+                          className="w-full rounded-lg border border-[#E5E0D5] bg-[#FAF9F6] p-2 text-xs font-bold text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none"
+                        />
+                      </div>
+
+                      {/* Question Type Selector */}
+                      <div className="flex items-center gap-2">
+                        <select
+                          value={q.type}
+                          onChange={(e) => handleUpdateQuestion(qIdx, "type", e.target.value)}
+                          className="rounded-lg border border-[#E5E0D5] bg-white px-3 py-2 text-xs font-bold text-[#111111] focus:border-[#E67230] focus:outline-none"
+                        >
+                          <option value="radio">Multiple Choice (Radio)</option>
+                          <option value="checkbox">Checkboxes (Multi-select)</option>
+                          <option value="rating">Linear Rating Scale (1 to 5)</option>
+                          <option value="text">Paragraph / Written Text</option>
+                        </select>
+
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveQuestion(qIdx)}
+                          className="rounded-lg p-2 text-[#888888] hover:bg-red-50 hover:text-red-600"
+                          title="Remove Question"
+                        >
+                          <Trash2 className="size-4" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Question Help Text */}
+                    <div>
+                      <input
+                        type="text"
+                        value={q.helpText || ""}
+                        onChange={(e) => handleUpdateQuestion(qIdx, "helpText", e.target.value)}
+                        placeholder="Optional subtitle / clinical guidance hint"
+                        className="w-full rounded-md border border-[#EAE6DE] bg-white px-2.5 py-1 text-[11px] text-[#666666] focus:border-[#E67230] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Options Editor for Radio & Checkbox */}
+                    {(q.type === "radio" || q.type === "checkbox") && (
+                      <div className="pl-6 space-y-2 border-l-2 border-[#EAE6DE]">
+                        <label className="text-[11px] font-bold text-[#666666] uppercase tracking-wider">
+                          Options
+                        </label>
+                        {q.options?.map((opt, optIdx) => (
+                          <div key={optIdx} className="flex items-center gap-2">
+                            <span className="text-xs text-[#888888]">
+                              {q.type === "radio" ? "○" : "□"}
+                            </span>
+                            <input
+                              type="text"
+                              value={opt}
+                              onChange={(e) => handleUpdateOption(qIdx, optIdx, e.target.value)}
+                              className="w-full rounded-md border border-[#E5E0D5] px-2.5 py-1.5 text-xs text-[#222222] focus:border-[#E67230] focus:outline-none"
+                            />
+                            {q.options.length > 2 && (
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveOption(qIdx, optIdx)}
+                                className="text-[#999999] hover:text-red-600"
+                              >
+                                <X className="size-3.5" />
+                              </button>
+                            )}
+                          </div>
+                        ))}
+                        <button
+                          type="button"
+                          onClick={() => handleAddOption(qIdx)}
+                          className="text-xs font-bold text-[#E67230] hover:underline pt-1 inline-flex items-center gap-1"
+                        >
+                          <Plus className="size-3" />
+                          <span>Add Option</span>
+                        </button>
+                      </div>
+                    )}
+
+                    {q.type === "rating" && (
+                      <div className="pl-6 border-l-2 border-[#EAE6DE] text-xs text-[#777777]">
+                        Rating Scale preview: <span className="font-bold text-[#111111]">1, 2, 3, 4, 5 Stars / Scale</span>
+                      </div>
+                    )}
+
+                    {q.type === "text" && (
+                      <div className="pl-6 border-l-2 border-[#EAE6DE] text-xs text-[#777777] italic">
+                        Open-ended clinical narrative response box.
+                      </div>
+                    )}
+
+                    {/* Required Toggle */}
+                    <div className="flex items-center justify-end gap-2 pt-2 border-t border-[#F2EEE6]">
+                      <label className="flex items-center gap-2 text-xs font-semibold text-[#555555] cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={q.required}
+                          onChange={(e) => handleUpdateQuestion(qIdx, "required", e.target.checked)}
+                          className="accent-[#E67230] size-3.5"
+                        />
+                        <span>Required Answer</span>
+                      </label>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center justify-end gap-3 border-t border-[#E5E0D5] pt-5">
+                <button
+                  type="button"
+                  onClick={() => setSurveyModalOpen(false)}
+                  className="rounded-lg border border-[#E5E0D5] px-5 py-2 text-xs font-bold text-[#666666] hover:bg-[#FAF9F6]"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="rounded-lg bg-[#E67230] px-6 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all"
+                >
+                  {editingSurvey ? "Update Survey" : "Publish Form"}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* -------------------------------------------------------------------- */}
+      {/* BAR GRAPH INSIGHTS & ANALYTICS MODAL                                  */}
+      {/* -------------------------------------------------------------------- */}
+      {surveyAnalyticsModalOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4 backdrop-blur-xs">
+          <div className="relative max-h-[92vh] w-full max-w-4xl overflow-y-auto rounded-2xl bg-white p-6 sm:p-8 shadow-2xl">
+            <button
+              onClick={() => setSurveyAnalyticsModalOpen(false)}
+              className="absolute right-6 top-6 rounded-full p-2 text-[#777777] hover:bg-[#FAF9F6] hover:text-[#111111]"
+            >
+              <X className="size-5" />
+            </button>
+
+            <div className="border-b border-[#E5E0D5] pb-5">
+              <span className="inline-flex items-center gap-1.5 rounded-full bg-blue-100 px-3 py-1 text-xs font-bold text-blue-800">
+                <TrendingUp className="size-3.5" />
+                Aggregated Doctor Demand Analytics
+              </span>
+              <h2 className="mt-2 text-xl font-bold text-[#111111]">
+                {activeAnalytics?.title || "Survey Question Insights"}
+              </h2>
+              <p className="text-xs text-[#666666] mt-0.5">
+                Total Doctor Participants: <span className="font-bold text-[#111111]">{activeAnalytics?.total_responses || 0}</span> • Reward Granted: <span className="font-bold text-amber-700">+{activeAnalytics?.reward_points || 50} pts</span>
+              </p>
+            </div>
+
+            {loadingAnalytics ? (
+              <div className="flex min-h-[300px] items-center justify-center">
+                <div className="size-10 animate-spin rounded-full border-4 border-[#E67230] border-t-transparent" />
+              </div>
+            ) : activeAnalytics && activeAnalytics.question_insights ? (
+              <div className="mt-6 space-y-6">
+                {activeAnalytics.question_insights.map((qi, idx) => (
+                  <div key={idx} className="rounded-xl border border-[#E5E0D5] bg-[#FAF9F6] p-5 shadow-2xs">
+                    <div className="flex items-start justify-between gap-3 border-b border-[#EBE7DF] pb-2.5">
+                      <div>
+                        <h4 className="text-xs font-bold text-[#111111] sm:text-sm">
+                          <span className="text-[#E67230] mr-1">Q{idx + 1}.</span> {qi.question_title}
+                        </h4>
+                        <p className="text-[11px] text-[#777777]">
+                          Type: <span className="uppercase font-semibold">{qi.question_type}</span> • Total Votes: {qi.total_votes}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Bar chart rendering */}
+                    {qi.options && qi.options.length > 0 ? (
+                      <div className="mt-4 space-y-3">
+                        {qi.options.map((opt, oIdx) => (
+                          <div key={oIdx} className="space-y-1">
+                            <div className="flex justify-between text-xs font-semibold text-[#222222]">
+                              <span className="max-w-[75%] truncate" title={opt.option}>{opt.option}</span>
+                              <span className="font-mono font-bold text-[#111111]">{opt.percentage}% ({opt.count})</span>
+                            </div>
+                            <div className="h-3.5 w-full overflow-hidden rounded-full bg-[#E8E4DA] p-0.5">
+                              <div
+                                className="h-full rounded-full bg-gradient-to-r from-[#E67230] to-[#F2994A] transition-all duration-500"
+                                style={{ width: `${Math.max(opt.percentage, 2)}%` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : qi.text_answers && qi.text_answers.length > 0 ? (
+                      <div className="mt-3 space-y-2">
+                        <p className="text-xs font-bold text-[#666666]">Doctor Responses ({qi.text_answers.length}):</p>
+                        <div className="max-h-40 space-y-1.5 overflow-y-auto">
+                          {qi.text_answers.map((ans, aIdx) => (
+                            <div key={aIdx} className="rounded-md border border-[#E2DDD3] bg-white p-2.5 text-xs text-[#333333] italic">
+                              "{ans}"
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <p className="mt-3 text-xs text-[#888888] italic">No responses recorded yet.</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p className="mt-8 text-center text-xs text-[#888888]">No analytics data available for this survey.</p>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* -------------------------------------------------------------------- */}
       {/* 7. MODAL: ADD / EDIT PRESS RELEASE                                   */}
