@@ -191,83 +191,38 @@ export function Home() {
           </div>
         </div>
 
-        {/* Action CTAs */}
-        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-          <a
-            href={whatsappCommunityUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
-          >
-            <Users2 className="h-5 w-5" />
-            Join the Pioneer Community
-          </a>
-
+        {/* Action CTAs: Share Survey, WhatsApp Community, Telegram Group */}
+        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-wrap">
           <Link
             to="/survey"
-            className="inline-flex items-center justify-center gap-2 rounded-xl border-2 border-[#E67230] bg-white px-6 py-3.5 text-base font-bold text-[#E67230] hover:bg-[#E67230]/5 transition-colors"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
           >
-            <ClipboardList className="h-5 w-5" />
             Share Your Biggest Workflow Challenge
           </Link>
-        </div>
-      </section>
 
-      {/* 3. Social Media, WhatsApp & Telegram Group Links */}
-      <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-5">
-        <div>
-          <h2 className="text-lg sm:text-xl font-bold text-[#111111]">
-            Social Media & Practitioner Channels
-          </h2>
-          <p className="text-sm text-[#777777] mt-1">
-            Connect with our core team and the pioneer practitioner network
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <a
             href={whatsappCommunityUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-5 rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6] hover:border-[#25D366] hover:bg-white transition-all group"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors"
           >
-            <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-xl bg-[#25D366]/10 text-[#25D366] flex items-center justify-center font-bold">
-                <MessageCircle className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-[#111111] group-hover:text-[#25D366] transition-colors">
-                  WhatsApp Community
-                </p>
-                <p className="text-sm text-[#777777]">Exclusive updates & practitioner discussions</p>
-              </div>
-            </div>
-            <ExternalLink className="h-5 w-5 text-[#888888] group-hover:text-[#25D366] transition-colors" />
+            <MessageCircle className="h-5 w-5" />
+            WhatsApp Community
           </a>
 
           <a
             href={telegramCommunityUrl}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-between p-5 rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6] hover:border-[#0088cc] hover:bg-white transition-all group"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0088cc] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#0077b5] transition-colors"
           >
-            <div className="flex items-center gap-4">
-              <div className="h-12 w-12 rounded-xl bg-[#0088cc]/10 text-[#0088cc] flex items-center justify-center font-bold">
-                <Send className="h-6 w-6" />
-              </div>
-              <div>
-                <p className="text-base font-bold text-[#111111] group-hover:text-[#0088cc] transition-colors">
-                  Telegram Group
-                </p>
-                <p className="text-sm text-[#777777]">Direct builder channel & feature polls</p>
-              </div>
-            </div>
-            <ExternalLink className="h-5 w-5 text-[#888888] group-hover:text-[#0088cc] transition-colors" />
+            <Send className="h-5 w-5" />
+            Telegram Group
           </a>
         </div>
       </section>
 
-      {/* 4. Survey Link Section */}
+      {/* 3. Survey Link Section */}
       <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
           <div className="space-y-1">
