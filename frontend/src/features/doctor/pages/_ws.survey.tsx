@@ -1,12 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState, useEffect } from "react";
 import {
-  ClipboardList,
-  CheckCircle2,
-  BarChart3,
   HelpCircle,
   ArrowRight,
-  RotateCcw,
+  ArrowLeft,
   Check,
 } from "lucide-react";
 import { seo } from "@/lib/seo";
@@ -16,8 +13,8 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/_ws/survey")({
   head: () =>
     seo(
-      "Practitioner Survey | Meyveda",
-      "Participate in the Meyveda AYUSH clinical survey and view peer insights.",
+      "Practitioner Surveys | Meyveda",
+      "Participate in Meyveda clinical surveys and view live peer responses.",
     ),
   component: SurveyPage,
 });
@@ -31,7 +28,7 @@ interface Question {
   helpText?: string;
 }
 
-interface SurveyData {
+interface SurveyItem {
   id: string;
   title: string;
   description: string;
@@ -64,48 +61,77 @@ interface InsightsData {
 }
 
 export function SurveyPage() {
-  const [survey, setSurvey] = useState<SurveyData | null>(null);
+  const [surveys, setSurveys] = useState<SurveyItem[]>([]);
+  const [completedSurveyIds, setCompletedSurveyIds] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
-  const [insights, setInsights] = useState<InsightsData | null>(null);
-  const [activeTab, setActiveTab] = useState<"survey" | "insights">("survey");
 
-  const doctorEmail = localStorage.getItem("meyveda_user_email") || "doctor@meyveda.com";
+  // Active view state: null = list of all surveys, object = currently taking/viewing a survey
+  const [activeSurvey, setActiveSurvey] = useState<SurveyItem | null>(null);
+  const [viewMode, setViewMode] = useState<"fill" | "results" | null>(null);
+  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [submitting, setSubmitting] = useState(false);
+  const [insights, setInsights] = useState<InsightsData | null>(null);
+  const [loadingInsights, setLoadingInsights] = useState(false);
+
+  const doctorEmail = localStorage.getItem("meyveda_user_email") || "doctor@practice.com";
   const doctorName = localStorage.getItem("meyveda_user_name") || "Dr. Ramesh Vaidya";
 
   useEffect(() => {
-    fetchActiveSurvey();
+    loadSurveysAndStatus();
   }, []);
 
-  const fetchActiveSurvey = async () => {
+  const loadSurveysAndStatus = async () => {
     setLoading(true);
     try {
-      const data = await apiClient.get<SurveyData>("/content/surveys/active");
-      setSurvey(data);
+      const [surveyList, completedIds] = await Promise.all([
+        apiClient.get<SurveyItem[]>("/content/surveys/list").catch(() => []),
+        apiClient
+          .get<string[]>(`/content/surveys/my-completed?doctor_email=${encodeURIComponent(doctorEmail)}`)
+          .catch(() => []),
+      ]);
 
-      const submittedSurveys = JSON.parse(localStorage.getItem("meyveda_submitted_surveys") || "[]");
-      if (data && submittedSurveys.includes(data.id)) {
-        setSubmitted(true);
-        setActiveTab("insights");
-        fetchInsights(data.id);
-      }
-    } catch (err: any) {
-      console.error("Failed to fetch active survey:", err);
-      toast.error("Unable to load the current survey.");
+      const localCompleted: string[] = JSON.parse(
+        localStorage.getItem("meyveda_submitted_surveys") || "[]",
+      );
+      const mergedCompleted = Array.from(new Set([...(completedIds || []), ...localCompleted]));
+
+      setSurveys(Array.isArray(surveyList) ? surveyList : []);
+      setCompletedSurveyIds(mergedCompleted);
+    } catch (err) {
+      console.error("Failed to load surveys:", err);
+      toast.error("Could not load surveys.");
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchInsights = async (surveyId: string) => {
+  const handleStartSurvey = (survey: SurveyItem) => {
+    setActiveSurvey(survey);
+    setViewMode("fill");
+    setAnswers({});
+  };
+
+  const handleViewResults = async (survey: SurveyItem) => {
+    setActiveSurvey(survey);
+    setViewMode("results");
+    setLoadingInsights(true);
     try {
-      const res = await apiClient.get<InsightsData>(`/content/surveys/insights/${surveyId}`);
+      const res = await apiClient.get<InsightsData>(`/content/surveys/insights/${survey.id}`);
       setInsights(res);
     } catch (err) {
-      console.error("Failed to fetch survey insights:", err);
+      console.error("Failed to load survey results:", err);
+      toast.error("Could not load survey results.");
+    } finally {
+      setLoadingInsights(false);
     }
+  };
+
+  const handleBackToList = () => {
+    setActiveSurvey(null);
+    setViewMode(null);
+    setAnswers({});
+    setInsights(null);
+    loadSurveysAndStatus();
   };
 
   const handleOptionSelect = (questionId: string, option: string, isCheckbox: boolean) => {
@@ -131,9 +157,9 @@ export function SurveyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!survey) return;
+    if (!activeSurvey) return;
 
-    for (const q of survey.questions) {
+    for (const q of activeSurvey.questions) {
       if (q.required) {
         const ans = answers[q.id];
         if (ans === undefined || ans === null || ans === "" || (Array.isArray(ans) && ans.length === 0)) {
@@ -146,7 +172,7 @@ export function SurveyPage() {
     setSubmitting(true);
     try {
       const payload = {
-        survey_id: survey.id,
+        survey_id: activeSurvey.id,
         doctor_email: doctorEmail,
         doctor_name: doctorName,
         answers: answers,
@@ -154,16 +180,17 @@ export function SurveyPage() {
 
       await apiClient.post("/content/surveys/submit", payload);
 
-      const submittedSurveys = JSON.parse(localStorage.getItem("meyveda_submitted_surveys") || "[]");
-      if (!submittedSurveys.includes(survey.id)) {
-        submittedSurveys.push(survey.id);
-        localStorage.setItem("meyveda_submitted_surveys", JSON.stringify(submittedSurveys));
+      const localCompleted: string[] = JSON.parse(
+        localStorage.getItem("meyveda_submitted_surveys") || "[]",
+      );
+      if (!localCompleted.includes(activeSurvey.id)) {
+        localCompleted.push(activeSurvey.id);
+        localStorage.setItem("meyveda_submitted_surveys", JSON.stringify(localCompleted));
       }
+      setCompletedSurveyIds((prev) => Array.from(new Set([...prev, activeSurvey.id])));
 
-      toast.success("Survey submitted successfully!");
-      setSubmitted(true);
-      setActiveTab("insights");
-      fetchInsights(survey.id);
+      toast.success("Survey submitted!");
+      handleViewResults(activeSurvey);
     } catch (err: any) {
       console.error("Survey submission failed:", err);
       toast.error(err.response?.data?.detail || "Submission failed. Please try again.");
@@ -176,328 +203,342 @@ export function SurveyPage() {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-4xl flex-col items-center justify-center p-8">
         <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
-        <p className="mt-3 text-xs font-medium text-muted-foreground">Loading survey...</p>
+        <p className="mt-3 text-xs font-medium text-muted-foreground">Loading surveys...</p>
       </div>
     );
   }
 
-  if (!survey) {
+  // ---------------------------------------------------------------------------
+  // VIEW 1: SINGLE SURVEY QUESTIONNAIRE
+  // ---------------------------------------------------------------------------
+  if (activeSurvey && viewMode === "fill") {
     return (
-      <div className="mx-auto max-w-3xl p-6 text-center">
-        <div className="rounded-2xl border border-border bg-card p-10 shadow-soft">
-          <HelpCircle className="mx-auto size-10 text-muted-foreground/60" />
-          <h2 className="mt-3 text-lg font-bold text-foreground">No Active Survey</h2>
-          <p className="mt-1 text-xs text-muted-foreground">
-            There are currently no active surveys available.
-          </p>
-        </div>
-      </div>
-    );
-  }
+      <div className="mx-auto w-full max-w-4xl px-4 py-6 md:px-8 space-y-6">
+        <button
+          type="button"
+          onClick={handleBackToList}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="size-3.5" />
+          <span>Back to Surveys</span>
+        </button>
 
-  return (
-    <div className="mx-auto w-full max-w-4xl px-4 py-6 md:px-8 space-y-6">
-      {/* 1. Standard Minimal Header Card */}
-      <div className="rounded-2xl border border-border bg-white p-6 shadow-soft">
-        <div className="space-y-1.5">
+        <div className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-1">
           <h1 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
-            {survey.title}
+            {activeSurvey.title}
           </h1>
-          {survey.description && (
+          {activeSurvey.description && (
             <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
-              {survey.description}
+              {activeSurvey.description}
             </p>
           )}
         </div>
 
-        {/* Tab switch */}
-        <div className="mt-6 flex border-b border-border">
-          <button
-            type="button"
-            onClick={() => setActiveTab("survey")}
-            className={`flex items-center gap-2 border-b-2 px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
-              activeTab === "survey"
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <ClipboardList className="size-4" />
-            <span>Survey</span>
-            {submitted && (
-              <span className="rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 px-2 py-0.5 text-[10px] font-bold">
-                Submitted
-              </span>
-            )}
-          </button>
-
-          <button
-            type="button"
-            onClick={() => {
-              setActiveTab("insights");
-              fetchInsights(survey.id);
-            }}
-            className={`flex items-center gap-2 border-b-2 px-4 py-2 text-xs font-semibold transition-all cursor-pointer ${
-              activeTab === "insights"
-                ? "border-primary text-primary"
-                : "border-transparent text-muted-foreground hover:text-foreground"
-            }`}
-          >
-            <BarChart3 className="size-4" />
-            <span>Results & Insights</span>
-          </button>
-        </div>
-      </div>
-
-      {/* 2. TAB A: QUESTIONNAIRE FORM */}
-      {activeTab === "survey" && (
-        <div className="space-y-6">
-          {submitted ? (
-            <div className="rounded-2xl border border-emerald-200 bg-white p-6 shadow-soft space-y-3">
-              <div className="flex items-center gap-3 text-emerald-700 font-bold text-sm">
-                <CheckCircle2 className="size-5" />
-                <span>Response Submitted</span>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          {activeSurvey.questions.map((q, idx) => (
+            <div
+              key={q.id || idx}
+              className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-4"
+            >
+              <div className="space-y-0.5">
+                <label className="text-sm font-bold text-foreground">
+                  <span className="text-primary mr-1.5">{idx + 1}.</span>
+                  {q.title}
+                  {q.required && <span className="ml-1 text-red-500 font-bold">*</span>}
+                </label>
+                {q.helpText && (
+                  <p className="text-xs text-muted-foreground">{q.helpText}</p>
+                )}
               </div>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Thank you for your responses. You can view the aggregated results in the Results & Insights tab.
-              </p>
-              <div>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveTab("insights");
-                    fetchInsights(survey.id);
-                  }}
-                  className="inline-flex items-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-bold text-white hover:bg-primary-dark transition-colors cursor-pointer"
-                >
-                  <span>View Results</span>
-                  <ArrowRight className="size-3.5" />
-                </button>
-              </div>
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {survey.questions.map((q, idx) => (
-                <div
-                  key={q.id || idx}
-                  className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-4"
-                >
-                  <div className="space-y-0.5">
-                    <label className="text-sm font-bold text-foreground">
-                      <span className="text-primary mr-1.5">{idx + 1}.</span>
-                      {q.title}
-                      {q.required && <span className="ml-1 text-red-500 font-bold">*</span>}
-                    </label>
-                    {q.helpText && (
-                      <p className="text-xs text-muted-foreground">{q.helpText}</p>
-                    )}
-                  </div>
 
-                  {/* Render Question Inputs */}
-                  <div className="pt-1">
-                    {/* TYPE 1: RADIO */}
-                    {q.type === "radio" && (
-                      <div className="space-y-2">
-                        {q.options.map((opt, optIdx) => {
-                          const isSelected = answers[q.id] === opt;
-                          return (
-                            <label
-                              key={optIdx}
-                              onClick={() => handleOptionSelect(q.id, opt, false)}
-                              className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-xs transition-colors ${
-                                isSelected
-                                  ? "border-primary bg-primary-soft text-foreground font-semibold"
-                                  : "border-border bg-card text-foreground hover:bg-muted/40"
-                              }`}
-                            >
-                              <div
-                                className={`flex size-4 shrink-0 items-center justify-center rounded-full border ${
-                                  isSelected
-                                    ? "border-primary bg-primary text-white"
-                                    : "border-muted-foreground/40 bg-white"
-                                }`}
-                              >
-                                {isSelected && <div className="size-1.5 rounded-full bg-white" />}
-                              </div>
-                              <span>{opt}</span>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* TYPE 2: CHECKBOX */}
-                    {q.type === "checkbox" && (
-                      <div className="space-y-2">
-                        {q.options.map((opt, optIdx) => {
-                          const current = (answers[q.id] as string[]) || [];
-                          const isSelected = current.includes(opt);
-                          return (
-                            <label
-                              key={optIdx}
-                              onClick={() => handleOptionSelect(q.id, opt, true)}
-                              className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-xs transition-colors ${
-                                isSelected
-                                  ? "border-primary bg-primary-soft text-foreground font-semibold"
-                                  : "border-border bg-card text-foreground hover:bg-muted/40"
-                              }`}
-                            >
-                              <div
-                                className={`flex size-4 shrink-0 items-center justify-center rounded-md border ${
-                                  isSelected
-                                    ? "border-primary bg-primary text-white"
-                                    : "border-muted-foreground/40 bg-white"
-                                }`}
-                              >
-                                {isSelected && <Check className="size-3 stroke-[3]" />}
-                              </div>
-                              <span>{opt}</span>
-                            </label>
-                          );
-                        })}
-                      </div>
-                    )}
-
-                    {/* TYPE 3: RATING */}
-                    {q.type === "rating" && (
-                      <div className="space-y-2">
-                        <div className="flex items-center gap-2">
-                          {[1, 2, 3, 4, 5].map((num) => {
-                            const isSelected = answers[q.id] === num.toString();
-                            return (
-                              <button
-                                type="button"
-                                key={num}
-                                onClick={() => handleRatingSelect(q.id, num)}
-                                className={`flex size-10 items-center justify-center rounded-xl border text-xs font-bold transition-all cursor-pointer ${
-                                  isSelected
-                                    ? "border-primary bg-primary text-white shadow-xs"
-                                    : "border-border bg-card text-foreground hover:border-primary hover:text-primary"
-                                }`}
-                              >
-                                {num}
-                              </button>
-                            );
-                          })}
+              {/* RADIO */}
+              {q.type === "radio" && (
+                <div className="space-y-2 pt-1">
+                  {q.options.map((opt, optIdx) => {
+                    const isSelected = answers[q.id] === opt;
+                    return (
+                      <label
+                        key={optIdx}
+                        onClick={() => handleOptionSelect(q.id, opt, false)}
+                        className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-xs transition-colors ${
+                          isSelected
+                            ? "border-primary bg-primary-soft text-foreground font-semibold"
+                            : "border-border bg-card text-foreground hover:bg-muted/40"
+                        }`}
+                      >
+                        <div
+                          className={`flex size-4 shrink-0 items-center justify-center rounded-full border ${
+                            isSelected
+                              ? "border-primary bg-primary text-white"
+                              : "border-muted-foreground/40 bg-white"
+                          }`}
+                        >
+                          {isSelected && <div className="size-1.5 rounded-full bg-white" />}
                         </div>
-                      </div>
-                    )}
+                        <span>{opt}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
 
-                    {/* TYPE 4: TEXT */}
-                    {q.type === "text" && (
-                      <textarea
-                        rows={3}
-                        placeholder="Type your response here..."
-                        value={answers[q.id] || ""}
-                        onChange={(e) => handleTextChange(q.id, e.target.value)}
-                        className="w-full rounded-xl border border-border bg-card p-3 text-xs text-foreground focus:border-primary focus:bg-white focus:outline-none placeholder:text-muted-foreground"
-                      />
-                    )}
+              {/* CHECKBOX */}
+              {q.type === "checkbox" && (
+                <div className="space-y-2 pt-1">
+                  {q.options.map((opt, optIdx) => {
+                    const current = (answers[q.id] as string[]) || [];
+                    const isSelected = current.includes(opt);
+                    return (
+                      <label
+                        key={optIdx}
+                        onClick={() => handleOptionSelect(q.id, opt, true)}
+                        className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3 text-xs transition-colors ${
+                          isSelected
+                            ? "border-primary bg-primary-soft text-foreground font-semibold"
+                            : "border-border bg-card text-foreground hover:bg-muted/40"
+                        }`}
+                      >
+                        <div
+                          className={`flex size-4 shrink-0 items-center justify-center rounded-md border ${
+                            isSelected
+                              ? "border-primary bg-primary text-white"
+                              : "border-muted-foreground/40 bg-white"
+                          }`}
+                        >
+                          {isSelected && <Check className="size-3 stroke-[3]" />}
+                        </div>
+                        <span>{opt}</span>
+                      </label>
+                    );
+                  })}
+                </div>
+              )}
+
+              {/* RATING */}
+              {q.type === "rating" && (
+                <div className="pt-1">
+                  <div className="flex items-center gap-2">
+                    {[1, 2, 3, 4, 5].map((num) => {
+                      const isSelected = answers[q.id] === num.toString();
+                      return (
+                        <button
+                          type="button"
+                          key={num}
+                          onClick={() => handleRatingSelect(q.id, num)}
+                          className={`flex size-10 items-center justify-center rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                            isSelected
+                              ? "border-primary bg-primary text-white shadow-xs"
+                              : "border-border bg-card text-foreground hover:border-primary hover:text-primary"
+                          }`}
+                        >
+                          {num}
+                        </button>
+                      );
+                    })}
                   </div>
                 </div>
-              ))}
+              )}
 
-              <div className="flex justify-end pt-2">
-                <button
-                  type="submit"
-                  disabled={submitting}
-                  className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
-                >
-                  {submitting ? (
-                    <span>Submitting...</span>
-                  ) : (
-                    <>
-                      <span>Submit Survey</span>
-                      <ArrowRight className="size-4" />
-                    </>
-                  )}
-                </button>
-              </div>
-            </form>
-          )}
-        </div>
-      )}
+              {/* TEXT */}
+              {q.type === "text" && (
+                <div className="pt-1">
+                  <textarea
+                    rows={3}
+                    placeholder="Type your response here..."
+                    value={answers[q.id] || ""}
+                    onChange={(e) => handleTextChange(q.id, e.target.value)}
+                    className="w-full rounded-xl border border-border bg-card p-3 text-xs text-foreground focus:border-primary focus:bg-white focus:outline-none placeholder:text-muted-foreground"
+                  />
+                </div>
+              )}
+            </div>
+          ))}
 
-      {/* 3. TAB B: RESULTS & INSIGHTS (CLEAN BAR GRAPHS) */}
-      {activeTab === "insights" && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold text-foreground">
-              Survey Results
-            </h2>
+          <div className="flex items-center justify-between pt-2">
             <button
               type="button"
-              onClick={() => fetchInsights(survey.id)}
-              className="inline-flex items-center gap-1.5 rounded-lg border border-border bg-white px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              title="Refresh results"
+              onClick={handleBackToList}
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
             >
-              <RotateCcw className="size-3.5" />
-              <span>Refresh</span>
+              Cancel
+            </button>
+            <button
+              type="submit"
+              disabled={submitting}
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
+            >
+              {submitting ? (
+                <span>Submitting...</span>
+              ) : (
+                <>
+                  <span>Submit Survey</span>
+                  <ArrowRight className="size-4" />
+                </>
+              )}
             </button>
           </div>
+        </form>
+      </div>
+    );
+  }
 
-          {insights && insights.question_insights && insights.question_insights.length > 0 ? (
-            <div className="space-y-4">
-              {insights.question_insights.map((qi, qIdx) => (
-                <div
-                  key={qi.question_id || qIdx}
-                  className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-4"
-                >
-                  <div className="space-y-0.5">
-                    <h3 className="text-sm font-bold text-foreground">
-                      <span className="text-primary mr-1.5">Q{qIdx + 1}.</span>
-                      {qi.question_title}
-                    </h3>
+  // ---------------------------------------------------------------------------
+  // VIEW 2: RESULTS VIEW WITH CLEAN BAR GRAPHS
+  // ---------------------------------------------------------------------------
+  if (activeSurvey && viewMode === "results") {
+    return (
+      <div className="mx-auto w-full max-w-4xl px-4 py-6 md:px-8 space-y-6">
+        <button
+          type="button"
+          onClick={handleBackToList}
+          className="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+        >
+          <ArrowLeft className="size-3.5" />
+          <span>Back to Surveys</span>
+        </button>
+
+        <div className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-1">
+          <h1 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
+            {activeSurvey.title} — Results
+          </h1>
+          {activeSurvey.description && (
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              {activeSurvey.description}
+            </p>
+          )}
+        </div>
+
+        {loadingInsights ? (
+          <div className="flex min-h-[40vh] items-center justify-center">
+            <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+          </div>
+        ) : insights && insights.question_insights && insights.question_insights.length > 0 ? (
+          <div className="space-y-4">
+            {insights.question_insights.map((qi, qIdx) => (
+              <div
+                key={qi.question_id || qIdx}
+                className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-4"
+              >
+                <h3 className="text-sm font-bold text-foreground">
+                  <span className="text-primary mr-1.5">Q{qIdx + 1}.</span>
+                  {qi.question_title}
+                </h3>
+
+                {qi.options && qi.options.length > 0 ? (
+                  <div className="space-y-3 pt-1">
+                    {qi.options.map((optItem, optIdx) => (
+                      <div key={optIdx} className="space-y-1">
+                        <div className="flex items-center justify-between text-xs text-foreground">
+                          <span className="font-medium max-w-[80%] truncate">
+                            {optItem.option}
+                          </span>
+                          <span className="font-mono text-[11px] text-muted-foreground font-semibold">
+                            {optItem.percentage}% ({optItem.count})
+                          </span>
+                        </div>
+                        <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#F4F1EA]">
+                          <div
+                            className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                            style={{ width: `${optItem.percentage}%` }}
+                          />
+                        </div>
+                      </div>
+                    ))}
                   </div>
+                ) : qi.text_answers && qi.text_answers.length > 0 ? (
+                  <div className="space-y-2 pt-1">
+                    {qi.text_answers.map((ans, aIdx) => (
+                      <div
+                        key={aIdx}
+                        className="rounded-lg border border-border bg-muted/20 p-3 text-xs text-foreground leading-relaxed"
+                      >
+                        {ans}
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-xs text-muted-foreground italic">No responses recorded yet.</p>
+                )}
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-dashed border-border bg-white p-8 text-center">
+            <p className="text-xs font-semibold text-muted-foreground">
+              No results recorded yet.
+            </p>
+          </div>
+        )}
+      </div>
+    );
+  }
 
-                  {/* Clean Bar Charts */}
-                  {qi.options && qi.options.length > 0 ? (
-                    <div className="space-y-3 pt-1">
-                      {qi.options.map((optItem, optIdx) => (
-                        <div key={optIdx} className="space-y-1">
-                          <div className="flex items-center justify-between text-xs text-foreground">
-                            <span className="font-medium max-w-[80%] truncate">
-                              {optItem.option}
-                            </span>
-                            <span className="font-mono text-[11px] text-muted-foreground font-semibold">
-                              {optItem.percentage}% ({optItem.count})
-                            </span>
-                          </div>
+  // ---------------------------------------------------------------------------
+  // VIEW 3: CLEAN LIST OF ALL SURVEYS
+  // ---------------------------------------------------------------------------
+  return (
+    <div className="mx-auto w-full max-w-4xl px-4 py-6 md:px-8 space-y-6">
+      <div className="space-y-1">
+        <h1 className="text-xl sm:text-2xl font-extrabold text-foreground tracking-tight">
+          Surveys
+        </h1>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Participate in practitioner feedback surveys or view live peer results.
+        </p>
+      </div>
 
-                          {/* Meyveda Brand Primary Orange Bar */}
-                          <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#F4F1EA]">
-                            <div
-                              className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
-                              style={{ width: `${optItem.percentage}%` }}
-                            />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  ) : qi.text_answers && qi.text_answers.length > 0 ? (
-                    <div className="space-y-2 pt-1">
-                      {qi.text_answers.map((ans, aIdx) => (
-                        <div
-                          key={aIdx}
-                          className="rounded-lg border border-border bg-muted/20 p-3 text-xs text-foreground leading-relaxed"
-                        >
-                          {ans}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p className="text-xs text-muted-foreground italic">No responses recorded yet.</p>
+      {surveys.length === 0 ? (
+        <div className="rounded-2xl border border-border bg-white p-12 text-center shadow-soft">
+          <HelpCircle className="mx-auto size-10 text-muted-foreground/50" />
+          <h2 className="mt-3 text-base font-bold text-foreground">No Surveys Available</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            There are currently no active surveys. Please check back later.
+          </p>
+        </div>
+      ) : (
+        <div className="space-y-4">
+          {surveys.map((survey) => {
+            const isCompleted = completedSurveyIds.includes(survey.id);
+            return (
+              <div
+                key={survey.id}
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 rounded-2xl border border-border bg-white p-6 shadow-soft transition-colors hover:border-primary/40"
+              >
+                <div className="space-y-1 flex-1">
+                  <h3 className="text-base font-bold text-foreground">
+                    {survey.title}
+                  </h3>
+                  {survey.description && (
+                    <p className="text-xs text-muted-foreground line-clamp-2">
+                      {survey.description}
+                    </p>
                   )}
                 </div>
-              ))}
-            </div>
-          ) : (
-            <div className="rounded-2xl border border-dashed border-border bg-white p-8 text-center">
-              <BarChart3 className="mx-auto size-8 text-muted-foreground/50" />
-              <p className="mt-2 text-xs font-semibold text-muted-foreground">
-                No results recorded yet.
-              </p>
-            </div>
-          )}
+
+                <div className="shrink-0 flex items-center gap-3">
+                  {isCompleted ? (
+                    <button
+                      type="button"
+                      onClick={() => handleViewResults(survey)}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-bold text-foreground hover:border-primary hover:text-primary transition-colors cursor-pointer"
+                    >
+                      <span>View Results</span>
+                      <ArrowRight className="size-3.5" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleStartSurvey(survey)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-colors cursor-pointer"
+                    >
+                      <span>Start Survey</span>
+                      <ArrowRight className="size-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>

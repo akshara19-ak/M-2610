@@ -132,6 +132,32 @@ def get_active_survey(db: Session = Depends(get_db)):
         "created_at": survey.created_at.isoformat() if survey.created_at else None,
     }
 
+@router.get("/list", summary="Get all available surveys for practitioners")
+def get_practitioner_surveys(db: Session = Depends(get_db)):
+    surveys = db.query(ClinicalSurvey).filter(ClinicalSurvey.status == "active").order_by(ClinicalSurvey.created_at.desc()).all()
+    result = []
+    for s in surveys:
+        resp_count = db.query(ClinicalSurveyResponse).filter(ClinicalSurveyResponse.survey_id == s.id).count()
+        result.append({
+            "id": s.id,
+            "title": s.title,
+            "description": s.description,
+            "category": s.category,
+            "reward_points": s.reward_points,
+            "status": s.status,
+            "questions": s.questions,
+            "total_responses": resp_count,
+            "created_at": s.created_at.isoformat() if s.created_at else None,
+        })
+    return result
+
+@router.get("/my-completed", summary="Get IDs of surveys completed by the current doctor")
+def get_my_completed_surveys(doctor_email: Optional[str] = None, db: Session = Depends(get_db)):
+    if not doctor_email:
+        return []
+    responses = db.query(ClinicalSurveyResponse.survey_id).filter(ClinicalSurveyResponse.doctor_email == doctor_email).all()
+    return [r[0] for r in responses]
+
 @router.get("/manage/all", summary="Get all surveys for Content Manager with detailed completion metrics")
 def get_all_surveys_for_manager(db: Session = Depends(get_db)):
     surveys = db.query(ClinicalSurvey).order_by(ClinicalSurvey.created_at.desc()).all()
