@@ -210,9 +210,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <aside
+        style={{
+          width: collapsed ? "var(--sidebar-width-collapsed, 5.5rem)" : "var(--sidebar-width, 17.5rem)",
+          position: "fixed",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 30,
+        }}
         className={cn(
-          "shell-sidebar motif-corner fixed inset-y-0 left-0 z-30 hidden h-screen h-dvh flex-col overflow-hidden p-3 transition-[width] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:flex",
-          collapsed ? "w-[var(--sidebar-width-collapsed)]" : "w-[var(--sidebar-width)]",
+          "shell-sidebar motif-corner hidden h-screen h-dvh flex-col overflow-hidden p-3 transition-[width] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:flex",
         )}
       >
         <div className="relative z-[1] mb-4">
@@ -292,10 +299,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      <div className={cn(
-        "flex min-w-0 flex-1 flex-col transition-[padding] duration-[var(--duration-base)] ease-[var(--ease-out)]",
-        collapsed ? "lg:pl-[var(--sidebar-width-collapsed)]" : "lg:pl-[var(--sidebar-width)]"
-      )}>
+      <div
+        style={{
+          paddingLeft: collapsed ? "var(--sidebar-width-collapsed, 5.5rem)" : "var(--sidebar-width, 17.5rem)",
+        }}
+        className="flex min-w-0 flex-1 flex-col transition-[padding] duration-[var(--duration-base)] ease-[var(--ease-out)] max-lg:!pl-0"
+      >
         {/* Mobile menu bar - only rendered on small screens where sidebar is hidden */}
         <div className="flex h-12 items-center justify-between border-b border-border bg-white/95 px-4 backdrop-blur-md lg:hidden">
           <button
