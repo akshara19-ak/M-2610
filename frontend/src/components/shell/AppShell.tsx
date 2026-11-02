@@ -318,9 +318,19 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
-          <span className="max-w-[200px] truncate text-xs font-semibold text-foreground">
-            {doctor.name}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="max-w-[160px] truncate text-xs font-semibold text-foreground">
+              {doctor.name}
+            </span>
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:text-[#E67230] hover:bg-muted/50 transition-colors"
+              title="Return to Meyveda Home"
+              aria-label="Return to Meyveda Home"
+            >
+              <Home className="h-4 w-4" />
+            </Link>
+          </div>
           
         </div>
 
@@ -334,10 +344,19 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="text-xs font-bold text-foreground">
               {doctor.name}
             </span>
+
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center p-2 rounded-xl text-muted-foreground hover:text-[#E67230] hover:bg-muted/50 transition-colors"
+              title="Return to Meyveda Home"
+              aria-label="Return to Meyveda Home"
+            >
+              <Home className="h-4 w-4" />
+            </Link>
           </div>
         </header>
 
