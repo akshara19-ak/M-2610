@@ -114,7 +114,10 @@ def _ensure_seed_survey(db: Session) -> ClinicalSurvey:
 
 @router.get("/active", summary="Get the current active survey for practitioners")
 def get_active_survey(db: Session = Depends(get_db)):
-    survey = _ensure_seed_survey(db)
+    # Retrieve the latest active survey created by the Content Manager
+    survey = db.query(ClinicalSurvey).filter(ClinicalSurvey.status == "active").order_by(ClinicalSurvey.created_at.desc()).first()
+    if not survey:
+        return None
     # Check total responses
     total_responses = db.query(ClinicalSurveyResponse).filter(ClinicalSurveyResponse.survey_id == survey.id).count()
     return {
@@ -131,7 +134,6 @@ def get_active_survey(db: Session = Depends(get_db)):
 
 @router.get("/manage/all", summary="Get all surveys for Content Manager with detailed completion metrics")
 def get_all_surveys_for_manager(db: Session = Depends(get_db)):
-    _ensure_seed_survey(db)
     surveys = db.query(ClinicalSurvey).order_by(ClinicalSurvey.created_at.desc()).all()
     result = []
     for s in surveys:

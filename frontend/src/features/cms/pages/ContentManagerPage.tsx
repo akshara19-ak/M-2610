@@ -164,55 +164,21 @@ export function ContentManagerPage() {
   const [activeAnalytics, setActiveAnalytics] = useState<SurveyAnalytics | null>(null);
   const [loadingAnalytics, setLoadingAnalytics] = useState(false);
 
-  // Google Forms Survey Builder Form State
+  // Google Forms Survey Builder Form State (Blank by default like Google Forms)
   const [surveyForm, setSurveyForm] = useState({
-    title: "Practitioner Clinical Intelligence and Practice Survey",
-    description: "Help refine AYUSH formulation guidelines, clinical monographs, and drug interaction research.",
+    title: "",
+    description: "",
     category: "AYUSH Clinical Practice",
     reward_points: 50,
     status: "active",
     questions: [
       {
-        id: "q_need_1",
-        title: "Which primary clinical challenge requires the most immediate assistance in your daily practice?",
+        id: `q_${Date.now()}_1`,
+        title: "",
         type: "radio" as const,
-        options: [
-          "Standardized, batch-tested authentic classical medicines",
-          "Predictable patient adherence and repeat refill compliance",
-          "Rapid clinical monograph and drug-drug herb interaction references",
-          "Transparent, ethical AYUSH digital prescription toolkit"
-        ],
+        options: ["Option 1"],
         required: true,
-        helpText: "Select the single most pressing operational or clinical bottleneck."
-      },
-      {
-        id: "q_need_2",
-        title: "What critical services should Meyveda prioritize for your clinic desk?",
-        type: "checkbox" as const,
-        options: [
-          "Direct manufacturer lab testing certificates (COA and Heavy Metal assays)",
-          "Formulary sample access and trial dispensing kits",
-          "Integrated digital clinic notes and Ayur-pharmacopeia search",
-          "Peer case exchange and clinical discussions with fellow Vaidyas"
-        ],
-        required: true,
-        helpText: "Select all areas you wish to see supported first."
-      },
-      {
-        id: "q_need_3",
-        title: "How critical is verified heavy metal and microbiology certification on every formulation batch?",
-        type: "rating" as const,
-        options: ["1", "2", "3", "4", "5"],
-        required: true,
-        helpText: "Scale from 1 (Not Critical) to 5 (Absolute Requirement)"
-      },
-      {
-        id: "q_need_4",
-        title: "What is one specific classical formulation or clinical workflow you wish was easier to access?",
-        type: "text" as const,
-        options: [],
-        required: false,
-        helpText: "Share any specific classical Taila, Gritha, Bhasma or clinical documentation hurdle."
+        helpText: ""
       }
     ] as SurveyQuestion[]
   });
@@ -327,27 +293,19 @@ export function ContentManagerPage() {
   const openNewSurveyModal = () => {
     setEditingSurvey(null);
     setSurveyForm({
-      title: "AYUSH Practitioner Clinical Requirements Survey",
-      description: "Gather feedback on dispensing preferences, clinical tools, and classical pharmacy standards.",
+      title: "",
+      description: "",
       category: "AYUSH Clinical Practice",
       reward_points: 50,
       status: "active",
       questions: [
         {
           id: `q_${Date.now()}_1`,
-          title: "What is the biggest challenge you face with AYUSH medicine sourcing?",
+          title: "",
           type: "radio",
-          options: ["Inconsistent quality / lack of lab reports", "High costs & unverified stock", "Patient trust and adherence", "Lack of dosage clarity"],
+          options: ["Option 1"],
           required: true,
-          helpText: "Choose the primary barrier in clinical practice."
-        },
-        {
-          id: `q_${Date.now()}_2`,
-          title: "Which digital desk features would you find most valuable?",
-          type: "checkbox",
-          options: ["Fast Ayur-pharmacopeia search", "Automated refill reminders for patients", "Direct heavy-metal batch COA download", "Interactive dosage converter"],
-          required: true,
-          helpText: "Select all that apply."
+          helpText: ""
         }
       ]
     });
@@ -370,9 +328,9 @@ export function ContentManagerPage() {
   const handleAddQuestion = () => {
     const newQ: SurveyQuestion = {
       id: `q_${Date.now()}_${Math.floor(Math.random() * 1000)}`,
-      title: "Untitled Question",
+      title: "",
       type: "radio",
-      options: ["Option 1", "Option 2"],
+      options: ["Option 1"],
       required: true,
       helpText: ""
     };
