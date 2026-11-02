@@ -53,8 +53,8 @@ function BrandPanel({ compact }: { compact?: boolean; onNavigate?: () => void })
   return (
     <div
       className={cn(
-        "group flex shrink-0 items-center justify-center rounded-2xl bg-white shadow-soft transition-all duration-200 select-none",
-        compact ? "mx-auto h-14 w-14" : "w-full px-3 py-3",
+        "group flex shrink-0 items-center justify-center rounded-xl bg-white shadow-soft transition-all duration-200 select-none",
+        compact ? "mx-auto h-11 w-11 p-1.5" : "w-full px-4 py-2",
       )}
     >
       <Logo compact={compact ?? false} />
