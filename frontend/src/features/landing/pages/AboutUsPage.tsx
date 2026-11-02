@@ -528,7 +528,7 @@ export function AboutUsPage() {
                   to="/register"
                   className="group relative inline-flex h-12 items-center justify-center gap-2 rounded-md bg-[#E67230] px-7 sm:px-8 text-sm sm:text-base font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] hover:shadow-[0_8px_24px_-4px_rgba(230,114,48,0.5)] active:translate-y-0 active:shadow-sm"
                 >
-                  <span>Register as Doctor</span>
+                  <span>Register as Practitioner</span>
                   <ArrowRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
                 </Link>
 

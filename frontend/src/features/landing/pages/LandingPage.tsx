@@ -5249,7 +5249,7 @@ export function MeyvedaDoctorsPage() {
                   to="/register"
                   className="inline-flex items-center gap-2 rounded-md bg-[#111111] px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#222222] cursor-pointer"
                 >
-                  <span>Register as a Doctor</span>
+                  <span>Register as a Practitioner</span>
                   <ArrowRight className="size-4" />
                 </Link>
               </div>

@@ -731,7 +731,7 @@ export function Register() {
                 MEYVEDA · REGISTRATION
               </p>
               <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111]">
-                Register as a Doctor
+                Register as a Practitioner
               </h1>
               <p className="mt-2 text-xs sm:text-sm text-[#666666] leading-relaxed">
                 Join the verified AYUSH doctor network and access your clinical research desk.
@@ -1351,7 +1351,7 @@ export function Register() {
                       <span>Registering with Backend...</span>
                     ) : (
                       <>
-                        <span>Register as a Doctor</span>
+                        <span>Register as a Practitioner</span>
                         <ArrowRight className="size-4" />
                       </>
                     )}

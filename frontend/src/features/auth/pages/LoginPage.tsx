@@ -333,7 +333,7 @@ export function Login({ initialMode }: { initialMode?: "signin" | "forgot" | "re
               to="/register"
               className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#E67230] hover:underline"
             >
-              <span>Register as Doctor</span>
+              <span>Register as Practitioner</span>
               <ArrowRight className="size-3.5" />
             </Link>
             <Link
@@ -521,7 +521,7 @@ export function Login({ initialMode }: { initialMode?: "signin" | "forgot" | "re
                         to="/register"
                         className="font-bold text-[#E67230] hover:underline"
                       >
-                        Register as Doctor
+                        Register as Practitioner
                       </Link>
                     </p>
                   </div>
