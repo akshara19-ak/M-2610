@@ -73,6 +73,11 @@ import practitionerImage from "@/assets/Practitioner.png";
 import mentorshipImage from "@/assets/meyveda-mentorship.jpg";
 import juniorDoctorImage from "@/assets/meyveda-doctor-hero.jpg";
 import meyvedaLogo from "@/assets/meyvedalogo.png";
+import imgDigitalIdentity from "@/assets/verified digital identity trust engine.png";
+import imgWisdomHub from "@/assets/the wisdom hub.png";
+import imgMedicineCatalogue from "@/assets/dynamic medicine catalogue  procurement.png";
+import imgClinicalToolkit from "@/assets/clinical toolkit & structured care programs.png";
+import imgOpportunityDesk from "@/assets/opportunity desk & peer collaborative.png";
 import justMeyvedaLogo from "@/assets/just_meyveda.png";
 import justMeyvedDownLogo from "@/assets/just_meyved_down.png";
 import reinventYourLogo from "@/assets/REINVENT_YOU_transparent.png";
@@ -2644,345 +2649,45 @@ export function WorkspaceRevenuePage() {
 /* -------------------------------------------------------------------------- */
 
 function PracticeSuiteCardPreview({ type }: { type: string }) {
+  let imgSrc = "";
+  let imgAlt = "Meyveda Capability Feature";
+
   switch (type) {
-    case "library":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          {/* Subtle grid background pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Classical Ayurveda manuscript / open reference book with Sanskrit verses */}
-          <div className="relative flex flex-col items-center">
-            {/* Open Folio / Manuscript */}
-            <div className="relative flex h-20 w-40 items-center justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2.5 shadow-sm">
-              {/* Left page */}
-              <div className="flex flex-1 flex-col gap-1 border-r border-[#EBE7DF]/80 pr-2">
-                <span className="font-serif text-[9px] font-bold text-[#E67230]">चरक संहिता</span>
-                <div className="space-y-1">
-                  <div className="h-1 w-full rounded-sm bg-[#111111]/30" />
-                  <div className="h-1 w-4/5 rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-full rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-2/3 rounded-sm bg-[#111111]/20" />
-                </div>
-              </div>
-              {/* Right page */}
-              <div className="flex flex-1 flex-col gap-1 pl-2">
-                <span className="font-mono text-[8px] font-bold text-[#555555]">Sutra 1.41</span>
-                <div className="space-y-1">
-                  <div className="h-1 w-full rounded-sm bg-[#E67230]/40" />
-                  <div className="h-1 w-3/4 rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-5/6 rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-1/2 rounded-sm bg-[#111111]/20" />
-                </div>
-              </div>
-              {/* Red Ribbon Bookmark */}
-              <div className="absolute -top-1 left-1/2 -translate-x-1/2 h-5 w-2 rounded-b-xs bg-[#E67230] shadow-xs" />
-            </div>
-            {/* Bottom Shastra / Classical Source Indicator */}
-            <div className="mt-1.5 flex items-center gap-1.5 rounded-full border border-[#EBE7DF] bg-white px-2.5 py-0.5 shadow-2xs">
-              <BookOpen className="size-2.5 text-[#E67230]" />
-              <span className="font-mono text-[8.5px] font-bold text-[#111111]">SAMHITA VERSE · REF 01</span>
-            </div>
-          </div>
-        </div>
-      );
-
-    case "journals":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Academic journal / research paper layout with publication metadata */}
-          <div className="relative flex items-center gap-3">
-            {/* Journal / Paper sheet */}
-            <div className="relative flex h-20 w-32 flex-col justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              <div className="border-b border-[#EBE7DF] pb-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[8px] font-bold text-[#E67230]">AYUSH RESEARCH</span>
-                  <span className="font-mono text-[7px] text-[#888888]">VOL 18 · 2026</span>
-                </div>
-                <p className="mt-0.5 truncate text-[8.5px] font-extrabold text-[#111111]">
-                  Clinical Efficacy Studies
-                </p>
-              </div>
-              {/* Paper abstract text lines & citation marker */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1">
-                  <div className="h-1 w-3/4 rounded-sm bg-[#111111]/30" />
-                  <span className="size-1 rounded-full bg-[#E67230]" />
-                </div>
-                <div className="h-1 w-full rounded-sm bg-[#111111]/20" />
-                <div className="h-1 w-5/6 rounded-sm bg-[#111111]/20" />
-              </div>
-              <div className="flex items-center justify-between text-[7px] font-mono text-[#777777]">
-                <span>DOI: 10.1016/ayush</span>
-                <span className="text-[#E67230] font-bold">[12 CITATIONS]</span>
-              </div>
-            </div>
-
-            {/* Research & Citation Symbol Badge */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <FileText className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">PEER REVIEW</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
     case "profile":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Professional AYUSH practitioner profile card */}
-          <div className="relative flex items-center gap-3">
-            {/* Identity Badge Card */}
-            <div className="relative flex h-20 w-34 items-center gap-2 rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              {/* Doctor Avatar / Portrait */}
-              <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-[#E67230]/40 bg-[#FFF6EE]">
-                <UserRound className="size-5 text-[#E67230]" />
-                <div className="absolute -bottom-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-[#111111] text-white">
-                  <Check className="size-2 text-[#E67230]" />
-                </div>
-              </div>
-              {/* Credentials & Details */}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[10px] font-extrabold text-[#111111]">Dr. Ananya P.</p>
-                <p className="truncate text-[8px] font-bold text-[#E67230]">BAMS, MD (Ayu)</p>
-                <div className="mt-1 flex items-center gap-1 rounded bg-[#FAF9F6] px-1 py-0.5 border border-[#EBE7DF]">
-                  <Award className="size-2 text-[#E67230]" />
-                  <span className="font-mono text-[7px] font-bold text-[#555555]">VERIFIED AYUSH</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Visibility / Share Badge */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <Network className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">VAIDYA FORUM</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
+      imgSrc = imgDigitalIdentity;
+      imgAlt = "Verified Digital Identity & Trust Engine";
+      break;
+    case "library":
+    case "journals":
+      imgSrc = imgWisdomHub;
+      imgAlt = "The Wisdom Hub (Knowledge & Research Base)";
+      break;
     case "medicines":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.4]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Medicine catalogue interface: Ayurvedic formulation bottle & composition */}
-          <div className="relative flex items-center justify-center gap-3">
-            {/* Glass medicine bottle */}
-            <div className="relative flex flex-col items-center">
-              {/* Bottle Cap */}
-              <div className="h-2 w-6 rounded-t-sm bg-[#111111] shadow-xs" />
-              {/* Bottle Neck */}
-              <div className="h-2 w-4 border-x border-[#EBE7DF] bg-[#F8F6F2]" />
-              {/* Bottle Body */}
-              <div className="relative flex h-18 w-14 flex-col items-center justify-between rounded-md border border-[#EBE7DF] bg-white/95 p-1.5 shadow-sm">
-                <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#E67230]">
-                  ASHTA
-                </span>
-                {/* Traditional medicine label detail */}
-                <div className="w-full rounded border border-[#EBE7DF] bg-[#FAF9F6] px-1 py-0.5 text-center">
-                  <div className="h-0.5 w-full rounded bg-[#E67230]/40" />
-                  <div className="mt-0.5 h-0.5 w-3/4 mx-auto rounded bg-[#111111]/30" />
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="size-1 rounded-full bg-[#E67230]" />
-                  <span className="font-mono text-[8px] font-bold text-[#111111]">500mg</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Herbal composition leaf & search indicator */}
-            <div className="flex flex-col items-center gap-1.5">
-              {/* Botanical Leaf */}
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <svg
-                  className="size-5 text-[#E67230]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                  <path d="M2 21c0-3 1.85-5.36 5.08-6" />
-                </svg>
-              </div>
-              {/* Magnifying Glass Search Badge */}
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <Search className="size-2.5 text-[#E67230]" />
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">DRAVYA FINDER</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
-    case "hrms":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Workforce management / HRMS illustration: practitioner tiles & scheduling */}
-          <div className="relative flex items-center gap-3">
-            {/* Workforce & Team roster card */}
-            <div className="relative flex h-20 w-32 flex-col justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#EBE7DF] pb-1">
-                <span className="font-mono text-[8px] font-bold text-[#E67230]">CLINIC ROSTER</span>
-                <span className="rounded bg-[#FAF9F6] px-1 text-[7px] font-bold text-[#111111] border border-[#EBE7DF]">
-                  4 ACTIVE
-                </span>
-              </div>
-              {/* Team member slots */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex size-4 items-center justify-center rounded-full bg-[#E67230]/15 text-[#E67230]">
-                      <UserRound className="size-2.5" />
-                    </div>
-                    <span className="text-[8px] font-bold text-[#111111]">Senior Vaidya</span>
-                  </div>
-                  <span className="font-mono text-[7.5px] text-[#22c55e] font-bold">On Duty</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex size-4 items-center justify-center rounded-full bg-[#111111]/10 text-[#111111]">
-                      <UserRound className="size-2.5" />
-                    </div>
-                    <span className="text-[8px] font-bold text-[#555555]">Therapist</span>
-                  </div>
-                  <span className="font-mono text-[7.5px] text-[#E67230] font-bold">Scheduled</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-[7px] font-mono text-[#888888]">
-                <CalendarDays className="size-2 text-[#E67230]" />
-                <span>Next shift: 02:00 PM</span>
-              </div>
-            </div>
-
-            {/* Team / Recruitment Element */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <UsersRound className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">TEAM HRMS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
+      imgSrc = imgMedicineCatalogue;
+      imgAlt = "Dynamic Medicine Catalogue & Procurement";
+      break;
     case "compliance":
+      imgSrc = imgClinicalToolkit;
+      imgAlt = "Clinical Toolkit & Structured Care Programs";
+      break;
+    case "hrms":
+      imgSrc = imgOpportunityDesk;
+      imgAlt = "Opportunity Desk & Peer Collaborative";
+      break;
     default:
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Compliance checklist / dashboard with document records and verification */}
-          <div className="relative flex items-center gap-3">
-            {/* Compliance Checklist Document */}
-            <div className="flex h-20 w-32 flex-col justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#EBE7DF] pb-1">
-                <span className="font-mono text-[8px] font-bold text-[#111111]">COMPLIANCE LOG</span>
-                <span className="size-1.5 rounded-full bg-[#22c55e]" />
-              </div>
-              {/* Checklist items with checkmarks */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-[7.5px] text-[#555555]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="size-2 text-[#22c55e]" />
-                    <span>State Board Reg</span>
-                  </span>
-                  <span className="font-mono font-bold text-[#111111]">Active</span>
-                </div>
-                <div className="flex items-center justify-between text-[7.5px] text-[#555555]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="size-2 text-[#22c55e]" />
-                    <span>Pharmacy License</span>
-                  </span>
-                  <span className="font-mono font-bold text-[#111111]">Verified</span>
-                </div>
-                <div className="flex items-center justify-between text-[7.5px] text-[#555555]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="size-2 text-[#E67230]" />
-                    <span>Annual Audit</span>
-                  </span>
-                  <span className="font-mono font-bold text-[#E67230]">Current</span>
-                </div>
-              </div>
-              <div className="rounded bg-[#FAF9F6] px-1 py-0.5 text-center text-[7px] font-bold text-[#111111] border border-[#EBE7DF]">
-                REGULATORY VERIFIED
-              </div>
-            </div>
-
-            {/* Verification Shield & Status Badge */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <ShieldCheck className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">AUDIT PASS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+      imgSrc = imgWisdomHub;
   }
+
+  return (
+    <div className="relative flex h-40 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-[#FAF9F6] p-2 select-none shadow-2xs">
+      <img
+        src={imgSrc}
+        alt={imgAlt}
+        className="h-full w-full object-contain rounded-lg transition-transform duration-300 group-hover:scale-[1.03]"
+        loading="lazy"
+      />
+    </div>
+  );
 }
 
 function PracticeSuiteScrollSection({
