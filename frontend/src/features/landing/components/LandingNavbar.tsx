@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X, Newspaper } from "lucide-react";
 import meyvedaLogo from "@/assets/meyvedalogo.png";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
@@ -16,11 +16,11 @@ export const LANDING_NAV_LINKS = [
   { label: "Community", href: "/#community" },
   { label: "Blog", href: "/blogs" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Public Relations", href: "/public-relations" },
 ];
 
 export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
@@ -66,7 +66,60 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
         <nav aria-label="Main Navigation" className="hidden items-center gap-6 lg:flex xl:gap-8">
           {LANDING_NAV_LINKS.map((item) => {
             const isExternalAnchor = item.href.startsWith("/#") || item.href.startsWith("#");
-            const isActive = activePath ? activePath === item.href : false;
+            const isAbout = item.label === "About Us";
+            const isAboutActive = activePath === "/about" || activePath === "/public-relations";
+
+            // If item is About Us: render link with hover/click dropdown for Public Relations
+            if (isAbout) {
+              return (
+                <div
+                  key={item.label}
+                  className="relative py-2"
+                  onMouseEnter={() => setAboutDropdownOpen(true)}
+                  onMouseLeave={() => setAboutDropdownOpen(false)}
+                >
+                  <a
+                    href="/about"
+                    className={`inline-flex items-center gap-1 text-[15px] font-semibold transition-colors ${
+                      isAboutActive ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
+                    }`}
+                  >
+                    <span>About Us</span>
+                    <ChevronDown
+                      className={`size-3.5 transition-transform duration-200 ${
+                        aboutDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
+                      }`}
+                    />
+                  </a>
+
+                  {/* Dropdown Menu */}
+                  {aboutDropdownOpen && (
+                    <div className="absolute left-0 top-full -mt-0.5 w-56 rounded-xl border border-[#EBE7DF] bg-white py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in slide-in-from-top-1 duration-150">
+                      <Link
+                        to="/about"
+                        className="flex flex-col px-4 py-2.5 hover:bg-[#FAF9F6] transition-colors"
+                      >
+                        <span className="text-sm font-bold text-[#111111]">About Meyveda</span>
+                        <span className="text-xs text-[#777777]">Our mission, clinical charter & story</span>
+                      </Link>
+
+                      <div className="my-1 border-t border-[#F0ECE3]" />
+
+                      <Link
+                        to="/public-relations"
+                        className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[#FAF9F6] hover:text-[#E67230] transition-colors group"
+                      >
+                        <Newspaper className="size-4 text-[#888888] group-hover:text-[#E67230]" />
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-[#111111] group-hover:text-[#E67230]">Public Relations</span>
+                          <span className="text-xs text-[#777777]">Press releases & official announcements</span>
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            }
 
             if (isExternalAnchor) {
               return (
@@ -75,7 +128,7 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className={`whitespace-nowrap py-2 text-[15px] font-semibold transition-colors ${
-                    isActive ? "text-[#E67230]" : "text-[#555555] hover:text-[#111111]"
+                    activePath === item.href ? "text-[#E67230]" : "text-[#555555] hover:text-[#111111]"
                   }`}
                 >
                   {item.label}
@@ -88,7 +141,7 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
                 key={item.label}
                 href={item.href}
                 className={`whitespace-nowrap py-2 text-[15px] font-semibold transition-colors ${
-                  isActive ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
+                  activePath === item.href ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 {item.label}
@@ -180,6 +233,31 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
           <nav className="flex flex-col space-y-3.5">
             {LANDING_NAV_LINKS.map((item) => {
               const isExternalAnchor = item.href.startsWith("/#") || item.href.startsWith("#");
+              const isAbout = item.label === "About Us";
+
+              if (isAbout) {
+                return (
+                  <div key={item.label} className="flex flex-col space-y-2">
+                    <a
+                      href="/about"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
+                    >
+                      About Us
+                    </a>
+                    {/* Nested Public Relations sub-item */}
+                    <Link
+                      to="/public-relations"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="ml-4 flex items-center gap-2 rounded-md px-2 py-1 text-sm font-medium text-[#666666] hover:text-[#E67230]"
+                    >
+                      <Newspaper className="size-4 text-[#E67230]" />
+                      <span>Public Relations</span>
+                    </Link>
+                  </div>
+                );
+              }
+
               if (isExternalAnchor) {
                 return (
                   <a
@@ -269,3 +347,5 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
     </header>
   );
 }
+
+export default LandingNavbar;

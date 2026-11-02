@@ -4,6 +4,8 @@ import {
   AlertCircle,
   ArrowDown,
   ArrowLeft,
+  ChevronDown,
+  Newspaper,
   ArrowRight,
   Award,
   Bookmark,
@@ -100,7 +102,6 @@ const navigation = [
   { label: "Community", href: "#community" },
   { label: "Blog", href: "/blogs" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Public Relations", href: "/public-relations" },
 ];
 
 const AYUSH_SYSTEMS = [
@@ -4045,6 +4046,7 @@ export function MeyvedaDoctorsPage() {
   const navigate = useNavigate();
   // Navigation & modals
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [signInModalOpen, setSignInModalOpen] = useState(false);
 
@@ -4761,16 +4763,66 @@ export function MeyvedaDoctorsPage() {
 
           {/* CENTER: Navigation Links */}
           <nav aria-label="Main Navigation" className="hidden items-center gap-6 lg:flex xl:gap-8">
-            {navigation.map((item) => (
-              <a
-                className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
-                href={item.href}
-                key={item.label}
-                onClick={(e) => handleNavClick(e, item.href)}
-              >
-                {item.label}
-              </a>
-            ))}
+            {navigation.map((item) => {
+              if (item.label === "About Us") {
+                return (
+                  <div
+                    key={item.label}
+                    className="relative py-2"
+                    onMouseEnter={() => setAboutDropdownOpen(true)}
+                    onMouseLeave={() => setAboutDropdownOpen(false)}
+                  >
+                    <a
+                      href="/about"
+                      className="inline-flex items-center gap-1 whitespace-nowrap text-[15px] font-semibold text-[#555555] hover:text-[#111111] transition-colors"
+                    >
+                      <span>About Us</span>
+                      <ChevronDown
+                        className={`size-3.5 transition-transform duration-200 ${
+                          aboutDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
+                        }`}
+                      />
+                    </a>
+
+                    {aboutDropdownOpen && (
+                      <div className="absolute left-0 top-full -mt-0.5 w-56 rounded-xl border border-[#EBE7DF] bg-white py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                        <Link
+                          to="/about"
+                          className="flex flex-col px-4 py-2.5 hover:bg-[#FAF9F6] transition-colors"
+                        >
+                          <span className="text-sm font-bold text-[#111111]">About Meyveda</span>
+                          <span className="text-xs text-[#777777]">Our mission, clinical charter & story</span>
+                        </Link>
+
+                        <div className="my-1 border-t border-[#F0ECE3]" />
+
+                        <Link
+                          to="/public-relations"
+                          className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[#FAF9F6] hover:text-[#E67230] transition-colors group"
+                        >
+                          <Newspaper className="size-4 text-[#888888] group-hover:text-[#E67230]" />
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-[#111111] group-hover:text-[#E67230]">Public Relations</span>
+                            <span className="text-xs text-[#777777]">Press releases & announcements</span>
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <a
+                  className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
+                  href={item.href}
+                  key={item.label}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* RIGHT: CTAs (Sign In + Register Modal Triggers or Authenticated User) */}
@@ -4861,19 +4913,43 @@ export function MeyvedaDoctorsPage() {
             className="border-b border-[#EBE7DF] bg-white px-5 py-6 lg:hidden"
           >
             <nav className="flex flex-col space-y-3.5">
-              {navigation.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => {
-                    handleNavClick(e, item.href);
-                    setMobileMenuOpen(false);
-                  }}
-                  className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
-                >
-                  {item.label}
-                </a>
-              ))}
+              {navigation.map((item) => {
+                if (item.label === "About Us") {
+                  return (
+                    <div key={item.label} className="flex flex-col space-y-2">
+                      <a
+                        href="/about"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
+                      >
+                        About Us
+                      </a>
+                      <Link
+                        to="/public-relations"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="ml-4 flex items-center gap-2 rounded-md px-2 py-1 text-sm font-medium text-[#666666] hover:text-[#E67230]"
+                      >
+                        <Newspaper className="size-4 text-[#E67230]" />
+                        <span>Public Relations</span>
+                      </Link>
+                    </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => {
+                      handleNavClick(e, item.href);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
               <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-2.5">
                 {isAuthenticated && user ? (
                   <div className="flex flex-col gap-2">
