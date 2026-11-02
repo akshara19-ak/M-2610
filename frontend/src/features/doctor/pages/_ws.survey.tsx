@@ -5,12 +5,6 @@ import {
   ArrowRight,
   ArrowLeft,
   Check,
-  ClipboardList,
-  Sparkles,
-  CheckCircle2,
-  BarChart3,
-  Flame,
-  Award,
 } from "lucide-react";
 import { seo } from "@/lib/seo";
 import { apiClient } from "@/services/apiClient";
@@ -208,8 +202,8 @@ export function SurveyPage() {
   if (loading) {
     return (
       <div className="mx-auto flex min-h-[50vh] max-w-5xl flex-col items-center justify-center p-8">
-        <div className="size-10 animate-spin rounded-full border-3 border-[#E67230] border-t-transparent" />
-        <p className="mt-3 text-sm font-semibold text-[#666666]">Loading surveys...</p>
+        <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
+        <p className="mt-3 text-xs font-medium text-muted-foreground">Loading surveys...</p>
       </div>
     );
   }
@@ -223,70 +217,60 @@ export function SurveyPage() {
         <button
           type="button"
           onClick={handleBackToList}
-          className="inline-flex items-center gap-2 rounded-lg border border-[#E5E0D5] bg-white px-3.5 py-2 text-xs font-bold text-[#555555] hover:border-[#E67230] hover:text-[#E67230] transition-all cursor-pointer shadow-2xs"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
           <ArrowLeft className="size-3.5" />
-          <span>Back to All Surveys</span>
+          <span>Back to Surveys</span>
         </button>
 
-        <div className="relative overflow-hidden rounded-2xl border-2 border-[#E67230]/30 bg-gradient-to-br from-[#FFFDF9] via-white to-[#FDF4EC] p-6 sm:p-8 shadow-sm">
-          <div className="space-y-2">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E67230]/10 px-3 py-1 text-xs font-bold text-[#E67230]">
-              <Sparkles className="size-3.5" />
-              Clinical Survey Questionnaire
-            </span>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
-              {activeSurvey.title}
-            </h1>
-            {activeSurvey.description && (
-              <p className="text-sm text-[#555555] leading-relaxed max-w-3xl">
-                {activeSurvey.description}
-              </p>
-            )}
-          </div>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            {activeSurvey.title}
+          </h1>
+          {activeSurvey.description && (
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+              {activeSurvey.description}
+            </p>
+          )}
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {activeSurvey.questions.map((q, idx) => (
             <div
               key={q.id || idx}
-              className="rounded-2xl border border-[#E5E0D5] bg-white p-6 sm:p-7 shadow-xs hover:border-[#E67230]/40 transition-colors space-y-4"
+              className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-3"
             >
-              <div className="space-y-1">
-                <label className="text-base font-extrabold text-[#111111] flex items-start gap-2">
-                  <span className="flex size-6 shrink-0 items-center justify-center rounded-full bg-[#FAF4ED] text-xs font-black text-[#E67230] border border-[#E67230]/30">
-                    {idx + 1}
-                  </span>
-                  <span>
-                    {q.title}
-                    {q.required && <span className="ml-1 text-red-500 font-bold">*</span>}
-                  </span>
+              <div className="space-y-0.5">
+                <label className="text-sm font-bold text-foreground">
+                  <span className="text-primary mr-1.5">{idx + 1}.</span>
+                  {q.title}
+                  {q.required && <span className="ml-1 text-red-500 font-bold">*</span>}
                 </label>
                 {q.helpText && (
-                  <p className="text-xs text-[#777777] pl-8">{q.helpText}</p>
+                  <p className="text-xs text-muted-foreground">{q.helpText}</p>
                 )}
               </div>
 
               {/* RADIO */}
               {q.type === "radio" && (
-                <div className="space-y-2.5 pt-1 pl-0 sm:pl-8">
+                <div className="space-y-2 pt-1">
                   {q.options.map((opt, optIdx) => {
                     const isSelected = answers[q.id] === opt;
                     return (
                       <label
                         key={optIdx}
                         onClick={() => handleOptionSelect(q.id, opt, false)}
-                        className={`flex cursor-pointer items-center gap-3.5 rounded-xl border p-4 text-xs sm:text-sm transition-all ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-xs transition-colors ${
                           isSelected
-                            ? "border-[#E67230] bg-[#FFFBF8] text-[#111111] font-semibold ring-1 ring-[#E67230] shadow-2xs"
-                            : "border-[#EBE7DF] bg-[#FAF9F6] text-[#444444] hover:bg-white hover:border-[#D5CFC2]"
+                            ? "border-primary bg-primary-soft text-foreground font-semibold"
+                            : "border-border bg-card text-foreground hover:bg-muted/40"
                         }`}
                       >
                         <div
-                          className={`flex size-4.5 shrink-0 items-center justify-center rounded-full border transition-all ${
+                          className={`flex size-4 shrink-0 items-center justify-center rounded-full border ${
                             isSelected
-                              ? "border-[#E67230] bg-[#E67230] text-white"
-                              : "border-[#BDB7AB] bg-white"
+                              ? "border-primary bg-primary text-white"
+                              : "border-muted-foreground/40 bg-white"
                           }`}
                         >
                           {isSelected && <div className="size-1.5 rounded-full bg-white" />}
@@ -300,7 +284,7 @@ export function SurveyPage() {
 
               {/* CHECKBOX */}
               {q.type === "checkbox" && (
-                <div className="space-y-2.5 pt-1 pl-0 sm:pl-8">
+                <div className="space-y-2 pt-1">
                   {q.options.map((opt, optIdx) => {
                     const current = (answers[q.id] as string[]) || [];
                     const isSelected = current.includes(opt);
@@ -308,20 +292,20 @@ export function SurveyPage() {
                       <label
                         key={optIdx}
                         onClick={() => handleOptionSelect(q.id, opt, true)}
-                        className={`flex cursor-pointer items-center gap-3.5 rounded-xl border p-4 text-xs sm:text-sm transition-all ${
+                        className={`flex cursor-pointer items-center gap-3 rounded-xl border p-3.5 text-xs transition-colors ${
                           isSelected
-                            ? "border-[#E67230] bg-[#FFFBF8] text-[#111111] font-semibold ring-1 ring-[#E67230] shadow-2xs"
-                            : "border-[#EBE7DF] bg-[#FAF9F6] text-[#444444] hover:bg-white hover:border-[#D5CFC2]"
+                            ? "border-primary bg-primary-soft text-foreground font-semibold"
+                            : "border-border bg-card text-foreground hover:bg-muted/40"
                         }`}
                       >
                         <div
-                          className={`flex size-4.5 shrink-0 items-center justify-center rounded-md border transition-all ${
+                          className={`flex size-4 shrink-0 items-center justify-center rounded-md border ${
                             isSelected
-                              ? "border-[#E67230] bg-[#E67230] text-white"
-                              : "border-[#BDB7AB] bg-white"
+                              ? "border-primary bg-primary text-white"
+                              : "border-muted-foreground/40 bg-white"
                           }`}
                         >
-                          {isSelected && <Check className="size-3.5 stroke-[3]" />}
+                          {isSelected && <Check className="size-3 stroke-[3]" />}
                         </div>
                         <span>{opt}</span>
                       </label>
@@ -332,8 +316,8 @@ export function SurveyPage() {
 
               {/* RATING */}
               {q.type === "rating" && (
-                <div className="pt-2 pl-0 sm:pl-8">
-                  <div className="flex items-center gap-2.5 sm:gap-3">
+                <div className="pt-1">
+                  <div className="flex items-center gap-2">
                     {[1, 2, 3, 4, 5].map((num) => {
                       const isSelected = answers[q.id] === num.toString();
                       return (
@@ -341,10 +325,10 @@ export function SurveyPage() {
                           type="button"
                           key={num}
                           onClick={() => handleRatingSelect(q.id, num)}
-                          className={`flex size-12 items-center justify-center rounded-xl border text-sm font-black transition-all cursor-pointer ${
+                          className={`flex size-10 items-center justify-center rounded-xl border text-xs font-bold transition-all cursor-pointer ${
                             isSelected
-                              ? "border-[#E67230] bg-[#E67230] text-white shadow-sm ring-2 ring-[#E67230]/20"
-                              : "border-[#E5E0D5] bg-[#FAF9F6] text-[#555555] hover:border-[#E67230] hover:text-[#E67230] hover:bg-white"
+                              ? "border-primary bg-primary text-white shadow-xs"
+                              : "border-border bg-card text-foreground hover:border-primary hover:text-primary"
                           }`}
                         >
                           {num}
@@ -357,34 +341,34 @@ export function SurveyPage() {
 
               {/* TEXT */}
               {q.type === "text" && (
-                <div className="pt-1 pl-0 sm:pl-8">
+                <div className="pt-1">
                   <textarea
                     rows={3}
-                    placeholder="Type your clinical reflection or note here..."
+                    placeholder="Type your response here..."
                     value={answers[q.id] || ""}
                     onChange={(e) => handleTextChange(q.id, e.target.value)}
-                    className="w-full rounded-xl border border-[#E5E0D5] bg-[#FAF9F6] p-3.5 text-xs sm:text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-[#999999]"
+                    className="w-full rounded-xl border border-border bg-card p-3 text-xs text-foreground focus:border-primary focus:bg-white focus:outline-none placeholder:text-muted-foreground"
                   />
                 </div>
               )}
             </div>
           ))}
 
-          <div className="flex items-center justify-between pt-3">
+          <div className="flex items-center justify-between pt-2">
             <button
               type="button"
               onClick={handleBackToList}
-              className="text-xs font-bold text-[#777777] hover:text-[#111111] cursor-pointer"
+              className="text-xs font-semibold text-muted-foreground hover:text-foreground cursor-pointer"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={submitting}
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-9 py-3.5 text-sm font-bold text-white shadow-md hover:bg-[#D15F1F] active:scale-[0.98] transition-all disabled:opacity-50 cursor-pointer"
+              className="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-8 py-3 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-all disabled:opacity-50 cursor-pointer"
             >
               {submitting ? (
-                <span>Submitting Answers...</span>
+                <span>Submitting...</span>
               ) : (
                 <>
                   <span>Submit Survey</span>
@@ -399,7 +383,7 @@ export function SurveyPage() {
   }
 
   // ---------------------------------------------------------------------------
-  // VIEW 2: RESULTS VIEW WITH HIGH-CONTRAST MEYVEDA ORANGE BAR CHARTS
+  // VIEW 2: RESULTS VIEW WITH CLEAN BAR GRAPHS
   // ---------------------------------------------------------------------------
   if (activeSurvey && viewMode === "results") {
     return (
@@ -407,80 +391,55 @@ export function SurveyPage() {
         <button
           type="button"
           onClick={handleBackToList}
-          className="inline-flex items-center gap-2 rounded-lg border border-[#E5E0D5] bg-white px-3.5 py-2 text-xs font-bold text-[#555555] hover:border-[#E67230] hover:text-[#E67230] transition-all cursor-pointer shadow-2xs"
+          className="inline-flex items-center gap-2 text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
         >
           <ArrowLeft className="size-3.5" />
-          <span>Back to All Surveys</span>
+          <span>Back to Surveys</span>
         </button>
 
-        <div className="relative overflow-hidden rounded-2xl border-2 border-[#E67230]/30 bg-gradient-to-br from-[#FFFDF9] via-white to-[#FDF4EC] p-6 sm:p-8 shadow-sm">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div className="space-y-1.5">
-              <span className="inline-flex items-center gap-1.5 rounded-full bg-[#E67230]/10 px-3 py-1 text-xs font-bold text-[#E67230]">
-                <BarChart3 className="size-3.5" />
-                Aggregated Survey Results
-              </span>
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight">
-                {activeSurvey.title}
-              </h1>
-              {activeSurvey.description && (
-                <p className="text-sm text-[#555555] leading-relaxed max-w-2xl">
-                  {activeSurvey.description}
-                </p>
-              )}
-            </div>
-
-            <div className="shrink-0 flex items-center gap-3">
-              <div className="rounded-xl border border-[#E5E0D5] bg-white px-4 py-2.5 text-center shadow-2xs">
-                <div className="text-xl font-black text-[#E67230]">
-                  {insights?.total_responses ?? activeSurvey.total_responses}
-                </div>
-                <div className="text-[10px] font-bold text-[#888888] uppercase tracking-wider">
-                  Total Doctors
-                </div>
-              </div>
-            </div>
-          </div>
+        <div className="space-y-1">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
+            {activeSurvey.title} — Results
+          </h1>
+          {activeSurvey.description && (
+            <p className="text-sm text-muted-foreground leading-relaxed max-w-3xl">
+              {activeSurvey.description}
+            </p>
+          )}
         </div>
 
         {loadingInsights ? (
           <div className="flex min-h-[40vh] items-center justify-center">
-            <div className="size-10 animate-spin rounded-full border-3 border-[#E67230] border-t-transparent" />
+            <div className="size-8 animate-spin rounded-full border-2 border-primary border-t-transparent" />
           </div>
         ) : insights && insights.question_insights && insights.question_insights.length > 0 ? (
-          <div className="space-y-5">
+          <div className="space-y-4">
             {insights.question_insights.map((qi, qIdx) => (
               <div
                 key={qi.question_id || qIdx}
-                className="rounded-2xl border border-[#E5E0D5] bg-white p-6 sm:p-7 shadow-xs space-y-4"
+                className="rounded-2xl border border-border bg-white p-6 shadow-soft space-y-3"
               >
-                <div className="flex items-start justify-between gap-4 border-b border-[#F4EFE6] pb-3">
-                  <h3 className="text-base font-bold text-[#111111]">
-                    <span className="text-[#E67230] mr-2">Q{qIdx + 1}.</span>
-                    {qi.question_title}
-                  </h3>
-                  <span className="shrink-0 rounded-full bg-[#FAF4ED] px-2.5 py-0.5 text-xs font-bold text-[#E67230]">
-                    {qi.total_votes} {qi.total_votes === 1 ? "Vote" : "Votes"}
-                  </span>
-                </div>
+                <h3 className="text-sm font-bold text-foreground">
+                  <span className="text-primary mr-1.5">Q{qIdx + 1}.</span>
+                  {qi.question_title}
+                </h3>
 
                 {qi.options && qi.options.length > 0 ? (
-                  <div className="space-y-3.5 pt-2">
+                  <div className="space-y-3 pt-1">
                     {qi.options.map((optItem, optIdx) => (
-                      <div key={optIdx} className="space-y-1.5">
-                        <div className="flex items-center justify-between text-xs sm:text-sm font-semibold text-[#222222]">
-                          <span className="max-w-[75%] truncate" title={optItem.option}>
+                      <div key={optIdx} className="space-y-1">
+                        <div className="flex items-center justify-between text-xs text-foreground">
+                          <span className="font-medium max-w-[80%] truncate">
                             {optItem.option}
                           </span>
-                          <span className="font-mono text-xs font-bold text-[#111111]">
+                          <span className="font-mono text-[11px] text-muted-foreground font-semibold">
                             {optItem.percentage}% ({optItem.count})
                           </span>
                         </div>
-                        {/* Meyveda Brand Vivid Orange Fill Bar */}
-                        <div className="h-3.5 w-full overflow-hidden rounded-full bg-[#FAF4ED] p-0.5 border border-[#F0E6D8]">
+                        <div className="h-2.5 w-full overflow-hidden rounded-full bg-[#F4F1EA]">
                           <div
-                            className="h-full rounded-full bg-gradient-to-r from-[#E67230] to-[#F2994A] transition-all duration-700 ease-out shadow-2xs"
-                            style={{ width: `${Math.max(optItem.percentage, 2)}%` }}
+                            className="h-full rounded-full bg-primary transition-all duration-500 ease-out"
+                            style={{ width: `${optItem.percentage}%` }}
                           />
                         </div>
                       </div>
@@ -491,22 +450,22 @@ export function SurveyPage() {
                     {qi.text_answers.map((ans, aIdx) => (
                       <div
                         key={aIdx}
-                        className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] p-3.5 text-xs sm:text-sm text-[#333333] leading-relaxed italic"
+                        className="rounded-lg border border-border bg-muted/20 p-3 text-xs text-foreground leading-relaxed"
                       >
-                        "{ans}"
+                        {ans}
                       </div>
                     ))}
                   </div>
                 ) : (
-                  <p className="text-xs text-[#888888] italic">No responses recorded yet.</p>
+                  <p className="text-xs text-muted-foreground italic">No responses recorded yet.</p>
                 )}
               </div>
             ))}
           </div>
         ) : (
-          <div className="rounded-2xl border border-dashed border-[#E5E0D5] bg-white p-10 text-center">
-            <p className="text-sm font-semibold text-[#777777]">
-              No responses recorded yet.
+          <div className="rounded-2xl border border-dashed border-border bg-white p-8 text-center">
+            <p className="text-xs font-semibold text-muted-foreground">
+              No results recorded yet.
             </p>
           </div>
         )}
@@ -515,104 +474,72 @@ export function SurveyPage() {
   }
 
   // ---------------------------------------------------------------------------
-  // VIEW 3: RICH BRANDED SURVEY CARDS (BIGGER, ORANGE ACCENTED, HIGH VISIBILITY)
+  // VIEW 3: CLEAN SURVEY LIST (NO TEMPLATE BOXES, NO LEFT ACCENTS, NO BADGES)
   // ---------------------------------------------------------------------------
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8 md:px-8 space-y-8">
-      {/* Top Banner Header */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-[#E67230]/25 bg-gradient-to-br from-[#FFFDF9] via-white to-[#FDF4EC] p-7 md:p-9 shadow-sm">
-        <div className="space-y-2 max-w-3xl">
-          <div className="inline-flex items-center gap-2 rounded-full bg-[#E67230]/10 px-3.5 py-1 text-xs font-black tracking-wide text-[#E67230] uppercase">
-            <Sparkles className="size-3.5" />
-            Practitioner Intelligence Desk
-          </div>
-          <h1 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold tracking-tight text-[#111111]">
-            Clinical & Formulary Surveys
-          </h1>
-          <p className="text-sm sm:text-base text-[#555555] leading-relaxed">
-            Share your clinical experience, classical pharmacy requirements, and diagnostic preferences. View live peer patterns to understand how Vaidyas practice across India.
-          </p>
-        </div>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8 md:px-8 space-y-6">
+      {/* Top Header - Pure clean typography */}
+      <div className="space-y-1">
+        <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-foreground">
+          Surveys
+        </h1>
+        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
+          Participate in practitioner feedback surveys or view live peer results.
+        </p>
       </div>
 
       {/* Surveys Catalog Grid */}
       {surveys.length === 0 ? (
-        <div className="rounded-3xl border border-[#E5E0D5] bg-white p-14 text-center shadow-xs">
-          <ClipboardList className="mx-auto size-12 text-[#BDB7AB]" />
-          <h2 className="mt-4 text-lg font-bold text-[#111111]">No Open Surveys</h2>
-          <p className="mt-1 text-xs sm:text-sm text-[#777777]">
-            The Meyveda Clinical Desk currently has no open surveys. Please check back soon!
+        <div className="rounded-2xl border border-border bg-white p-12 text-center shadow-soft">
+          <HelpCircle className="mx-auto size-10 text-muted-foreground/50" />
+          <h2 className="mt-3 text-base font-bold text-foreground">No Surveys Available</h2>
+          <p className="mt-1 text-xs text-muted-foreground">
+            There are currently no active surveys. Please check back later.
           </p>
         </div>
       ) : (
-        <div className="space-y-5">
+        <div className="space-y-4">
           {surveys.map((survey) => {
             const isCompleted = completedSurveyIds.includes(survey.id);
 
             return (
               <div
                 key={survey.id}
-                className="group relative overflow-hidden rounded-2xl border-2 border-[#EBE7DF] bg-white p-7 sm:p-8 shadow-xs hover:border-[#E67230] hover:shadow-md transition-all duration-200"
+                className="flex flex-col sm:flex-row sm:items-center justify-between gap-5 rounded-2xl border border-border bg-white p-6 shadow-soft transition-colors hover:border-primary/40"
               >
-                {/* Left Orange Decorative Border Highlight */}
-                <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-[#E67230] transition-all group-hover:w-2.5" />
+                {/* Survey Title & Description */}
+                <div className="space-y-1 flex-1">
+                  <h2 className="text-base sm:text-lg font-bold text-foreground">
+                    {survey.title}
+                  </h2>
+                  {survey.description && (
+                    <p className="text-xs sm:text-sm text-muted-foreground line-clamp-2">
+                      {survey.description}
+                    </p>
+                  )}
+                </div>
 
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 pl-2 sm:pl-3">
-                  {/* Survey Details */}
-                  <div className="space-y-2 flex-1">
-                    <div className="flex flex-wrap items-center gap-2.5">
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-[#FAF4ED] px-3 py-1 text-xs font-bold text-[#E67230] border border-[#E67230]/25">
-                        <ClipboardList className="size-3.5" />
-                        {survey.questions?.length || 0} Questions
-                      </span>
-
-                      {isCompleted ? (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-3 py-1 text-xs font-bold text-emerald-700 border border-emerald-200">
-                          <CheckCircle2 className="size-3.5" />
-                          Completed
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-3 py-1 text-xs font-bold text-amber-700 border border-amber-200">
-                          <Flame className="size-3.5 text-amber-600" />
-                          Open for Input
-                        </span>
-                      )}
-                    </div>
-
-                    <h2 className="text-xl sm:text-2xl font-black text-[#111111] tracking-tight group-hover:text-[#E67230] transition-colors">
-                      {survey.title}
-                    </h2>
-
-                    {survey.description && (
-                      <p className="text-xs sm:text-sm text-[#555555] leading-relaxed line-clamp-2 max-w-3xl">
-                        {survey.description}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* Action Button */}
-                  <div className="shrink-0 pt-2 lg:pt-0">
-                    {isCompleted ? (
-                      <button
-                        type="button"
-                        onClick={() => handleViewResults(survey)}
-                        className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl border-2 border-[#E67230] bg-[#FFFBF8] px-6 py-3.5 text-xs sm:text-sm font-bold text-[#E67230] hover:bg-[#E67230] hover:text-white transition-all duration-150 cursor-pointer shadow-2xs group-hover:shadow-xs active:scale-[0.98]"
-                      >
-                        <BarChart3 className="size-4" />
-                        <span>View Results</span>
-                        <ArrowRight className="size-4" />
-                      </button>
-                    ) : (
-                      <button
-                        type="button"
-                        onClick={() => handleStartSurvey(survey)}
-                        className="inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-[#E67230] px-7 py-3.5 text-xs sm:text-sm font-black text-white shadow-sm hover:bg-[#D15F1F] active:scale-[0.98] transition-all duration-150 cursor-pointer"
-                      >
-                        <span>Start Survey</span>
-                        <ArrowRight className="size-4" />
-                      </button>
-                    )}
-                  </div>
+                {/* Direct Action Button */}
+                <div className="shrink-0">
+                  {isCompleted ? (
+                    <button
+                      type="button"
+                      onClick={() => handleViewResults(survey)}
+                      className="inline-flex items-center gap-1.5 rounded-xl border border-border bg-card px-5 py-2.5 text-xs font-bold text-foreground hover:border-primary hover:text-primary transition-colors cursor-pointer"
+                    >
+                      <span>View Results</span>
+                      <ArrowRight className="size-3.5" />
+                    </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => handleStartSurvey(survey)}
+                      className="inline-flex items-center gap-1.5 rounded-xl bg-primary px-5 py-2.5 text-xs font-bold text-white shadow-soft hover:bg-primary-dark transition-colors cursor-pointer"
+                    >
+                      <span>Start Survey</span>
+                      <ArrowRight className="size-3.5" />
+                    </button>
+                  )}
                 </div>
               </div>
             );
