@@ -562,65 +562,6 @@ export function ReferralsPage() {
               </div>
             </div>
           </div>
-
-          {/* Program Guidelines and Eligibility */}
-          <div className="grid gap-6 md:grid-cols-2">
-            <div className="panel p-5 space-y-3">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-foreground border-b pb-2 flex items-center gap-2">
-                <ShieldCheck className="h-4 w-4 text-primary" />
-                Eligibility Criteria for Early Access
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                Meyveda is a closed professional environment. Early access privileges are
-                reserved exclusively for:
-              </p>
-              <ul className="space-y-2 text-xs">
-                {referralAccount.eligibleCohorts.map((c, i) => (
-                  <li key={i} className="flex items-start gap-2">
-                    <CheckCircle2 className="h-4 w-4 text-primary shrink-0 mt-0.5" />
-                    <span className="text-foreground">{c}</span>
-                  </li>
-                ))}
-              </ul>
-              <div className="rounded-lg bg-muted p-3 text-[11px] text-muted-foreground">
-                <strong>Documentation Required:</strong> Invitees must upload their State Board
-                registration certificate and institutional credentials during onboarding.
-              </div>
-            </div>
-
-            <div className="panel p-5 space-y-3">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-foreground border-b pb-2 flex items-center gap-2">
-                <AlertCircle className="h-4 w-4 text-amber-600" />
-                Program Boundaries & Commercial Policy
-              </h3>
-              <p className="text-xs text-muted-foreground leading-relaxed">
-                {referralAccount.termsNotice}
-              </p>
-              <div className="space-y-2 text-xs pt-1">
-                <div className="flex items-start gap-2 text-muted-foreground">
-                  <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                  <span>
-                    <strong>Zero Financial Commission:</strong> Referrals do not confer monetary
-                    rewards, discounts, or financial compensation.
-                  </span>
-                </div>
-                <div className="flex items-start gap-2 text-muted-foreground">
-                  <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                  <span>
-                    <strong>No Public Leaderboards:</strong> We do not publish doctor referral
-                    rankings, competitive scoring, or volume metrics.
-                  </span>
-                </div>
-                <div className="flex items-start gap-2 text-muted-foreground">
-                  <div className="h-1.5 w-1.5 rounded-full bg-primary shrink-0 mt-1.5" />
-                  <span>
-                    <strong>Independent Privacy Scoping:</strong> Your research formulations and
-                    patient case notes are never exposed to invited peers.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       )}
 

@@ -162,8 +162,7 @@ export function Home() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Step 1: Co-Create */}
           <div className="rounded-2xl border border-[#F0ECE1] bg-[#FAF9F6] p-6 space-y-3">
-            <div className="flex items-center gap-2.5 text-[#E67230] font-bold text-base">
-              <Sparkles className="h-5 w-5" />
+            <div className="text-[#E67230] font-bold text-base">
               <span>Co-Create</span>
             </div>
             <p className="text-sm text-[#555555] leading-relaxed">
@@ -173,8 +172,7 @@ export function Home() {
 
           {/* Step 2: Beta Access */}
           <div className="rounded-2xl border border-[#F0ECE1] bg-[#FAF9F6] p-6 space-y-3">
-            <div className="flex items-center gap-2.5 text-[#E67230] font-bold text-base">
-              <Layers className="h-5 w-5" />
+            <div className="text-[#E67230] font-bold text-base">
               <span>Beta Access</span>
             </div>
             <p className="text-sm text-[#555555] leading-relaxed">
@@ -184,8 +182,7 @@ export function Home() {
 
           {/* Step 3: The Builder’s Circle */}
           <div className="rounded-2xl border border-[#F0ECE1] bg-[#FAF9F6] p-6 space-y-3">
-            <div className="flex items-center gap-2.5 text-[#E67230] font-bold text-base">
-              <Users2 className="h-5 w-5" />
+            <div className="text-[#E67230] font-bold text-base">
               <span>The Builder’s Circle</span>
             </div>
             <p className="text-sm text-[#555555] leading-relaxed">
@@ -273,18 +270,13 @@ export function Home() {
       {/* 4. Survey Link Section */}
       <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
-          <div className="flex items-start gap-4">
-            <div className="h-12 w-12 rounded-xl bg-[#E67230]/10 text-[#E67230] flex items-center justify-center shrink-0">
-              <ClipboardList className="h-6 w-6" />
-            </div>
-            <div className="space-y-1">
-              <h3 className="text-lg font-bold text-[#111111]">
-                Practitioner Feedback & Workflow Survey
-              </h3>
-              <p className="text-sm text-[#666666] max-w-xl leading-relaxed">
-                Your feedback directly impacts how Meyveda builds clinical toolkits, dispensing workflows, and diagnostic records.
-              </p>
-            </div>
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold text-[#111111]">
+              Practitioner Feedback & Workflow Survey
+            </h3>
+            <p className="text-sm text-[#666666] max-w-xl leading-relaxed">
+              Your feedback directly impacts how Meyveda builds clinical toolkits, dispensing workflows, and diagnostic records.
+            </p>
           </div>
 
           <Link
