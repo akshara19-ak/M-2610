@@ -147,6 +147,7 @@ def get_all_surveys_for_manager(db: Session = Depends(get_db)):
             "status": s.status,
             "questions": s.questions,
             "total_responses": resp_count,
+            "response_count": resp_count,
             "created_by_email": s.created_by_email,
             "created_at": s.created_at.isoformat() if s.created_at else None,
         })

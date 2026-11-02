@@ -235,17 +235,20 @@ export function ContentManagerPage() {
     if (!silent) setLoading(true);
     else setRefreshing(true);
 
+    // 1. Always load surveys independently so 403 on /content/manage/all never blocks surveys
+    try {
+      const surveyRes = await apiClient.get<SurveyItem[]>("/content/surveys/manage/all");
+      if (Array.isArray(surveyRes)) {
+        setSurveys(surveyRes);
+      }
+    } catch (sErr) {
+      console.warn("Surveys fetch warning:", sErr);
+    }
+
+    // 2. Load PR & Blog overview (with fallback if role is not admin)
     try {
       const res = await apiClient.get<OverviewData>("/content/manage/all");
       setData(res);
-      // Load Surveys for Content Manager
-      try {
-        const surveyRes = await apiClient.get<SurveyItem[]>("/content/surveys/manage/all");
-        setSurveys(surveyRes);
-      } catch (sErr) {
-        console.warn("Surveys fetch warning:", sErr);
-      }
-
     } catch (err: any) {
       console.warn("Failed to load /content/manage/all, loading public endpoints:", err);
       // Fallback: load public PR and blogs
