@@ -263,7 +263,12 @@ export function ReferralsPage() {
       })
       .catch((err: any) => {
         setIsSubmitting(false);
-        toast.error(err?.message || "Failed to submit referral. Please try again.");
+        const detailMsg = err?.response?.data?.detail || err?.message;
+        if (typeof detailMsg === "string" && detailMsg.toLowerCase().includes("already refered")) {
+          toast.error("Already refered by fellow");
+        } else {
+          toast.error(detailMsg || "Failed to submit referral. Please try again.");
+        }
       });
   };
 
