@@ -372,7 +372,7 @@ Submitted: ${d.timestamp}`;
             <div className="mt-7 sm:mt-8 flex flex-wrap items-center gap-3.5 sm:gap-4">
               <a
                 href="#partnership-models"
-                className="inline-flex h-12 sm:h-13 items-center justify-center gap-2 rounded-lg bg-[#E67230] px-6 sm:px-7 text-sm sm:text-base font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:bg-[#D15F1F] active:translate-y-0"
+                className="inline-flex h-12 sm:h-13 items-center justify-center gap-2 rounded-lg bg-[#E67230] px-6 sm:px-7 text-sm sm:text-base font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:text-black active:translate-y-0"
               >
                 <span>Explore 3 Partnership Models</span>
                 <ArrowRight className="size-4 shrink-0" />
@@ -380,21 +380,14 @@ Submitted: ${d.timestamp}`;
 
               <a
                 href="#revenue-calculator"
-                className="inline-flex h-12 sm:h-13 items-center justify-center gap-2 rounded-lg border border-[#E0DBD1] bg-white/95 px-6 sm:px-7 text-sm sm:text-base font-bold text-[#111111] shadow-2xs hover:bg-[#FAF7F2] hover:border-[#E67230]/50 transition-all duration-200"
+                className="inline-flex h-12 sm:h-13 items-center justify-center gap-2 rounded-lg bg-[#E67230] px-6 sm:px-7 text-sm sm:text-base font-bold text-white shadow-[0_4px_16px_-4px_rgba(230,114,48,0.45)] transition-all duration-200 hover:-translate-y-0.5 hover:text-black active:translate-y-0"
               >
                 <span>Calculate Revenue Potential</span>
                 <ArrowRight className="size-4 shrink-0" />
               </a>
             </div>
 
-            {/* Trust & Governance Badges */}
-            <div className="mt-8 pt-6 border-t border-[#EBE7DF]/80 flex flex-wrap items-center gap-x-6 gap-y-2 text-xs sm:text-[13px] text-[#66635D]">
-              
-              <div className="flex items-center gap-2">
-                <ShieldCheck className="size-4 text-[#E67230] shrink-0" />
-                <span>100% Refundable Caution Deposit</span>
-              </div>
-            </div>
+
           </div>
         </div>
       </section>
