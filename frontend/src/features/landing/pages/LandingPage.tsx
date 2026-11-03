@@ -3278,7 +3278,7 @@ export function CoreVaidyaSection() {
                   <img
                     src={meyvedaFaviconSource}
                     alt="Meyveda Logo"
-                    className="max-h-[72px] max-w-[72px] lg:max-h-[80px] lg:max-w-[80px] w-auto h-auto object-contain select-none"
+                    className="max-h-[72px] max-w-[72px] lg:max-h-[80px] lg:max-w-[80px] w-auto h-auto object-contain select-none -translate-y-[8px] -translate-x-[2px]"
                   />
                   <span className="sr-only">Meyveda Ecosystem Core</span>
                 </div>
@@ -3428,7 +3428,7 @@ export function CoreVaidyaSection() {
                 <img
                   src={meyvedaFaviconSource}
                   alt="Meyveda Logo"
-                  className="max-h-[48px] max-w-[60px] w-auto h-auto object-contain select-none"
+                  className="max-h-[48px] max-w-[60px] w-auto h-auto object-contain select-none -translate-y-[6px]"
                 />
               </div>
             </div>
