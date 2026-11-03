@@ -3739,13 +3739,20 @@ export function ManagedServicesTreeSection() {
           >
             {/* Section Eyebrow, Title & Intro Description */}
             <div className="mb-5 lg:mb-6">
-              <div className="inline-flex items-center gap-2 mb-2.5">
-                <span className="flex size-6 items-center justify-center rounded-md bg-[#E67230]/10 text-[#E67230]">
-                  <Building2 className="size-3.5" />
+              <div className="flex items-center justify-between gap-3 mb-2.5">
+                <div className="inline-flex items-center gap-2">
+                  <span className="flex size-6 items-center justify-center rounded-md bg-[#E67230]/10 text-[#E67230]">
+                    <Building2 className="size-3.5" />
+                  </span>
+                  <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
+                    FLAGSHIP LAYER · ENTERPRISE ECOSYSTEM
+                  </p>
+                </div>
+
+                {/* Upcoming Badge */}
+                <span className="inline-flex items-center rounded-full border border-[#E67230]/40 bg-[#FFF5EE] px-3 py-0.5 text-[11px] font-bold uppercase tracking-wider text-[#E67230]">
+                  Upcoming
                 </span>
-                <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
-                  FLAGSHIP LAYER · ENTERPRISE ECOSYSTEM
-                </p>
               </div>
               <h2
                 id="managed-services-title"
@@ -3898,13 +3905,20 @@ export function ManagedServicesTreeSection() {
         <div className="block lg:hidden">
           {/* 1. Header (Eyebrow, Title & Intro Description) */}
           <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
-            <div className="inline-flex items-center gap-2 mb-2">
-              <span className="flex size-6 items-center justify-center rounded-md bg-[#E67230]/10 text-[#E67230]">
-                <Building2 className="size-3.5" />
+            <div className="inline-flex flex-wrap items-center justify-center gap-2.5 mb-2">
+              <div className="inline-flex items-center gap-2">
+                <span className="flex size-6 items-center justify-center rounded-md bg-[#E67230]/10 text-[#E67230]">
+                  <Building2 className="size-3.5" />
+                </span>
+                <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
+                  FLAGSHIP LAYER · ENTERPRISE ECOSYSTEM
+                </p>
+              </div>
+
+              {/* Upcoming Badge */}
+              <span className="inline-flex items-center rounded-full border border-[#E67230]/40 bg-[#FFF5EE] px-2.5 py-0.5 text-[10.5px] font-bold uppercase tracking-wider text-[#E67230]">
+                Upcoming
               </span>
-              <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-[#E67230]">
-                FLAGSHIP LAYER · ENTERPRISE ECOSYSTEM
-              </p>
             </div>
             <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-[#111111] leading-tight">
               Managed Services Organization
