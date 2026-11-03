@@ -104,9 +104,9 @@ const AYUSH_SYSTEMS = [
     restText: "yurveda",
     fullName: "Ayurveda",
     icon: (
-      /* Mortar & pestle icon (Ayurveda) */
+      /* Mortar & pestle with leafy sprout & small leaf motif (Ayurveda) */
       <svg
-        className="size-4 sm:size-4.5"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -114,9 +114,15 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M4 11h16a1 1 0 0 1 1 1c0 5-3.5 8-9 8s-9-3-9-8a1 1 0 0 1 1-1Z" />
-        <path d="M8 20h8" />
-        <path d="M14.5 4.5l-3.5 6.5" />
+        {/* Mortar bowl */}
+        <path d="M4 11h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
+        <path d="M8 18.5h8" />
+        {/* Pestle diagonally extending out */}
+        <path d="M15.5 4l-4 7" />
+        {/* Leaf branch sprouted on top left */}
+        <path d="M10.5 6.5C8 6 7 8 8 10c2 .5 3-1.5 2.5-3.5Z" />
+        {/* Small internal leaf emblem on bowl */}
+        <path d="M14 14.5c-1.5 0-2.2 1.2-1.8 2.3 1.2.3 2.2-.8 1.8-2.3Z" />
       </svg>
     ),
   },
@@ -126,9 +132,9 @@ const AYUSH_SYSTEMS = [
     fullName: "Yoga and\nNaturopathy",
     isTwoLine: true,
     icon: (
-      /* Meditating figure with heart / lotus hands (Yoga & Naturopathy) */
+      /* Meditating figure in full lotus posture with radiating lotus petals behind (Yoga & Naturopathy) */
       <svg
-        className="size-4 sm:size-4.5"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -136,9 +142,15 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="12" cy="5" r="2" />
-        <path d="M12 9c-2.5 0-4 1.8-4 3.5 0 2 2.5 3.5 4 5 1.5-1.5 4-3 4-5 0-1.7-1.5-3.5-4-3.5Z" />
-        <path d="M4 19c1.5-1 4-1.5 8-1.5s6.5.5 8 1.5" />
+        {/* Meditator head & torso */}
+        <circle cx="12" cy="6" r="1.8" />
+        <path d="M12 9.5c-2 0-3 1.5-3 3 0 2.2 2 3.8 3 5 1-1.2 3-2.8 3-5 0-1.5-1-3-3-3Z" />
+        {/* Folded crossed legs in lotus base */}
+        <path d="M6 18c1.5-1.5 3.5-1.5 6-1.5s4.5 0 6 1.5c-2 1.5-4 1.5-6 1.5s-4 0-6-1.5Z" />
+        {/* Surrounding lotus petals */}
+        <path d="M7 13.5C5.5 12 5.5 9.5 7.5 8c1 1.5 1.5 3.5 1 5.5" />
+        <path d="M17 13.5c1.5-1.5 1.5-4-.5-5.5-1 1.5-1.5 3.5-1 5.5" />
+        <path d="M10 6C9 4 10.5 2.5 12 2c1.5.5 3 2 2 4" />
       </svg>
     ),
   },
@@ -147,9 +159,9 @@ const AYUSH_SYSTEMS = [
     restText: "nani",
     fullName: "Unani",
     icon: (
-      /* Medicine bowl with ladle / spoon (Unani) */
+      /* Unani preparation bowl with diagonal pestle & top sprig */
       <svg
-        className="size-4 sm:size-4.5"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -157,9 +169,13 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M4 12h16c0 4.5-3.5 7-8 7s-8-2.5-8-7Z" />
-        <path d="M15 5c0 0-2 2-2.5 7" />
-        <path d="M7 19h10" />
+        {/* Shallow preparation bowl */}
+        <path d="M4 11h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
+        <path d="M8 18.5h8" />
+        {/* Long pestle */}
+        <path d="M16 4l-4.5 7" />
+        {/* Leaf sprig at top of pestle */}
+        <path d="M11 6.5c-2-.5-2.8 1.2-2 2.8 1.8.3 2.5-1.2 2-2.8Z" />
       </svg>
     ),
   },
@@ -168,9 +184,9 @@ const AYUSH_SYSTEMS = [
     restText: "iddha",
     fullName: "Siddha",
     icon: (
-      /* Herbal leaf with veins (Siddha) */
+      /* Traditional Siddha pot / Kalash vessel topped with flame/finial and flanked by side leaves */
       <svg
-        className="size-4 sm:size-4.5"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -178,8 +194,17 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+        {/* Top flame / spire finial */}
+        <path d="M12 2c-.8 1.2-.8 2 0 3 .8-1 .8-1.8 0-3Z" />
+        <circle cx="12" cy="6.2" r="1.2" />
+        {/* Tiered neck of vessel */}
+        <path d="M10 8h4" />
+        <path d="M9 10h6" />
+        {/* Rounded pot body */}
+        <path d="M8 11.5c-2 1.5-2 4.5 0 6 1.8 1.5 6.2 1.5 8 0 2-1.5 2-4.5 0-6" />
+        {/* Flanking side leaves */}
+        <path d="M6 14.5c-2.5-.5-3.5 1.5-2.5 3 1.8.5 3-.8 2.5-3Z" />
+        <path d="M18 14.5c2.5-.5 3.5 1.5 2.5 3-1.8.5-3-.8-2.5-3Z" />
       </svg>
     ),
   },
@@ -188,9 +213,9 @@ const AYUSH_SYSTEMS = [
     restText: "omoeopathy",
     fullName: "Homoeopathy",
     icon: (
-      /* Laboratory Erlenmeyer flask (Homoeopathy) */
+      /* Homoeopathic medicine bottle with globules and flowering branch */
       <svg
-        className="size-4 sm:size-4.5"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -198,9 +223,18 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M10 2v5L4.5 18A2 2 0 0 0 6.2 21h11.6a2 2 0 0 0 1.7-3L14 7V2" />
-        <path d="M9 2h6" />
-        <path d="M11.5 14h1" />
+        {/* Bottle neck & rim */}
+        <path d="M8 4h8" />
+        <path d="M9 4v2.5L7 9v10a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5V9l-2-2.5V4" />
+        {/* Inner globules / pellets */}
+        <circle cx="10" cy="13" r=".9" />
+        <circle cx="14" cy="13" r=".9" />
+        <circle cx="12" cy="15.5" r=".9" />
+        <circle cx="10" cy="17.5" r=".9" />
+        <circle cx="14" cy="17.5" r=".9" />
+        {/* Small herbal blossom beside bottle base */}
+        <path d="M18 16c1.5-1.5 3-1 3.5.5s-1 2.5-2.5 2" />
+        <path d="M18 18.5c1.2.2 2 1.2 1.5 2.2-.8.5-1.8 0-2-1" />
       </svg>
     ),
   },
@@ -4376,7 +4410,7 @@ function AyushSlideCarousel() {
         Width spans max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px]
         (Ending before the peacock R)
       */}
-      <div className="flex items-center justify-between w-full max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px] h-11 sm:h-12 select-none">
+      <div className="flex items-center justify-between w-full max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px] h-12 sm:h-14 select-none">
         {AYUSH_SYSTEMS.map((sys, idx) => {
           const isFocused = idx === focusedIndex;
 
@@ -4389,7 +4423,7 @@ function AyushSlideCarousel() {
             >
               {/* Icon Circle (Enlarged, smoothly turns into bold black circle when focused) */}
               <div
-                className={`size-9 sm:size-10 lg:size-[42px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${
+                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${
                   isFocused
                     ? "bg-[#111111] text-[#E67230] shadow-md scale-105"
                     : "bg-[#F3EFEA] text-[#111111] hover:bg-[#EBE5DE]"
