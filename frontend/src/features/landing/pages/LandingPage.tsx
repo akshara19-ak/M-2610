@@ -4078,7 +4078,7 @@ function AyushSlideCarousel() {
   }, []);
 
   return (
-    <div className="my-2.5 sm:my-3 w-full">
+    <div className="mt-3.5 mb-2.5 sm:mt-4 sm:mb-3 w-full">
       {/* 
         Bounded strictly between the blue line guidelines:
         Width spans max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px]
@@ -5138,7 +5138,7 @@ export function MeyvedaDoctorsPage() {
       {/* ==================================================================== */}
       <section
         aria-labelledby="hero-title"
-        className="relative flex min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-5.5rem)] lg:max-h-[820px] items-center overflow-hidden bg-[#FAF9F6] py-8 sm:py-10 lg:py-0 scroll-mt-20 sm:scroll-mt-22"
+        className="relative flex min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-5.5rem)] lg:max-h-[820px] items-end sm:items-center overflow-hidden bg-[#FAF9F6] pt-16 pb-12 sm:py-10 lg:py-0 scroll-mt-20 sm:scroll-mt-22"
         id="top"
       >
         {/* Full-Bleed Background Video Layer */}
@@ -5161,7 +5161,7 @@ export function MeyvedaDoctorsPage() {
           {/* Fading transition begins around the horizontal position where 'Next' ends (~36-40%) and clears quickly */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#FAF9F6]/85 via-[#FAF9F6]/45 to-transparent sm:from-[#FAF9F6]/80 sm:via-[#FAF9F6]/35 sm:to-transparent lg:bg-gradient-to-r lg:from-[#FAF9F6]/95 lg:from-0% lg:via-[#FAF9F6]/90 lg:via-26% lg:via-[#FAF9F6]/55 lg:via-36% lg:via-[#FAF9F6]/15 lg:via-44% lg:to-transparent lg:to-50%"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF9F6]/95 via-[#FAF9F6]/60 via-35% to-transparent sm:bg-gradient-to-b sm:from-[#FAF9F6]/80 sm:via-[#FAF9F6]/35 sm:to-transparent lg:bg-gradient-to-r lg:from-[#FAF9F6]/95 lg:from-0% lg:via-[#FAF9F6]/90 lg:via-26% lg:via-[#FAF9F6]/55 lg:via-36% lg:via-[#FAF9F6]/15 lg:via-44% lg:to-transparent lg:to-50%"
           />
         </div>
 
@@ -5175,10 +5175,10 @@ export function MeyvedaDoctorsPage() {
                 Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
               </p>
 
-              {/* Headline with Brand Graphic */}
+              {/* Headline with Brand Graphic - Enlarged for impact and alignment */}
               <h1
                 id="hero-title"
-                className="relative h-[44px] sm:h-[50px] lg:h-[56px] xl:h-[58px]"
+                className="relative h-[52px] sm:h-[60px] lg:h-[70px] xl:h-[76px]"
               >
                 <span className="sr-only">REINVENT YOUR</span>
                 <img
@@ -5186,7 +5186,7 @@ export function MeyvedaDoctorsPage() {
                   alt="REINVENT YOUR"
                   width={2144}
                   height={387}
-                  className="absolute top-0 left-0 h-[56px] sm:h-[64px] lg:h-[72px] xl:h-[76px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
+                  className="absolute top-0 left-0 h-[66px] sm:h-[76px] lg:h-[88px] xl:h-[96px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
                   loading="eager"
                   decoding="async"
                 />
@@ -5217,11 +5217,11 @@ export function MeyvedaDoctorsPage() {
 
 
 
-            {/* Action Buttons: Request for Early Access CTA */}
-            <div className="mt-5 flex flex-wrap items-center gap-3">
+            {/* Action Buttons: Request for Early Access CTA placed down with clean breathing room */}
+            <div className="mt-7 sm:mt-8 lg:mt-9 flex flex-wrap items-center gap-3">
               <RegisterPrimaryButton
                 size="default"
-                className="h-11 sm:h-12 px-6 text-sm sm:text-[15px] uppercase font-bold tracking-wide"
+                className="h-12 sm:h-13 px-7 text-sm sm:text-[15px] uppercase font-bold tracking-wide shadow-md hover:shadow-lg transition-all"
 
               >
                 REQUEST FOR EARLY ACCESS
