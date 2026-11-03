@@ -3169,6 +3169,21 @@ export function CoreVaidyaSection() {
     return () => window.removeEventListener("resize", checkMedia);
   }, []);
 
+  // Auto-advance active service every 3 seconds only on mobile (< 1024px / !isDesktop)
+  useEffect(() => {
+    if (isDesktop) return;
+
+    const timer = setInterval(() => {
+      setSelectedId((prev) => {
+        const curIdx = CORE_VAIDYA_SERVICES.findIndex((s) => s.id === prev);
+        const nextIdx = (curIdx + 1) % CORE_VAIDYA_SERVICES.length;
+        return CORE_VAIDYA_SERVICES[nextIdx].id;
+      });
+    }, 3000);
+
+    return () => clearInterval(timer);
+  }, [isDesktop]);
+
   useEffect(() => {
     if (!isDesktop || reducedMotion) return;
 
