@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from typing import Literal, Optional
 import random
+import re
 import string
 from fastapi import APIRouter, Depends, HTTPException, status
 from pydantic import BaseModel, EmailStr, Field
