@@ -209,7 +209,7 @@ export function ClusterFranchisePage() {
     }
 
     if (!inlineDistrict.trim()) {
-      errors.district = "Target district / territory is required.";
+      errors.district = "Target district / PIN code is required.";
     }
 
     setInlineErrors(errors);
@@ -1742,7 +1742,7 @@ Submitted: ${d.timestamp}`;
                   </div>
                   <div>
                     <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
-                      TARGET DISTRICT / TERRITORY <span className="text-red-500">*</span>
+                      TARGET DISTRICT / PIN CODE <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
@@ -1752,7 +1752,7 @@ Submitted: ${d.timestamp}`;
                         setInlineDistrict(e.target.value);
                         if (inlineErrors.district) setInlineErrors((p) => ({ ...p, district: undefined }));
                       }}
-                      placeholder="e.g. Pune Metro / Ernakulam"
+                      placeholder="e.g. 600117 / Pune Metro"
                       className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
                     />
                     {inlineErrors.district && (
@@ -2002,14 +2002,14 @@ Submitted: ${d.timestamp}`;
                 </div>
                 <div>
                   <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
-                    TARGET DISTRICT / TERRITORY *
+                    TARGET DISTRICT / PIN CODE *
                   </label>
                   <input
                     type="text"
                     required
                     value={modalDistrict}
                     onChange={(e) => setModalDistrict(e.target.value)}
-                    placeholder="e.g. Pune Metro / Ernakulam"
+                    placeholder="e.g. 600117 / Pune Metro"
                     className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
                   />
                 </div>
