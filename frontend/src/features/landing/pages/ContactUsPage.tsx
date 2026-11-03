@@ -287,14 +287,7 @@ export function ContactUsPage() {
                   </div>
                 </div>
 
-                {/* Direct Commitment Box */}
-                <div className="rounded-2xl border border-[#EBE7DF] bg-white/70 p-4.5 text-xs text-[#666666] flex items-start gap-3 shadow-2xs">
-                  <ShieldCheck className="size-4 shrink-0 text-[#E67230] mt-0.5" />
-                  <p className="leading-relaxed">
-                    <strong>Logged &amp; Tracked:</strong> Every inquiry submitted here receives an
-                    official reference ID and is reviewed directly by our administration desk.
-                  </p>
-                </div>
+
               </div>
 
               {/* RIGHT COLUMN: The Interactive Form Card (7 Cols) */}
