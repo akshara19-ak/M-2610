@@ -28,7 +28,7 @@ import {
 } from "@/lib/validation";
 
 export interface ReferralsSearchParams {
-  tab?: "overview" | "invite" | "history" | undefined;
+  tab?: "overview" | "history" | undefined;
   status?: string | undefined;
   q?: string | undefined;
 }
@@ -36,7 +36,7 @@ export interface ReferralsSearchParams {
 export const Route = createFileRoute("/_ws/referrals")({
   validateSearch: (s: Record<string, unknown>): ReferralsSearchParams => ({
     tab:
-      s["tab"] === "overview" || s["tab"] === "invite" || s["tab"] === "history"
+      s["tab"] === "overview" || s["tab"] === "history"
         ? (s["tab"] as ReferralsSearchParams["tab"])
         : undefined,
     status: typeof s["status"] === "string" ? s["status"] : undefined,
@@ -307,17 +307,7 @@ export function ReferralsPage() {
           <span>Invite &amp; Overview</span>
         </button>
 
-        <button
-          type="button"
-          onClick={() => updateSearch({ tab: "invite" })}
-          className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-bold transition-colors cursor-pointer ${
-            activeTab === "invite"
-              ? "bg-[#E67230] text-white shadow-xs"
-              : "text-muted-foreground hover:text-foreground hover:bg-muted/40"
-          }`}
-        >
-          <span>Dispatch Invitation</span>
-        </button>
+        
 
         <button
           type="button"
@@ -493,12 +483,8 @@ export function ReferralsPage() {
               </div>
             </div>
           </section>
-        </div>
-      )}
 
-      {/* TAB 2: DISPATCH INVITATION FORM */}
-      {activeTab === "invite" && (
-        <div className="max-w-3xl mx-auto space-y-6">
+          {/* Direct Colleague Nomination & Dispatch Form (3 Questions) */}
           <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-6">
             <div className="border-b border-[#EBE7DF] pb-4 space-y-1">
               <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">
@@ -586,53 +572,31 @@ export function ReferralsPage() {
                 </div>
 
                 {/* 3. Mobile & 4. Qualification */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-bold text-[#111111] block">
-                      3. Mobile Number *
-                    </label>
-                    <div className="relative">
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-xs font-bold text-muted-foreground select-none pointer-events-none">
-                        +91
-                      </span>
-                      <input
-                        type="tel"
-                        maxLength={10}
-                        required
-                        value={inviteMobile}
-                        onChange={(e) => {
-                          const val = sanitizeMobileInput(e.target.value);
-                          setInviteMobile(val);
-                          if (formErrors.mobile) setFormErrors((p) => ({ ...p, mobile: undefined }));
-                        }}
-                        placeholder="98765 43210"
-                        className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] pl-12 pr-4 py-3 font-mono text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
-                      />
-                    </div>
-                    {formErrors.mobile && (
-                      <p className="text-xs text-red-500 font-medium">{formErrors.mobile}</p>
-                    )}
+                <div className="space-y-1.5">
+                  <label className="text-sm font-bold text-[#111111] block">
+                    3. Mobile Number *
+                  </label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-xs font-bold text-muted-foreground select-none pointer-events-none">
+                      +91
+                    </span>
+                    <input
+                      type="tel"
+                      maxLength={10}
+                      required
+                      value={inviteMobile}
+                      onChange={(e) => {
+                        const val = sanitizeMobileInput(e.target.value);
+                        setInviteMobile(val);
+                        if (formErrors.mobile) setFormErrors((p) => ({ ...p, mobile: undefined }));
+                      }}
+                      placeholder="98765 43210"
+                      className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] pl-12 pr-4 py-3 font-mono text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
+                    />
                   </div>
-
-                  <div className="space-y-1.5">
-                    <label className="text-sm font-bold text-[#111111] block">
-                      4. Medical Qualification *
-                    </label>
-                    <select
-                      value={inviteQualification}
-                      onChange={(e) => setInviteQualification(e.target.value)}
-                      className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none"
-                    >
-                      <option value="BAMS">BAMS — Ayurveda</option>
-                      <option value="MD (Ayurveda)">MD (Ayurveda) — Postgraduate</option>
-                      <option value="MS (Ayurveda)">MS (Ayurveda) — Shalya / Shalakya</option>
-                      <option value="BHMS">BHMS — Homoeopathy</option>
-                      <option value="BUMS">BUMS — Unani Medicine</option>
-                      <option value="BSMS">BSMS — Siddha Medicine</option>
-                      <option value="BNYS">BNYS — Naturopathy &amp; Yoga</option>
-                      <option value="Ph.D (AYUSH)">Ph.D / Research Scholar (AYUSH)</option>
-                    </select>
-                  </div>
+                  {formErrors.mobile && (
+                    <p className="text-xs text-red-500 font-medium">{formErrors.mobile}</p>
+                  )}
                 </div>
 
                 <div className="pt-3 border-t border-[#EBE7DF] flex items-center justify-end gap-3">
@@ -662,6 +626,8 @@ export function ReferralsPage() {
           </section>
         </div>
       )}
+
+      
 
       {/* TAB 3: REFERRAL RECORDS TABLE */}
       {activeTab === "history" && (
