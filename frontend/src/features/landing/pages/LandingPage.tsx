@@ -2736,11 +2736,11 @@ function PracticeSuiteCardPreview({ type }: { type: string }) {
   }
 
   return (
-    <div className="relative flex h-40 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-[#FAF9F6] p-2 select-none shadow-2xs">
+    <div className="relative flex h-40 w-full items-center justify-center overflow-hidden p-2 select-none">
       <img
         src={imgSrc}
         alt={imgAlt}
-        className="h-full w-full object-contain rounded-lg transition-transform duration-300 group-hover:scale-[1.03]"
+        className="h-full w-full object-contain transition-transform duration-300 group-hover:scale-[1.03]"
         loading="lazy"
       />
     </div>
