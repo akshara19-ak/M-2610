@@ -1576,8 +1576,8 @@ export function WorkspaceOverviewPage({
                     type="button"
                     onClick={() => setSelectedDay(item.date)}
                     className={`flex flex-col items-center gap-1 rounded-md p-1.5 text-center transition-all ${isChosen
-                        ? "bg-[#F47C0B] text-white shadow-xs"
-                        : "text-[#111111] hover:bg-white"
+                      ? "bg-[#F47C0B] text-white shadow-xs"
+                      : "text-[#111111] hover:bg-white"
                       }`}
                   >
                     <span
@@ -1768,8 +1768,8 @@ export function WorkspaceAppointmentsPage({
                     role="button"
                     tabIndex={0}
                     className={`rounded-xl border p-3.5 transition-all text-left ${isSelected
-                        ? "border-[#F47C0B]/60 bg-[#FFFDF9] shadow-xs"
-                        : "border-[#EBE7DF] bg-[#FAF9F6] hover:bg-white hover:border-[#F47C0B]/40"
+                      ? "border-[#F47C0B]/60 bg-[#FFFDF9] shadow-xs"
+                      : "border-[#EBE7DF] bg-[#FAF9F6] hover:bg-white hover:border-[#F47C0B]/40"
                       }`}
                   >
                     <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
@@ -1844,8 +1844,8 @@ export function WorkspaceAppointmentsPage({
                     type="button"
                     onClick={() => setSelectedDay(item.date)}
                     className={`flex flex-col items-center gap-1 rounded-md p-1.5 text-center transition-all ${isChosen
-                        ? "bg-[#F47C0B] text-white shadow-xs"
-                        : "text-[#111111] hover:bg-white"
+                      ? "bg-[#F47C0B] text-white shadow-xs"
+                      : "text-[#111111] hover:bg-white"
                       }`}
                   >
                     <span
@@ -1962,8 +1962,8 @@ export function WorkspaceClinicalCasesPage({
                 type="button"
                 onClick={() => setSelectedCaseId(c.id)}
                 className={`w-full rounded-xl border p-3.5 text-left transition-all ${isSelected
-                    ? "border-[#F47C0B]/60 bg-[#FFFDF9] shadow-xs"
-                    : "border-[#EBE7DF] bg-[#FAF9F6] hover:bg-white hover:border-[#F47C0B]/40"
+                  ? "border-[#F47C0B]/60 bg-[#FFFDF9] shadow-xs"
+                  : "border-[#EBE7DF] bg-[#FAF9F6] hover:bg-white hover:border-[#F47C0B]/40"
                   }`}
               >
                 <div className="flex items-center justify-between">
@@ -2317,8 +2317,8 @@ export function WorkspaceCommunicationPage() {
                 type="button"
                 onClick={() => setSelectedThreadId(thread.id)}
                 className={`w-full rounded-xl border p-3.5 text-left transition-all ${isSelected
-                    ? "border-[#F47C0B]/60 bg-[#FFFDF9] shadow-xs"
-                    : "border-[#EBE7DF] bg-[#FAF9F6] hover:bg-white hover:border-[#F47C0B]/40"
+                  ? "border-[#F47C0B]/60 bg-[#FFFDF9] shadow-xs"
+                  : "border-[#EBE7DF] bg-[#FAF9F6] hover:bg-white hover:border-[#F47C0B]/40"
                   }`}
               >
                 <div className="flex items-center justify-between">
@@ -2929,8 +2929,8 @@ function PracticeSuiteScrollSection({
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
                       className={`group relative flex h-full flex-col justify-start rounded-2xl border bg-white p-5 sm:p-6 transition-all duration-300 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E67230] motion-reduce:transition-none ${isActive
-                          ? "border-[#E67230]/60 shadow-xs ring-1 ring-[#E67230]/25"
-                          : "border-[#EBE7DF] shadow-2xs"
+                        ? "border-[#E67230]/60 shadow-xs ring-1 ring-[#E67230]/25"
+                        : "border-[#EBE7DF] shadow-2xs"
                         }`}
                     >
                       <div>
@@ -2984,8 +2984,8 @@ function PracticeSuiteScrollSection({
                     aria-selected={activeSlideIndex === idx}
                     aria-label={`Scroll to capability ${idx + 1}: ${feature.title}`}
                     className={`h-2 rounded-full transition-all duration-250 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E67230] ${activeSlideIndex === idx
-                        ? "w-8 bg-[#E67230]"
-                        : "w-2 bg-[#EBE7DF] hover:bg-[#888888]"
+                      ? "w-8 bg-[#E67230]"
+                      : "w-2 bg-[#EBE7DF] hover:bg-[#888888]"
                       }`}
                   />
                 ))}
@@ -3075,7 +3075,7 @@ const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
     id: "multi-clinic",
     number: "01",
     title: "Multi-Clinic Synchronization & Smart Scheduling",
-    shortTitle: "Multi-Clinic Sync & Scheduling",
+    shortTitle: "Eco-System Sync",
     description:
       "Connect with multiple Health Facility Registries (HFRs), HIMS, and CMS platforms for personal time management, capacity sharing, and gated data handling.",
     gradientClass: "from-[#F58238] via-[#E67230] to-[#CF5C1D]",
@@ -3087,7 +3087,7 @@ const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
     id: "cdss-telehealth",
     number: "02",
     title: "Intelligent Clinical Decision Support (CDSS) & Tele-Health",
-    shortTitle: "Intelligent CDSS & Tele-Health",
+    shortTitle: "AI Assistance",
     description:
       "Centralized RAG engine utilizing classical texts for precise, protocol-driven care, dynamically syncing with HFRs for real-time medicine pricing and inventory availability.",
     gradientClass: "from-[#E67230] via-[#D86423] to-[#B85217]",
@@ -3099,7 +3099,7 @@ const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
     id: "clinic-erp",
     number: "03",
     title: "Complete Clinic ERP & Asset Engine",
-    shortTitle: "Complete Clinic ERP & Asset Engine",
+    shortTitle: "HIMS & CMS",
     description:
       "Digital tools for asset management, statutory compliance tracking, and a dedicated HR desk to streamline hiring and staff management.",
     gradientClass: "from-[#D86423] via-[#BE561A] to-[#A04412]",
@@ -3111,7 +3111,7 @@ const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
     id: "supply-chain",
     number: "04",
     title: "Integrated Supply Chain & Procurement Hub",
-    shortTitle: "Integrated Supply Chain & Hub",
+    shortTitle: "Smart Sourcing",
     description:
       "Logistics support managing B2B bulk procurement, backward sourcing, and forward last-mile delivery directly to patients.",
     gradientClass: "from-[#F37B32] via-[#E06822] to-[#AE4E18]",
@@ -3123,7 +3123,7 @@ const CORE_VAIDYA_SERVICES: CoreVaidyaService[] = [
     id: "growth-bi",
     number: "05",
     title: "Growth, Business Intelligence (BI) & Collaborative Care",
-    shortTitle: "Growth, BI & Collaborative Care",
+    shortTitle: "Business Intelligence (BI)",
     description:
       "HFR reporting to scale revenue and careers, front-end marketing visibility, premium care programs with allied partners, and corporate interaction tools for localized health camps.",
     gradientClass: "from-[#E67230] via-[#C95618] to-[#9E3E0E]",
@@ -3149,6 +3149,7 @@ export function CoreVaidyaSection() {
   const [reducedMotion, setReducedMotion] = useState(false);
   const [selectedId, setSelectedId] = useState<string>("multi-clinic");
   const [hoveredId, setHoveredId] = useState<string | null>(null);
+  const [isLogoFlipped, setIsLogoFlipped] = useState(false);
 
   useEffect(() => {
     const checkMedia = () => {
@@ -3273,14 +3274,52 @@ export function CoreVaidyaSection() {
                   aria-hidden="true"
                 />
 
-                {/* Central Meyveda Logo Hub - Stays fixed */}
-                <div className="relative z-30 flex flex-col items-center justify-center size-[116px] lg:size-[128px] rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#EBE7DF] p-3.5 transition-transform duration-300 hover:scale-105 pointer-events-auto">
-                  <img
-                    src={meyvedaFaviconSource}
-                    alt="Meyveda Logo"
-                    className="max-h-[72px] max-w-[72px] lg:max-h-[80px] lg:max-w-[80px] w-auto h-auto object-contain select-none"
-                  />
-                  <span className="sr-only">Meyveda Ecosystem Core</span>
+                {/* Central Meyveda Logo Hub - Stays fixed and flips on hover to show "Upcoming" */}
+                <div
+                  className="relative z-30 size-[116px] lg:size-[128px] rounded-full pointer-events-auto cursor-pointer transition-transform duration-300 hover:scale-105 select-none"
+                  style={{ perspective: "1000px" }}
+                  onMouseEnter={() => setIsLogoFlipped(true)}
+                  onMouseLeave={() => setIsLogoFlipped(false)}
+                  onClick={() => setIsLogoFlipped((prev) => !prev)}
+                >
+                  <div
+                    className="relative w-full h-full rounded-full shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#EBE7DF] transition-transform duration-500"
+                    style={{
+                      transformStyle: "preserve-3d",
+                      WebkitTransformStyle: "preserve-3d",
+                      transform: isLogoFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                    }}
+                  >
+                    {/* Front face: Meyveda Logo */}
+                    <div
+                      className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-white p-3.5"
+                      style={{
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden",
+                      }}
+                    >
+                      <img
+                        src={meyvedaFaviconSource}
+                        alt="Meyveda Logo"
+                        className="max-h-[72px] max-w-[72px] lg:max-h-[80px] lg:max-w-[80px] w-auto h-auto object-contain select-none"
+                      />
+                      <span className="sr-only">Meyveda Ecosystem Core</span>
+                    </div>
+
+                    {/* Back face: Upcoming text */}
+                    <div
+                      className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-white p-3.5 border-2 border-[#E67230]/20"
+                      style={{
+                        backfaceVisibility: "hidden",
+                        WebkitBackfaceVisibility: "hidden",
+                        transform: "rotateY(180deg)",
+                      }}
+                    >
+                      <span className="text-sm lg:text-[15px] font-extrabold uppercase tracking-wider text-[#E67230]">
+                        Upcoming
+                      </span>
+                    </div>
+                  </div>
                 </div>
 
                 {/* Orbiting Elements Container: Rotates clockwise on scroll down */}
@@ -3313,8 +3352,8 @@ export function CoreVaidyaSection() {
                           onMouseEnter={() => setHoveredId(service.id)}
                           onMouseLeave={() => setHoveredId(null)}
                           className={`w-full h-full rounded-full p-3.5 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-500 ease-out focus:outline-none focus-visible:ring-4 focus-visible:ring-[#E67230] focus-visible:ring-offset-2 ${isCurrent
-                              ? "z-40 border-[2.5px] border-white ring-4 ring-[#E67230]/40 shadow-xl opacity-100"
-                              : "border border-white/50 opacity-65 hover:opacity-90 hover:scale-103 shadow-md"
+                            ? "z-40 border-[2.5px] border-white ring-4 ring-[#E67230]/40 shadow-xl opacity-100"
+                            : "border border-white/50 opacity-65 hover:opacity-90 hover:scale-103 shadow-md"
                             }`}
                           style={{
                             transform: `rotate(${-currentRotation}deg) scale(${isCurrent ? 1.06 : 1.0})`,
@@ -3396,8 +3435,8 @@ export function CoreVaidyaSection() {
                     aria-label={`Select service ${s.number}: ${s.title}`}
                     onClick={() => scrollToService(idx)}
                     className={`h-2 rounded-full transition-all duration-300 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E67230] ${safeSlideIndex === idx
-                        ? "w-8 bg-[#E67230]"
-                        : "w-2.5 bg-[#EBE7DF] hover:bg-[#E67230]/50"
+                      ? "w-8 bg-[#E67230]"
+                      : "w-2.5 bg-[#EBE7DF] hover:bg-[#E67230]/50"
                       }`}
                   />
                 ))}
@@ -3424,12 +3463,47 @@ export function CoreVaidyaSection() {
 
             {/* Central Logo in compact connected layout */}
             <div className="flex justify-center mb-5">
-              <div className="flex flex-col items-center justify-center size-[88px] rounded-full bg-white shadow-md border border-[#EBE7DF] p-2.5">
-                <img
-                  src={meyvedaFaviconSource}
-                  alt="Meyveda Logo"
-                  className="max-h-[48px] max-w-[60px] w-auto h-auto object-contain select-none"
-                />
+              <div
+                className="relative size-[88px] rounded-full cursor-pointer select-none"
+                style={{ perspective: "1000px" }}
+                onClick={() => setIsLogoFlipped((prev) => !prev)}
+              >
+                <div
+                  className="relative w-full h-full rounded-full shadow-md border border-[#EBE7DF] transition-transform duration-500"
+                  style={{
+                    transformStyle: "preserve-3d",
+                    WebkitTransformStyle: "preserve-3d",
+                    transform: isLogoFlipped ? "rotateY(180deg)" : "rotateY(0deg)",
+                  }}
+                >
+                  {/* Front face */}
+                  <div
+                    className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-white p-2.5"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                    }}
+                  >
+                    <img
+                      src={meyvedaFaviconSource}
+                      alt="Meyveda Logo"
+                      className="max-h-[48px] max-w-[60px] w-auto h-auto object-contain select-none"
+                    />
+                  </div>
+                  {/* Back face */}
+                  <div
+                    className="absolute inset-0 flex flex-col items-center justify-center rounded-full bg-white p-2.5 border-2 border-[#E67230]/20"
+                    style={{
+                      backfaceVisibility: "hidden",
+                      WebkitBackfaceVisibility: "hidden",
+                      transform: "rotateY(180deg)",
+                    }}
+                  >
+                    <span className="text-xs font-extrabold uppercase tracking-wider text-[#E67230]">
+                      Upcoming
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
 
@@ -3445,8 +3519,8 @@ export function CoreVaidyaSection() {
                     aria-pressed={isCurrent}
                     onClick={() => setSelectedId(service.id)}
                     className={`aspect-square rounded-full p-3 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E67230] ${isCurrent
-                        ? "scale-105 border-2 border-white ring-2 ring-[#E67230] opacity-100 shadow-lg"
-                        : "border border-white/40 opacity-65 hover:opacity-90 shadow-sm"
+                      ? "scale-105 border-2 border-white ring-2 ring-[#E67230] opacity-100 shadow-lg"
+                      : "border border-white/40 opacity-65 hover:opacity-90 shadow-sm"
                       }`}
                     style={{
                       background: isCurrent
@@ -3704,8 +3778,8 @@ export function ManagedServicesTreeSection() {
                   aria-label={`Go to ${s.title}`}
                   onClick={() => setCurrentIndex(index)}
                   className={`h-2 rounded-full transition-all duration-300 ${currentIndex === index
-                      ? "w-8 bg-[#E67230]"
-                      : "w-2.5 bg-[#EBE7DF] hover:bg-[#E67230]/50"
+                    ? "w-8 bg-[#E67230]"
+                    : "w-2.5 bg-[#EBE7DF] hover:bg-[#E67230]/50"
                     }`}
                 />
               ))}
@@ -3985,8 +4059,8 @@ export function ManagedServicesTreeSection() {
                     width: `${service.sizePercent}%`,
                   }}
                   className={`absolute -translate-x-1/2 -translate-y-1/2 z-30 aspect-square rounded-full cursor-pointer transition-all duration-300 p-0 focus:outline-none ${isSelected
-                      ? "ring-4 ring-[#E67230]/70 ring-offset-2 ring-offset-[#FAF9F6] shadow-md"
-                      : "ring-0 hover:ring-2 hover:ring-[#E67230]/40"
+                    ? "ring-4 ring-[#E67230]/70 ring-offset-2 ring-offset-[#FAF9F6] shadow-md"
+                    : "ring-0 hover:ring-2 hover:ring-[#E67230]/40"
                     }`}
                 >
                   <span className="sr-only">{service.title}</span>
@@ -4066,8 +4140,8 @@ export function ManagedServicesTreeSection() {
                   aria-label={`Go to ${s.title}`}
                   onClick={() => setCurrentIndex(index)}
                   className={`h-2 rounded-full transition-all duration-300 ${currentIndex === index
-                      ? "w-8 bg-[#E67230]"
-                      : "w-2.5 bg-[#EBE7DF] hover:bg-[#E67230]/50"
+                    ? "w-8 bg-[#E67230]"
+                    : "w-2.5 bg-[#EBE7DF] hover:bg-[#E67230]/50"
                     }`}
                 />
               ))}
@@ -4119,16 +4193,14 @@ function AyushSlideCarousel() {
             >
               {/* Icon Circle (Enlarged, smoothly turns into bold black circle when focused) */}
               <div
-                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${
-                  isFocused
+                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${isFocused
                     ? "bg-[#111111] text-[#E67230] shadow-md scale-105"
                     : "bg-[#F3EFEA] text-[#111111] hover:bg-[#EBE5DE]"
-                }`}
+                  }`}
               >
                 <span
-                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 ${
-                    isFocused ? "text-[#E67230]" : "text-[#111111]"
-                  }`}
+                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 ${isFocused ? "text-[#E67230]" : "text-[#111111]"
+                    }`}
                 >
                   {sys.icon}
                 </span>
@@ -4138,20 +4210,18 @@ function AyushSlideCarousel() {
               <div className="relative flex items-center">
                 {/* 1. Unfocused State: Single bold letter (A, Y, U, S, H) in brand orange */}
                 <span
-                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight transition-opacity duration-300 ${
-                    isFocused ? "opacity-0 absolute pointer-events-none" : "opacity-100"
-                  }`}
+                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight transition-opacity duration-300 ${isFocused ? "opacity-0 absolute pointer-events-none" : "opacity-100"
+                    }`}
                 >
                   {sys.letter}
                 </span>
 
                 {/* 2. Focused State: Smoothly expands as ONE unified cohesive name (same size/boldness as headline) */}
                 <div
-                  className={`overflow-hidden transition-all duration-500 ease-out flex items-center ${
-                    isFocused
+                  className={`overflow-hidden transition-all duration-500 ease-out flex items-center ${isFocused
                       ? "max-w-[210px] opacity-100"
                       : "max-w-0 opacity-0 pointer-events-none"
-                  }`}
+                    }`}
                 >
                   {sys.isTwoLine ? (
                     <span className="whitespace-nowrap text-xs sm:text-[13.5px] lg:text-[14.5px] font-extrabold uppercase leading-[1.15] tracking-tight text-[#111111]">
@@ -4914,9 +4984,8 @@ export function MeyvedaDoctorsPage() {
                     >
                       <span>Contact Us</span>
                       <ChevronDown
-                        className={`size-3.5 transition-transform duration-200 ${
-                          contactDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
-                        }`}
+                        className={`size-3.5 transition-transform duration-200 ${contactDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
+                          }`}
                       />
                     </a>
 
@@ -4999,7 +5068,7 @@ export function MeyvedaDoctorsPage() {
                 <div className="hidden sm:block">
                   <RegisterPrimaryButton
                     className="h-11 px-5 text-sm sm:text-[15px] font-bold"
-                    
+
                   >
                     Early Bird Registration
                   </RegisterPrimaryButton>
@@ -5008,7 +5077,7 @@ export function MeyvedaDoctorsPage() {
                 <div className="sm:hidden">
                   <RegisterPrimaryButton
                     className="h-10 px-3.5 text-xs font-bold"
-                    
+
                   >
                     Early Bird Registration
                   </RegisterPrimaryButton>
@@ -5223,7 +5292,7 @@ export function MeyvedaDoctorsPage() {
               <RegisterPrimaryButton
                 size="default"
                 className="h-11 sm:h-12 px-6 text-sm sm:text-[15px] uppercase font-bold tracking-wide"
-                
+
               >
                 REQUEST FOR EARLY ACCESS
               </RegisterPrimaryButton>
@@ -5786,7 +5855,7 @@ export function MeyvedaDoctorsPage() {
           </div>
         </div>
       </footer>
-      
+
 
       {/* ==================================================================== */}
       {/* 14. SIGN IN MODAL DIALOG                                             */}
