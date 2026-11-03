@@ -179,14 +179,6 @@ export function AboutUsPage() {
                 <span>Learn Our Story</span>
                 <ChevronRight className="size-4 transition-transform duration-200 group-hover:translate-x-1" />
               </a>
-
-              <Link
-                to="/"
-                className="inline-flex h-12 items-center justify-center gap-2 rounded-md border border-[#EBE7DF] bg-white px-7 text-sm font-semibold text-[#111111] shadow-none transition-all duration-200 hover:border-[#E67230]/40 hover:bg-[#FAF9F6] hover:text-[#111111]"
-              >
-                <span>Explore Doctor Platform</span>
-                <ArrowRight className="size-4" />
-              </Link>
             </div>
           </div>
         </section>
