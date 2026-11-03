@@ -75,9 +75,14 @@ export async function request<T = unknown>(
   if (!response.ok) {
     let errorData: unknown;
     try {
-      errorData = await response.json();
+      const cloned = response.clone();
+      try {
+        errorData = await response.json();
+      } catch {
+        errorData = await cloned.text();
+      }
     } catch {
-      errorData = await response.text();
+      errorData = null;
     }
     let errorMessage = response.statusText || `Request failed with status ${response.status}`;
     if (errorData && typeof errorData === "object") {
