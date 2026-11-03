@@ -915,48 +915,46 @@ export function Register() {
                 </div>
               </div>
 
-              {/* Postal Branch Mapping Card - Main Branch & Sub Branch */}
-              {postalBranchDetails && !isDetectingCity && (
+              {/* Statutory Medical Council Card - Shown below PIN code without official portal link */}
+              {governingCouncil && !isDetectingCity && (
                 <div className="rounded-xl border border-[#E67230]/35 bg-gradient-to-br from-[#FFFDFB] to-[#FFF6EE] p-4 sm:p-4.5 shadow-2xs space-y-3 animate-in fade-in-50 duration-200">
                   <div className="flex items-center justify-between flex-wrap gap-2">
                     <div className="flex items-center gap-1.5">
                       <div className="size-6 rounded-full bg-[#E67230]/15 flex items-center justify-center text-[#E67230]">
-                        <Building2 className="size-3.5" />
+                        <Scale className="size-3.5" />
                       </div>
                       <span className="text-xs font-bold text-[#E67230] uppercase tracking-wider">
-                        India Post Branch Allocation
+                        Governing Statutory Medical Council
                       </span>
                     </div>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[11px] font-bold text-emerald-700 border border-emerald-200 shadow-2xs">
-                      <CheckCircle2 className="size-3 text-emerald-600" />
-                      <span>PIN {pincode} Verified</span>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[11px] font-bold text-[#111111] border border-[#EBE7DF] shadow-2xs">
+                      <ShieldCheck className="size-3 text-[#E67230]" />
+                      {governingCouncil.board_type || "State Statutory Board"}
                     </span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                    <div className="rounded-xl bg-white/95 border border-[#EBE7DF] p-3 shadow-2xs space-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#888888] block">
-                        Main Branch (City / District)
-                      </span>
-                      <p className="text-sm font-extrabold text-[#111111] leading-snug">
-                        {postalBranchDetails.mainBranch}
+                  <div>
+                    <h4 className="text-sm sm:text-base font-extrabold text-[#111111] leading-snug">
+                      {governingCouncil.board_name}
+                    </h4>
+                    {governingCouncil.description && (
+                      <p className="mt-1 text-xs text-[#555555] leading-relaxed">
+                        {governingCouncil.description}
                       </p>
-                      <p className="text-[11px] text-[#666666]">
-                        {postalBranchDetails.district}, {postalBranchDetails.state}
-                      </p>
-                    </div>
+                    )}
+                  </div>
 
-                    <div className="rounded-xl bg-white/95 border border-[#EBE7DF] p-3 shadow-2xs space-y-1">
-                      <span className="text-[10px] font-bold uppercase tracking-wider text-[#888888] block">
-                        Sub Branch (Local Area)
-                      </span>
-                      <p className="text-sm font-extrabold text-[#E67230] leading-snug">
-                        {postalBranchDetails.subBranch}
-                      </p>
-                      <p className="text-[11px] text-[#666666]">
-                        Serving Postal Delivery Unit
-                      </p>
+                  <div className="rounded-lg bg-white/90 border border-[#EBE7DF] p-3 text-xs space-y-1.5">
+                    <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                      <span className="font-bold text-[#111111] shrink-0">Statutory Act:</span>
+                      <span className="text-[#444444] font-medium">{governingCouncil.statutory_act}</span>
                     </div>
+                    {governingCouncil.controlling_authority && (
+                      <div className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-2">
+                        <span className="font-bold text-[#111111] shrink-0">Governing Authority:</span>
+                        <span className="text-[#444444] font-medium">{governingCouncil.controlling_authority}</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               )}
