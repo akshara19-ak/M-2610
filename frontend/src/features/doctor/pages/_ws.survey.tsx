@@ -535,51 +535,94 @@ export function SurveyPage() {
                     </div>
 
                     {qi.options && qi.options.length > 0 ? (
-                      <div className="space-y-3 pt-1">
-                        {qi.options.map((optItem, optIdx) => {
-                          const isSelectedByMe = isDoctorSelection(
-                            qi.question_id,
-                            optItem.option,
-                            qi.question_type
-                          );
+                      <div className="pt-2">
+                        {/* Vertical Bar Chart Container */}
+                        <div className="relative pt-4 pb-2">
+                          {/* Y-axis guideline area & Bars */}
+                          <div className="flex items-end justify-around gap-2 h-44 sm:h-48 border-b-2 border-[#E5E0D8] px-1 pb-0.5">
+                            {qi.options.map((optItem, optIdx) => {
+                              const isSelectedByMe = isDoctorSelection(
+                                qi.question_id,
+                                optItem.option,
+                                qi.question_type
+                              );
 
-                          return (
-                            <div
-                              key={optIdx}
-                              className={`p-3 rounded-2xl border transition-all ${
-                                isSelectedByMe
-                                  ? "border-[#E67230] bg-[#FFF8F3] shadow-2xs ring-1 ring-[#E67230]/20"
-                                  : "border-transparent bg-[#FAF9F6]/80"
-                              }`}
-                            >
-                              <div className="flex items-center justify-between text-xs mb-1.5 gap-2">
-                                <div className="flex items-center gap-1.5 min-w-0">
-                                  <span className={`text-xs leading-tight truncate ${isSelectedByMe ? "font-bold text-[#111111]" : "text-foreground font-medium"}`}>
-                                    {optItem.option}
-                                  </span>
-                                  {isSelectedByMe && (
-                                    <span className="shrink-0 inline-flex items-center gap-0.5 rounded-full bg-[#E67230] text-white px-1.5 py-0.5 text-[10px] font-bold">
-                                      <Check className="size-2.5 stroke-[3]" /> You
-                                    </span>
-                                  )}
-                                </div>
-                                <span className="font-mono text-xs font-bold text-foreground shrink-0">
-                                  {optItem.percentage}% <span className="text-muted-foreground font-normal text-[10px]">({optItem.count})</span>
-                                </span>
-                              </div>
+                              const pct = Math.max(0, Math.min(100, optItem.percentage || 0));
+                              // minimum visual height if > 0% so label fits, or 0% shows slight bar base
+                              const barHeightPercent = pct > 0 ? Math.max(pct, 12) : 3;
 
-                              {/* Bar Graph */}
-                              <div className="h-2 w-full overflow-hidden rounded-full bg-[#EBE7DF]">
+                              return (
                                 <div
-                                  className={`h-full rounded-full transition-all duration-500 ease-out ${
-                                    isSelectedByMe ? "bg-[#E67230]" : "bg-[#D15F1F]/70"
-                                  }`}
-                                  style={{ width: `${optItem.percentage}%` }}
-                                />
-                              </div>
-                            </div>
-                          );
-                        })}
+                                  key={optIdx}
+                                  className="flex flex-col items-center flex-1 h-full justify-end group min-w-[36px]"
+                                >
+                                  {/* Percentage & Vote Count Top Label */}
+                                  <div className="mb-1.5 flex flex-col items-center">
+                                    {isSelectedByMe && (
+                                      <span className="mb-0.5 inline-flex items-center gap-0.5 rounded-full bg-[#E67230] text-white px-1.5 py-0.2 text-[9px] font-extrabold uppercase shadow-xs">
+                                        <Check className="size-2 stroke-[3]" /> You
+                                      </span>
+                                    )}
+                                    <span
+                                      className={`text-[11px] font-bold font-mono transition-colors ${
+                                        isSelectedByMe ? "text-[#E67230] font-extrabold" : "text-[#444444]"
+                                      }`}
+                                    >
+                                      {optItem.percentage}%
+                                    </span>
+                                  </div>
+
+                                  {/* Vertical Bar Column */}
+                                  <div className="w-full max-w-[42px] h-full flex items-end">
+                                    <div
+                                      className={`w-full rounded-t-lg transition-all duration-700 ease-out relative ${
+                                        isSelectedByMe
+                                          ? "bg-gradient-to-t from-[#D15F1F] to-[#E67230] shadow-[0_4px_12px_rgba(230,114,48,0.35)] ring-2 ring-[#E67230]/40"
+                                          : pct > 0
+                                            ? "bg-gradient-to-t from-[#F09A65] to-[#F5B58D] hover:from-[#E67230] hover:to-[#F09A65]"
+                                            : "bg-[#EFECE6]"
+                                      }`}
+                                      style={{ height: `${barHeightPercent}%` }}
+                                      title={`${optItem.option}: ${optItem.percentage}% (${optItem.count} votes)`}
+                                    />
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </div>
+
+                          {/* X-axis Options Labels */}
+                          <div className="flex justify-around gap-2 pt-2 px-1">
+                            {qi.options.map((optItem, optIdx) => {
+                              const isSelectedByMe = isDoctorSelection(
+                                qi.question_id,
+                                optItem.option,
+                                qi.question_type
+                              );
+
+                              return (
+                                <div
+                                  key={optIdx}
+                                  className="flex-1 text-center min-w-[36px]"
+                                >
+                                  <p
+                                    className={`text-[11px] leading-tight line-clamp-2 transition-colors ${
+                                      isSelectedByMe
+                                        ? "font-extrabold text-[#E67230]"
+                                        : "text-[#55524B] font-medium"
+                                    }`}
+                                    title={optItem.option}
+                                  >
+                                    {optItem.option}
+                                  </p>
+                                  <span className="text-[10px] text-[#888888] font-mono mt-0.5 block">
+                                    ({optItem.count} {optItem.count === 1 ? "vote" : "votes"})
+                                  </span>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </div>
                       </div>
                     ) : qi.text_answers && qi.text_answers.length > 0 ? (
                       <div className="space-y-2 pt-1">
