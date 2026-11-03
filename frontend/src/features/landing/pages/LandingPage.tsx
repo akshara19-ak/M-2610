@@ -3615,10 +3615,7 @@ export function ManagedServicesTreeSection() {
                               {service.tag}
                             </span>
                           </div>
-                          <span className="inline-flex items-center gap-1.5 text-xs text-[#888888]">
-                            <span className="size-1.5 rounded-full bg-[#E67230] animate-pulse" />
-                            Tree Node {service.number} / 05
-                          </span>
+
                         </div>
 
                         {/* Service Title */}
@@ -3642,9 +3639,7 @@ export function ManagedServicesTreeSection() {
                           <ArrowRight className="size-4 text-[#E67230]" />
                         </a>
 
-                        <span className="font-mono text-xs text-[#888888]">
-                          Auto-sliding (3s) · Hover to pause
-                        </span>
+
                       </div>
                     </div>
                   );
@@ -3982,10 +3977,7 @@ export function ManagedServicesTreeSection() {
                               {service.tag}
                             </span>
                           </div>
-                          <span className="inline-flex items-center gap-1.5 text-xs text-[#888888]">
-                            <span className="size-1.5 rounded-full bg-[#E67230] animate-pulse" />
-                            Tree Node {service.number} / 05
-                          </span>
+
                         </div>
 
                         {/* Service Title */}
@@ -4009,9 +4001,7 @@ export function ManagedServicesTreeSection() {
                           <ArrowRight className="size-3.5 sm:size-4 text-[#E67230]" />
                         </a>
 
-                        <span className="font-mono text-[11px] sm:text-xs text-[#888888]">
-                          Auto-sliding (3s)
-                        </span>
+
                       </div>
                     </div>
                   );
