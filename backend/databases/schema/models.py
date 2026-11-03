@@ -487,3 +487,20 @@ class ClinicalSurveyResponse(Base):
     reward_points_awarded: Mapped[int] = mapped_column(Integer, default=50, nullable=False)
     submitted_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
 
+class DoctorChallenge(Base):
+    """
+    Practitioner workflow challenges submitted from the Doctor Workspace.
+    """
+    __tablename__ = "doctor_challenges"
+
+    id: Mapped[str] = mapped_column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    doctor_id: Mapped[Optional[str]] = mapped_column(String(36), ForeignKey("doctors.id", ondelete="SET NULL"), nullable=True, index=True)
+    doctor_name: Mapped[str] = mapped_column(String(255), default="Practitioner", nullable=False)
+    doctor_email: Mapped[str] = mapped_column(String(255), default="doctor@meyveda.com", nullable=False, index=True)
+    doctor_phone: Mapped[Optional[str]] = mapped_column(String(50), nullable=True)
+    license_number: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
+    challenge: Mapped[str] = mapped_column(Text, nullable=False)
+    status: Mapped[str] = mapped_column(String(50), default="New", nullable=False, index=True) # New, In Review, Planned, Resolved
+    admin_notes: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=utc_now, onupdate=utc_now, nullable=False)

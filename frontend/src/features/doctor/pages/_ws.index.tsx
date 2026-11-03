@@ -90,13 +90,11 @@ export function Home() {
 
       const subjectHeadline = cleanChallenge.slice(0, 80).replace(/\r?\n/g, " ");
 
-      await apiClient.post("/contact", {
-        full_name: doctorName.startsWith("Dr.") ? doctorName : `Dr. ${doctorName}`,
-        email: doctorEmail,
-        phone: doctorPhone,
-        category: "Doctor Workflow Challenge",
-        subject: `[Workflow Challenge] ${subjectHeadline}`,
-        message: cleanChallenge,
+      await apiClient.post("/challenges", {
+        challenge: cleanChallenge,
+        doctor_name: doctorName.startsWith("Dr.") ? doctorName : `Dr. ${doctorName}`,
+        doctor_email: doctorEmail,
+        doctor_phone: doctorPhone,
       });
 
       toast.success("Thank you! Your workflow challenge has been submitted.", {

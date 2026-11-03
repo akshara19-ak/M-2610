@@ -1,5 +1,6 @@
 import * as AlertDialogPrimitive from "@radix-ui/react-alert-dialog";
 import { LiveContactInquiriesSection } from "@/features/admin/components/LiveContactInquiriesSection";
+import { LiveDoctorChallengesSection } from "@/features/admin/components/LiveDoctorChallengesSection";
 import { Mail, AlertCircle, ArrowUpDown, CheckCircle2, Clock, CornerDownRight, FileText, Send, User } from "lucide-react";
 import { useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -66,7 +67,7 @@ export function QueriesPage() {
     removeQuery,
   } = useQueries();
 
-  const [activeTab, setActiveTab] = useState<"contact" | "internal">("contact");
+  const [activeTab, setActiveTab] = useState<"challenges" | "contact" | "internal">("challenges");
   const [filters, setFilters] = useState<QueryFilters>(defaultQueryFilters);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [pendingDeleteId, setPendingDeleteId] = useState<string | null>(null);
