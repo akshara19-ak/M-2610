@@ -4065,8 +4065,11 @@ export function ManagedServicesTreeSection() {
 function AyushSlideCarousel() {
   const [focusedIndex, setFocusedIndex] = useState(0);
 
-  // Stepping in loop: focuses each element for 2.8 seconds, then advances left to right
+  // Stepping in loop: on tablet/desktop (min-width: 640px), focuses each element for 2.8s
   useEffect(() => {
+    // Only run the stepping animation if screen is desktop/tablet (sm and up)
+    if (typeof window === "undefined" || window.innerWidth < 640) return;
+
     const timer = setInterval(() => {
       setFocusedIndex((prev) => (prev + 1) % AYUSH_SYSTEMS.length);
     }, 2800);
@@ -4090,39 +4093,51 @@ function AyushSlideCarousel() {
               key={sys.letter}
               type="button"
               onClick={() => setFocusedIndex(idx)}
-              className="group inline-flex items-center gap-2 sm:gap-2.5 focus:outline-none shrink-0"
+              className="group inline-flex items-center gap-1.5 sm:gap-2.5 focus:outline-none shrink-0"
             >
-              {/* Icon Circle (Enlarged, smoothly turns into bold black circle when focused) */}
+              {/* Icon Circle */}
               <div
-                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${isFocused
-                    ? "bg-[#111111] text-[#E67230] shadow-md scale-105"
-                    : "bg-[#FBEDE0] text-[#111111] hover:bg-[#F8E2D0] border border-[#F5DCBE]/60 shadow-[0_2px_8px_rgba(230,114,48,0.06)]"
+                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out bg-[#FBEDE0] text-[#111111] hover:bg-[#F8E2D0] border border-[#F5DCBE]/60 shadow-[0_2px_8px_rgba(230,114,48,0.06)] ${
+                  isFocused
+                    ? "sm:bg-[#111111] sm:text-[#E67230] sm:shadow-md sm:scale-105"
+                    : ""
                 }`}
               >
                 <span
-                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 ${isFocused ? "text-[#E67230]" : "text-[#111111]"
-                    }`}
+                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 text-[#111111] ${
+                    isFocused ? "sm:text-[#E67230]" : ""
+                  }`}
                 >
                   {sys.icon}
                 </span>
               </div>
 
-              {/* Text Container: cross-fades cleanly between the initial letter and the full cohesive name */}
+              {/* Text Container */}
               <div className="relative flex items-center">
-                {/* 1. Unfocused State: Single bold letter (A, Y, U, S, H) in brand orange */}
+                {/* 
+                  Letter (A, Y, U, S, H):
+                  - On mobile (<sm): Always visible, static, brand orange, no expanding animation.
+                  - On desktop (sm+): Cross-fades out when expanded.
+                */}
                 <span
-                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight transition-opacity duration-300 ${isFocused ? "opacity-0 absolute pointer-events-none" : "opacity-100"
-                    }`}
+                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight ${
+                    isFocused ? "opacity-100 sm:opacity-0 sm:absolute sm:pointer-events-none" : "opacity-100"
+                  }`}
                 >
                   {sys.letter}
                 </span>
 
-                {/* 2. Focused State: Smoothly expands as ONE unified cohesive name (same size/boldness as headline) */}
+                {/* 
+                  Expanded text (Ayurveda, Yoga and Naturopathy, etc.):
+                  - On mobile (<sm): Completely hidden (hidden sm:flex).
+                  - On desktop (sm+): Smoothly expands when focused.
+                */}
                 <div
-                  className={`overflow-hidden transition-all duration-500 ease-out flex items-center ${isFocused
+                  className={`hidden sm:flex overflow-hidden transition-all duration-500 ease-out items-center ${
+                    isFocused
                       ? "max-w-[210px] opacity-100"
                       : "max-w-0 opacity-0 pointer-events-none"
-                    }`}
+                  }`}
                 >
                   {sys.isTwoLine ? (
                     <span className="whitespace-nowrap text-xs sm:text-[13.5px] lg:text-[14.5px] font-extrabold uppercase leading-[1.15] tracking-tight text-[#111111]">
