@@ -25,22 +25,28 @@ export function LandingFooter() {
       <div className="mx-auto max-w-[1280px] px-5 sm:px-8 lg:px-12">
         {/* Main Footer 4-Column Grid */}
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8 pb-12 border-b border-[#EBE7DF]">
-          {/* Col 1 (Span 4): Logo, About & Corporate/CIN */}
-          <div className="lg:col-span-4 space-y-4">
-            <Link to="/" aria-label="Meyveda Home" className="inline-block">
-              <img
-                src={meyvedaLogo}
-                alt="Meyveda — reinvent you"
-                className="h-11 sm:h-13 lg:h-[54px] w-auto object-contain select-none transition-opacity hover:opacity-95"
-              />
-            </Link>
+          {/* Col 1 (Span 4): Logo, Corporate/CIN & About */}
+          <div className="lg:col-span-4 space-y-3.5">
+            <div className="flex flex-wrap sm:flex-nowrap items-center gap-3.5 sm:gap-4">
+              <Link to="/" aria-label="Meyveda Home" className="inline-block shrink-0">
+                <img
+                  src={meyvedaLogo}
+                  alt="Meyveda — reinvent you"
+                  className="h-11 sm:h-12 lg:h-[48px] w-auto object-contain select-none transition-opacity hover:opacity-95"
+                />
+              </Link>
+              <div className="border-l border-[#D5D0C6] pl-3.5 sm:pl-4 space-y-0.5">
+                <p className="text-[11px] sm:text-xs font-extrabold text-[#111111] uppercase tracking-wide leading-tight">
+                  MEYVEDA AYUSH PRIVATE LIMITED
+                </p>
+                <p className="font-mono text-[10px] sm:text-[11px] text-[#666666] tracking-tight">
+                  CIN: U86909TN2026PTC199470
+                </p>
+              </div>
+            </div>
             <p className="text-sm leading-relaxed text-[#555555]">
               Meyveda is a proprietary digital operating system and Management Services Organization (MSO) dedicated exclusively to the AYUSH sector.
             </p>
-            <div className="pt-2 text-xs text-[#666666] space-y-1">
-              <p className="font-bold text-[#111111] uppercase tracking-wide">MEYVEDA AYUSH PRIVATE LIMITED</p>
-              <p className="font-mono text-[#555555]">CIN: U86909TN2026PTC199470</p>
-            </div>
           </div>
 
           {/* Col 2 (Span 3): Contact Information */}
