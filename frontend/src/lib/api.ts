@@ -140,8 +140,13 @@ export async function apiRequest<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const baseUrl = getApiBaseUrl();
-  const normalizedEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
-  const url = `${baseUrl}${normalizedEndpoint}`;
+  let cleanEndpoint = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+  if (baseUrl.endsWith("/api/v1") && cleanEndpoint.startsWith("/api/v1/")) {
+    cleanEndpoint = cleanEndpoint.replace("/api/v1", "");
+  } else if (baseUrl.endsWith("/api") && cleanEndpoint.startsWith("/api/")) {
+    cleanEndpoint = cleanEndpoint.replace("/api", "");
+  }
+  const url = `${baseUrl}${cleanEndpoint}`;
 
   const headers = new Headers(options.headers || {});
 

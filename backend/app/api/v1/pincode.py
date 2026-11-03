@@ -212,6 +212,84 @@ async def lookup_pincode_and_ayush_board(
     post_offices = first_record.get("PostOffice") or []
 
     if record_status != "Success" or not post_offices:
+        # 1. First attempt: Query nearby Apex Head Post Office / Sorting Hub for this series
+        # e.g., 614004 -> tries 614001, 614014, 610001
+        series_candidates = [
+            cleaned_pincode[:4] + "01",
+            cleaned_pincode[:3] + "001",
+            cleaned_pincode[:2] + "1001",
+            cleaned_pincode[:2] + "0001",
+        ]
+        async with httpx.AsyncClient(timeout=timeout) as fallback_client:
+            for cand_pin in series_candidates:
+                if cand_pin == cleaned_pincode:
+                    continue
+                try:
+                    c_resp = await fallback_client.get(f"{base_url}/pincode/{cand_pin}", headers={"User-Agent": "Meyveda-Platform/1.0"})
+                    if c_resp.status_code == 200:
+                        c_data = c_resp.json()
+                        if isinstance(c_data, list) and c_data and c_data[0].get("Status") == "Success":
+                            cand_pos = c_data[0].get("PostOffice") or []
+                            if cand_pos:
+                                # Prioritize Head Post Office
+                                ho_rec = next((p for p in cand_pos if "Head Post Office" in (p.get("BranchType") or "")), cand_pos[0])
+                                ho_name = ho_rec.get("Name") or ""
+                                cand_dist = ho_rec.get("District") or ho_rec.get("Division") or ""
+                                cand_state = ho_rec.get("State") or ""
+                                cand_div = ho_rec.get("Division") or cand_dist
+                                cand_reg = ho_rec.get("Region") or cand_state
+
+                                ayush_board_data = get_ayush_board_details(cand_state)
+                                return PincodeLookupResponse(
+                                    pincode=cleaned_pincode,
+                                    district=cand_dist,
+                                    state=cand_state,
+                                    region=cand_reg,
+                                    division=cand_div,
+                                    post_offices=[p.get("Name") for p in cand_pos if p.get("Name")],
+                                    primary_post_office=PostOfficeDetail(
+                                        name=f"{ho_name} Head Post Office (H.O.)",
+                                        branch_type="Head Post Office",
+                                        delivery_status="Delivery",
+                                        circle=cand_state,
+                                        district=cand_dist,
+                                        division=cand_div,
+                                        region=cand_reg,
+                                        state=cand_state,
+                                        country="India",
+                                        pincode=cleaned_pincode,
+                                    ),
+                                    ayush_governance=AyushBoardResponse(**ayush_board_data),
+                                )
+                except Exception as cand_exc:
+                    logger.debug("Candidate lookup failed for %s: %s", cand_pin, cand_exc)
+
+        # 2. Second fallback: General region fallback table
+        if prefix_2 in PIN_PREFIX_FALLBACK:
+            fb_city, fb_state = PIN_PREFIX_FALLBACK[prefix_2]
+            ayush_board_data = get_ayush_board_details(fb_state)
+            return PincodeLookupResponse(
+                pincode=cleaned_pincode,
+                district=fb_city,
+                state=fb_state,
+                region=fb_state,
+                division=fb_city,
+                post_offices=[f"{fb_city} Head Post Office", f"{fb_city} Branch Office"],
+                primary_post_office=PostOfficeDetail(
+                    name=f"{fb_city} Head Post Office (H.O.)",
+                    branch_type="Head Post Office",
+                    delivery_status="Delivery",
+                    circle=fb_state,
+                    district=fb_city,
+                    division=fb_city,
+                    region=fb_state,
+                    state=fb_state,
+                    country="India",
+                    pincode=cleaned_pincode,
+                ),
+                ayush_governance=AyushBoardResponse(**ayush_board_data),
+            )
+
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="PIN code incorrect.",

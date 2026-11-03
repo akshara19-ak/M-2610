@@ -106,10 +106,13 @@ function NavList({ collapsed, onNavigate }: { collapsed: boolean; onNavigate?: (
       <div className="flex flex-col gap-1">{visibleNav.map(item)}</div>
       <div className="mt-auto pt-6 flex flex-col gap-1 border-t border-sidebar-border/40">
         <Link
-          to="/login"
+          to="/"
           onClick={() => {
             if (typeof window !== "undefined") {
               localStorage.removeItem("meyveda_auth_token");
+              localStorage.removeItem("meyveda_access_token");
+              localStorage.removeItem("meyveda_user_email");
+              localStorage.removeItem("meyveda_user_name");
               localStorage.removeItem("meyveda_user_role");
             }
             setState(() => ({ signedIn: false }));

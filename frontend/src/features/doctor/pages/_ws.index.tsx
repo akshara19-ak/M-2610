@@ -13,7 +13,17 @@ import {
   Layers,
   Download,
   QrCode,
+  Loader2,
+  HelpCircle,
+  X,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import QRCode from "qrcode";
 import { useStore, getState } from "@/lib/store";
 import { seo } from "@/lib/seo";
@@ -53,6 +63,51 @@ export function Home() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
+
+  // Workflow challenge modal state
+  const [challengeModalOpen, setChallengeModalOpen] = useState(false);
+  const [challengeResponse, setChallengeResponse] = useState("");
+  const [submittingChallenge, setSubmittingChallenge] = useState(false);
+
+  const handleOpenChallengeModal = () => {
+    setChallengeResponse("");
+    setChallengeModalOpen(true);
+  };
+
+  const handleSubmitChallenge = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanChallenge = challengeResponse.trim();
+    if (!cleanChallenge || cleanChallenge.length < 5) {
+      toast.error("Please describe your challenge before submitting.");
+      return;
+    }
+
+    setSubmittingChallenge(true);
+    try {
+      const doctorName = (doctor as any)?.name || (doctor as any)?.full_name || "Practitioner";
+      const doctorEmail = (doctor as any)?.email || "doctor@meyveda.com";
+      const doctorPhone = (doctor as any)?.mobile || (doctor as any)?.phone || "+91 9986398332";
+
+      const subjectHeadline = cleanChallenge.slice(0, 80).replace(/\r?\n/g, " ");
+
+      await apiClient.post("/challenges", {
+        challenge: cleanChallenge,
+        doctor_name: doctorName.startsWith("Dr.") ? doctorName : `Dr. ${doctorName}`,
+        doctor_email: doctorEmail,
+        doctor_phone: doctorPhone,
+      });
+
+      toast.success("Thank you! Your workflow challenge has been submitted.", {
+        description: "Our team will review your feedback to shape upcoming practitioner tools.",
+      });
+      setChallengeModalOpen(false);
+      setChallengeResponse("");
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to submit challenge. Please try again.");
+    } finally {
+      setSubmittingChallenge(false);
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -223,12 +278,13 @@ export function Home() {
 
         {/* Action CTAs: Share Survey, WhatsApp Community, Telegram Group */}
         <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-wrap">
-          <Link
-            to="/survey"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
+          <button
+            type="button"
+            onClick={handleOpenChallengeModal}
+            className="inline-flex items-center justify-center rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           >
-            Share Your Biggest Workflow Challenge
-          </Link>
+            <span>Share Your Biggest Workflow Challenge</span>
+          </button>
 
           <a
             href={whatsappCommunityUrl}
@@ -384,6 +440,54 @@ export function Home() {
           </div>
         </div>
       </section>
+      {/* Dialog Popup for Workflow Challenge */}
+      <Dialog open={challengeModalOpen} onOpenChange={setChallengeModalOpen}>
+        <DialogContent className="max-w-lg p-6 sm:p-7 rounded-3xl bg-white border border-[#EBE7DF] shadow-2xl">
+          <DialogHeader className="space-y-1.5 text-left">
+            <p className="text-xs font-bold uppercase tracking-wider text-[#E67230]">
+              Co-Create With Meyveda
+            </p>
+            <DialogTitle className="text-xl sm:text-2xl font-bold text-[#111111]">
+              Share Your Workflow Challenge
+            </DialogTitle>
+            <DialogDescription className="text-sm text-[#666666] leading-relaxed">
+              Tell our product engineers what slows down your daily AYUSH clinical practice. Your feedback is sent directly to the Admin Desk to shape our development roadmap.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmitChallenge} className="mt-4 space-y-4">
+            <div>
+              <textarea
+                value={challengeResponse}
+                onChange={(e) => setChallengeResponse(e.target.value)}
+                rows={6}
+                placeholder="Describe your workflow challenge..."
+                className="w-full rounded-2xl border border-[#D5D0C7] bg-[#FAF9F6] p-4 text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:outline-none focus:ring-1 focus:ring-[#E67230] resize-none"
+                autoFocus
+                required
+              />
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setChallengeModalOpen(false)}
+                className="rounded-xl border border-[#EBE7DF] px-5 py-2.5 text-sm font-semibold text-[#555555] hover:bg-[#FAF9F6] transition-colors cursor-pointer"
+                disabled={submittingChallenge}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={submittingChallenge}
+                className="inline-flex items-center justify-center rounded-xl bg-[#E67230] px-6 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors disabled:opacity-60 cursor-pointer"
+              >
+                {submittingChallenge ? "Submitting..." : "Submit Challenge"}
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

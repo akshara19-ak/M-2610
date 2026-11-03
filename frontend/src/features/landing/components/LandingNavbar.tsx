@@ -35,6 +35,16 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
   const activeDoctorDisplayName = user?.doctor_profile?.full_name || localUserName || (localUserEmail ? localUserEmail.split("@")[0] : "Dr. Vaidya");
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href === "/" || href === "/#top" || href === "#top" || href === "#") {
+      if (window.location.pathname === "/" || window.location.pathname === "") {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        if (window.location.hash) {
+          window.history.replaceState(null, "", window.location.pathname);
+        }
+        return;
+      }
+    }
     if (href.startsWith("/#") || href.startsWith("#")) {
       const anchor = href.replace(/^\/?#/, "");
       if (window.location.pathname === "/" || window.location.pathname === "") {
@@ -150,6 +160,7 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
               <a
                 key={item.label}
                 href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
                 className={`whitespace-nowrap py-2 text-[15px] font-semibold transition-colors ${
                   activePath === item.href ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
                 }`}
@@ -275,7 +286,10 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
                 <a
                   key={item.label}
                   href={item.href}
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => {
+                    handleNavClick(e, item.href);
+                    setMobileMenuOpen(false);
+                  }}
                   className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
                 >
                   {item.label}

@@ -98,6 +98,14 @@ export function Register() {
     region_note?: string | null;
   } | null>(null);
 
+  const [postalBranchDetails, setPostalBranchDetails] = useState<{
+    mainBranch: string;
+    subBranch: string;
+    branchType?: string;
+    district: string;
+    state: string;
+  } | null>(null);
+
   // 4. PIN Code
   const [pincode, setPincode] = useState("");
 
@@ -113,12 +121,24 @@ export function Register() {
         .get<any>(`/pincode/${cleanPin}`)
         .then((res) => {
           if (!isCancelled) {
-            const postOfficeName = res?.primary_post_office?.name || res?.post_offices?.[0] || "";
-            const districtName = res?.district || res?.primary_post_office?.district || res?.division || "";
-            const detectedCity = postOfficeName && districtName && postOfficeName.toLowerCase() !== districtName.toLowerCase()
-              ? postOfficeName + ', ' + districtName
-              : districtName || postOfficeName || "";
-            const detectedState = res?.state || "";
+            // Extract clean town / post office name
+            const rawPoName = (res?.primary_post_office?.name || res?.post_offices?.[0] || "").trim();
+            const cleanTown = rawPoName
+              .replace(/\s+(Head Post Office|Sub Post Office|Branch Post Office|H\.O\.|S\.O\.|B\.O\.).*$/i, "")
+              .replace(/\s+Main Branch$/i, "")
+              .trim();
+
+            const districtName = (res?.district || res?.primary_post_office?.district || res?.division || "").trim();
+            const detectedState = (res?.state || "").trim();
+
+            // Format City cleanly: e.g. "Mannargudi, Tiruvarur" or "Begepalli, Krishnagiri" or "Chennai"
+            let detectedCity = "";
+            if (cleanTown && districtName && cleanTown.toLowerCase() !== districtName.toLowerCase()) {
+              detectedCity = `${cleanTown}, ${districtName}`;
+            } else {
+              detectedCity = districtName || cleanTown || "";
+            }
+
             if (detectedCity) {
               setCity(detectedCity);
               setStateName(detectedState);
@@ -139,6 +159,27 @@ export function Register() {
             } else {
               setGoverningCouncil(null);
             }
+
+            // Proper Main Apex Branch & Sub Branch
+            const mainBranchName = rawPoName.toLowerCase().includes("head post office")
+              ? rawPoName
+              : `${cleanTown || districtName} Head Post Office (H.O.)`;
+
+            const subBranchName =
+              rawPoName && rawPoName !== cleanTown && !rawPoName.toLowerCase().includes("head post office")
+                ? rawPoName
+                : cleanTown
+                ? `${cleanTown} Delivery Sub Branch`
+                : `${districtName} Delivery Unit`;
+
+            const brType = res?.primary_post_office?.branch_type || "Post Office";
+            setPostalBranchDetails({
+              mainBranch: mainBranchName,
+              subBranch: subBranchName,
+              branchType: brType,
+              district: districtName,
+              state: detectedState,
+            });
           }
         })
         .catch((err: any) => {
@@ -874,23 +915,10 @@ export function Register() {
                 </div>
               </div>
 
-              {/* Statutory Medical Council Card - Shown below PIN code */}
+              {/* Statutory Medical Council Card - Shown below PIN code without official portal link */}
               {governingCouncil && !isDetectingCity && (
                 <div className="rounded-xl border border-[#E67230]/35 bg-gradient-to-br from-[#FFFDFB] to-[#FFF6EE] p-4 sm:p-4.5 shadow-2xs space-y-3 animate-in fade-in-50 duration-200">
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-1.5">
-                      <div className="size-6 rounded-full bg-[#E67230]/15 flex items-center justify-center text-[#E67230]">
-                        <Scale className="size-3.5" />
-                      </div>
-                      <span className="text-xs font-bold text-[#E67230] uppercase tracking-wider">
-                        Governing Statutory Medical Council
-                      </span>
-                    </div>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[11px] font-bold text-[#111111] border border-[#EBE7DF] shadow-2xs">
-                      <ShieldCheck className="size-3 text-[#E67230]" />
-                      {governingCouncil.board_type || "State Statutory Board"}
-                    </span>
-                  </div>
+
 
                   <div>
                     <h4 className="text-sm sm:text-base font-extrabold text-[#111111] leading-snug">
@@ -913,21 +941,6 @@ export function Register() {
                         <span className="font-bold text-[#111111] shrink-0">Governing Authority:</span>
                         <span className="text-[#444444] font-medium">{governingCouncil.controlling_authority}</span>
                       </div>
-                    )}
-                  </div>
-
-                  <div className="flex items-center justify-between pt-0.5 flex-wrap gap-2">
-                    
-                    {governingCouncil.official_portal && (
-                      <a
-                        href={governingCouncil.official_portal}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-1 text-xs font-bold text-[#E67230] hover:text-[#D15F1F] hover:underline"
-                      >
-                        <span>Official Portal</span>
-                        <ExternalLink className="size-3.5" />
-                      </a>
                     )}
                   </div>
                 </div>

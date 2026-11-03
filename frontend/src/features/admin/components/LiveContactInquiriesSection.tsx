@@ -51,6 +51,7 @@ export interface LiveContactStats {
 
 const CATEGORIES = [
   "All",
+  "Doctor Workflow Challenge",
   "Doctor Onboarding & Verification",
   "Cluster Franchise Network",
   "AYUSH Pharma Collaboration",
