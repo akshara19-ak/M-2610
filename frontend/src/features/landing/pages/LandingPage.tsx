@@ -3575,7 +3575,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "iaas",
     number: "01",
-    title: "IaaS",
+    title: "Infrastructure-as-a-Service (IaaS)",
     description:
       "Instant infrastructure for healthcare & business needs. Deployable, plug-and-play co-working physical spaces and tele-health to bypass heavy initial capital expenditures.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
@@ -3601,7 +3601,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "global-opportunities",
     number: "02",
-    title: "Global Opportunities",
+    title: "Global Patient Sourcing & MVT Footprint",
     description:
       "Expand your reach with MVT worldwide. Centralized marketplace driving patient acquisition locally and internationally via Medical Value Travel (MVT).",
     gradient: "linear-gradient(135deg, #F37E38 0%, #D86423 50%, #B84E14 100%)",
@@ -3631,7 +3631,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "operating-support-system",
     number: "03",
-    title: "Operating Support System",
+    title: "Enterprise Logistics, NHCX Claims & M-CAMP Engine",
     description:
       "Seamless logistics & claim management. Frictionless NHCX cashless claim settlements, corporate camp engines, and complete end-to-end operational backing.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
@@ -3661,7 +3661,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "mso-backbone",
     number: "04",
-    title: "MSO back bone",
+    title: "MSO Backbone & Financial Command Center",
     description:
       "Scale smarter with our MSO support. Financial command center, regulatory compliance, and administrative infrastructure for hub-and-spoke expansion.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
@@ -3685,7 +3685,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "innovation-expansion",
     number: "05",
-    title: "innovation & expansion",
+    title: "Brand Incubation & Clinical Research Hub",
     description:
       "Research, innovate & grow with us. Clinical trial management (CTMS), brand incubation, and mentorship programs for launching groundbreaking AYUSH therapies.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
