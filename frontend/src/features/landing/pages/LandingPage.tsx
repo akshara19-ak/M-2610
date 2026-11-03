@@ -106,10 +106,13 @@ const navigation = [
 
 const AYUSH_SYSTEMS = [
   {
-    name: "Ayurveda",
+    letter: "A",
+    restText: "yurveda",
+    fullName: "Ayurveda",
     icon: (
+      /* Mortar & pestle with leafy sprout & small leaf motif (Ayurveda) */
       <svg
-        className="size-5 sm:size-6 text-[#E67230]"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -117,16 +120,27 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-        <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+        {/* Mortar bowl */}
+        <path d="M4 11h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
+        <path d="M8 18.5h8" />
+        {/* Pestle diagonally extending out */}
+        <path d="M15.5 4l-4 7" />
+        {/* Leaf branch sprouted on top left */}
+        <path d="M10.5 6.5C8 6 7 8 8 10c2 .5 3-1.5 2.5-3.5Z" />
+        {/* Small internal leaf emblem on bowl */}
+        <path d="M14 14.5c-1.5 0-2.2 1.2-1.8 2.3 1.2.3 2.2-.8 1.8-2.3Z" />
       </svg>
     ),
   },
   {
-    name: "Siddha",
+    letter: "Y",
+    restText: "oga and\nNaturopathy",
+    fullName: "Yoga and\nNaturopathy",
+    isTwoLine: true,
     icon: (
+      /* Meditating figure in full lotus posture with radiating lotus petals behind (Yoga & Naturopathy) */
       <svg
-        className="size-5 sm:size-6 text-[#E67230]"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -134,18 +148,26 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M10 2h4" />
-        <path d="M12 2v4" />
-        <path d="M8.5 7.5a6.5 6.5 0 1 0 7 0L14 6H10l-1.5 1.5Z" />
-        <circle cx="12" cy="14" r="2" />
+        {/* Meditator head & torso */}
+        <circle cx="12" cy="6" r="1.8" />
+        <path d="M12 9.5c-2 0-3 1.5-3 3 0 2.2 2 3.8 3 5 1-1.2 3-2.8 3-5 0-1.5-1-3-3-3Z" />
+        {/* Folded crossed legs in lotus base */}
+        <path d="M6 18c1.5-1.5 3.5-1.5 6-1.5s4.5 0 6 1.5c-2 1.5-4 1.5-6 1.5s-4 0-6-1.5Z" />
+        {/* Surrounding lotus petals */}
+        <path d="M7 13.5C5.5 12 5.5 9.5 7.5 8c1 1.5 1.5 3.5 1 5.5" />
+        <path d="M17 13.5c1.5-1.5 1.5-4-.5-5.5-1 1.5-1.5 3.5-1 5.5" />
+        <path d="M10 6C9 4 10.5 2.5 12 2c1.5.5 3 2 2 4" />
       </svg>
     ),
   },
   {
-    name: "Unani",
+    letter: "U",
+    restText: "nani",
+    fullName: "Unani",
     icon: (
+      /* Unani preparation bowl with diagonal pestle & top sprig */
       <svg
-        className="size-5 sm:size-6 text-[#E67230]"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -153,17 +175,24 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M4 14a8 8 0 0 0 16 0H4Z" />
-        <path d="M15 4l-4 6" />
-        <path d="M8 20h8" />
+        {/* Shallow preparation bowl */}
+        <path d="M4 11h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
+        <path d="M8 18.5h8" />
+        {/* Long pestle */}
+        <path d="M16 4l-4.5 7" />
+        {/* Leaf sprig at top of pestle */}
+        <path d="M11 6.5c-2-.5-2.8 1.2-2 2.8 1.8.3 2.5-1.2 2-2.8Z" />
       </svg>
     ),
   },
   {
-    name: "Homeopathy",
+    letter: "S",
+    restText: "iddha",
+    fullName: "Siddha",
     icon: (
+      /* Traditional Siddha pot / Kalash vessel topped with flame/finial and flanked by side leaves */
       <svg
-        className="size-5 sm:size-6 text-[#E67230]"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -171,16 +200,28 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M12 3a6 6 0 0 0 6 6c0 4-3 8-6 12-3-4-6-8-6-12a6 6 0 0 0 6-6Z" />
-        <circle cx="12" cy="9" r="1.5" />
+        {/* Top flame / spire finial */}
+        <path d="M12 2c-.8 1.2-.8 2 0 3 .8-1 .8-1.8 0-3Z" />
+        <circle cx="12" cy="6.2" r="1.2" />
+        {/* Tiered neck of vessel */}
+        <path d="M10 8h4" />
+        <path d="M9 10h6" />
+        {/* Rounded pot body */}
+        <path d="M8 11.5c-2 1.5-2 4.5 0 6 1.8 1.5 6.2 1.5 8 0 2-1.5 2-4.5 0-6" />
+        {/* Flanking side leaves */}
+        <path d="M6 14.5c-2.5-.5-3.5 1.5-2.5 3 1.8.5 3-.8 2.5-3Z" />
+        <path d="M18 14.5c2.5-.5 3.5 1.5 2.5 3-1.8.5-3-.8-2.5-3Z" />
       </svg>
     ),
   },
   {
-    name: "Yoga & Naturopathy",
+    letter: "H",
+    restText: "omoeopathy",
+    fullName: "Homoeopathy",
     icon: (
+      /* Homoeopathic medicine bottle with globules and flowering branch */
       <svg
-        className="size-5 sm:size-6 text-[#E67230]"
+        className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"
@@ -188,11 +229,18 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <circle cx="12" cy="9" r="4" />
-        <path d="M12 2v2" />
-        <path d="M4.93 4.93l1.41 1.41" />
-        <path d="M19.07 4.93l-1.41 1.41" />
-        <path d="M2 18c2.5 0 2.5 2 5 2s2.5-2 5-2 2.5 2 5 2 2.5-2 5-2" />
+        {/* Bottle neck & rim */}
+        <path d="M8 4h8" />
+        <path d="M9 4v2.5L7 9v10a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5V9l-2-2.5V4" />
+        {/* Inner globules / pellets */}
+        <circle cx="10" cy="13" r=".9" />
+        <circle cx="14" cy="13" r=".9" />
+        <circle cx="12" cy="15.5" r=".9" />
+        <circle cx="10" cy="17.5" r=".9" />
+        <circle cx="14" cy="17.5" r=".9" />
+        {/* Small herbal blossom beside bottle base */}
+        <path d="M18 16c1.5-1.5 3-1 3.5.5s-1 2.5-2.5 2" />
+        <path d="M18 18.5c1.2.2 2 1.2 1.5 2.2-.8.5-1.8 0-2-1" />
       </svg>
     ),
   },
@@ -988,7 +1036,7 @@ function MeyvedaLogo({
 }) {
   const activeVariant = compact ? "modal" : variant;
   const sizeClasses = {
-    navbar: "h-10 sm:h-12 lg:h-[52px] w-auto",
+    navbar: "h-[50px] sm:h-[58px] lg:h-[68px] xl:h-[72px] w-auto",
     footer: "h-11 sm:h-13 lg:h-[54px] w-auto",
     cta: "h-11 sm:h-13 lg:h-[54px] w-auto",
     modal: "h-8 sm:h-9 w-auto",
@@ -4031,6 +4079,101 @@ export function ManagedServicesTreeSection() {
   );
 }
 
+/* -------------------------------------------------------------------------- */
+/*             AYUSH SYSTEM SMOOTH SLIDE CAROUSEL (CANVA-STYLE)               */
+/* -------------------------------------------------------------------------- */
+/*             EXPANDING AYUSH STEPPING FOCUS STRIP                           */
+/* -------------------------------------------------------------------------- */
+/* -------------------------------------------------------------------------- */
+/*             EXPANDING AYUSH STEPPING FOCUS STRIP                           */
+/* -------------------------------------------------------------------------- */
+function AyushSlideCarousel() {
+  const [focusedIndex, setFocusedIndex] = useState(0);
+
+  // Stepping in loop: focuses each element for 2.8 seconds, then advances left to right
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setFocusedIndex((prev) => (prev + 1) % AYUSH_SYSTEMS.length);
+    }, 2800);
+
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div className="my-2.5 sm:my-3 w-full">
+      {/* 
+        Bounded strictly between the blue line guidelines:
+        Width spans max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px]
+        (Ending before the peacock R)
+      */}
+      <div className="flex items-center justify-between w-full max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px] h-12 sm:h-14 select-none">
+        {AYUSH_SYSTEMS.map((sys, idx) => {
+          const isFocused = idx === focusedIndex;
+
+          return (
+            <button
+              key={sys.letter}
+              type="button"
+              onClick={() => setFocusedIndex(idx)}
+              className="group inline-flex items-center gap-2 sm:gap-2.5 focus:outline-none shrink-0"
+            >
+              {/* Icon Circle (Enlarged, smoothly turns into bold black circle when focused) */}
+              <div
+                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${
+                  isFocused
+                    ? "bg-[#111111] text-[#E67230] shadow-md scale-105"
+                    : "bg-[#F3EFEA] text-[#111111] hover:bg-[#EBE5DE]"
+                }`}
+              >
+                <span
+                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 ${
+                    isFocused ? "text-[#E67230]" : "text-[#111111]"
+                  }`}
+                >
+                  {sys.icon}
+                </span>
+              </div>
+
+              {/* Text Container: cross-fades cleanly between the initial letter and the full cohesive name */}
+              <div className="relative flex items-center">
+                {/* 1. Unfocused State: Single bold letter (A, Y, U, S, H) in brand orange */}
+                <span
+                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight transition-opacity duration-300 ${
+                    isFocused ? "opacity-0 absolute pointer-events-none" : "opacity-100"
+                  }`}
+                >
+                  {sys.letter}
+                </span>
+
+                {/* 2. Focused State: Smoothly expands as ONE unified cohesive name (same size/boldness as headline) */}
+                <div
+                  className={`overflow-hidden transition-all duration-500 ease-out flex items-center ${
+                    isFocused
+                      ? "max-w-[210px] opacity-100"
+                      : "max-w-0 opacity-0 pointer-events-none"
+                  }`}
+                >
+                  {sys.isTwoLine ? (
+                    <span className="whitespace-nowrap text-xs sm:text-[13.5px] lg:text-[14.5px] font-extrabold uppercase leading-[1.15] tracking-tight text-[#111111]">
+                      Yoga and
+                      <br />
+                      Naturopathy
+                    </span>
+                  ) : (
+                    <span className="whitespace-nowrap text-base sm:text-lg lg:text-[19px] font-extrabold uppercase tracking-tight text-[#111111]">
+                      {sys.fullName}
+                    </span>
+                  )}
+                </div>
+              </div>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export function MeyvedaDoctorsPage() {
   const router = useRouter();
   const navigate = useNavigate();
@@ -4549,15 +4692,7 @@ export function MeyvedaDoctorsPage() {
   const [signInPassword, setSignInPassword] = useState("");
   const [isSigningIn, setIsSigningIn] = useState(false);
 
-  // Meyveda Landing Page Interactive Previews
-  const [currentAyushIndex, setCurrentAyushIndex] = useState(0);
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentAyushIndex((prev) => (prev + 1) % AYUSH_SYSTEMS.length);
-    }, 2400);
-    return () => clearInterval(timer);
-  }, []);
 
   // Sign In submit via backend API
   const handleSignInSubmit = async (e: React.FormEvent) => {
@@ -5030,45 +5165,34 @@ export function MeyvedaDoctorsPage() {
 
         {/* Hero Content Layer (Structured Left Side) */}
         <div className="relative z-10 mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12">
-          <div className="meyveda-enter max-w-[540px] lg:max-w-[490px] xl:max-w-[520px]">
-            {/* Section Eyebrow */}
-            <p className="mb-2 text-xs font-bold uppercase tracking-wider text-[#E67230] sm:text-xs">
-              Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
-            </p>
+          <div className="meyveda-enter max-w-[540px] lg:max-w-[580px] xl:max-w-[620px]">
+            {/* Hero Header Lockup: Eyebrow + Brand Graphic Headline (stands out by 0.1-0.2cm ~5px to the left, fitting precisely within the blue lines) */}
+            <div className="-ml-[5px] sm:-ml-[6px] md:-ml-[7px]">
+              {/* Section Eyebrow (Reduced in proportion to headline) */}
+              <p className="mb-2 pl-[1px] text-[12.5px] sm:text-[13.5px] lg:text-[14px] font-bold uppercase tracking-wider text-[#E67230]">
+                Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
+              </p>
 
-            {/* Headline with Brand Graphic */}
-            <h1
-              id="hero-title"
-              className="relative h-[38px] sm:h-[46px] lg:h-[50px] xl:h-[54px]"
-            >
-              <span className="sr-only">REINVENT YOUR</span>
-              <img
-                src={reinventYourLogo}
-                alt="REINVENT YOUR"
-                width={3312}
-                height={653}
-                className="absolute -top-[7px] sm:-top-[8px] lg:-top-[9px] xl:-top-[9px] left-0 h-[60px] sm:h-[72px] lg:h-[80px] xl:h-[86px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
-                loading="eager"
-                decoding="async"
-              />
-            </h1>
-
-            {/* Black rectangular box with animated AYUSH system carousel */}
-            <div className="mt-3 flex items-center">
-              <div className="inline-flex h-11 sm:h-12 items-center rounded-lg bg-[#111111] px-4 sm:px-5 shadow-md border border-[#222222]">
-                <div
-                  key={currentAyushIndex}
-                  className="ayush-carousel-slide flex items-center gap-2.5"
-                >
-                  <span className="shrink-0 flex items-center justify-center">
-                    {AYUSH_SYSTEMS[currentAyushIndex]?.icon}
-                  </span>
-                  <span className="text-base sm:text-lg font-bold tracking-wide text-white">
-                    {AYUSH_SYSTEMS[currentAyushIndex]?.name}
-                  </span>
-                </div>
-              </div>
+              {/* Headline with Brand Graphic (Scaled to fit neatly within the blue boundary lines) */}
+              <h1
+                id="hero-title"
+                className="relative h-[40px] sm:h-[46px] lg:h-[52px] xl:h-[54px]"
+              >
+                <span className="sr-only">REINVENT YOUR</span>
+                <img
+                  src={reinventYourLogo}
+                  alt="REINVENT YOUR"
+                  width={2144}
+                  height={387}
+                  className="absolute -top-[7px] sm:-top-[9px] lg:-top-[10px] left-0 h-[64px] sm:h-[74px] lg:h-[82px] xl:h-[86px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
+                  loading="eager"
+                  decoding="async"
+                />
+              </h1>
             </div>
+
+            {/* AYUSH System Smooth Slide Carousel (Canva-style right-to-left slide transition) */}
+            <AyushSlideCarousel />
 
             {/* Practice with Meyveda */}
             <div className="mt-2.5 flex flex-wrap items-center gap-2 sm:gap-2.5 text-base sm:text-lg lg:text-[20px] font-bold text-[#111111]">
@@ -5409,7 +5533,7 @@ export function MeyvedaDoctorsPage() {
           <div className="grid grid-cols-1 gap-10 md:grid-cols-2 lg:grid-cols-12 lg:gap-8 pb-12 border-b border-[#EBE7DF]">
             {/* Col 1 (Span 4): Logo, About & Corporate/CIN */}
             <div className="lg:col-span-4 space-y-4">
-              <MeyvedaLogo />
+              <MeyvedaLogo variant="footer" />
               <p className="text-sm leading-relaxed text-[#555555]">
                 Meyveda is a proprietary digital operating system and Management Services Organization (MSO) dedicated exclusively to the AYUSH sector.
               </p>
