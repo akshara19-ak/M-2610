@@ -81,7 +81,7 @@ import imgMedicineCatalogue from "@/assets/dynamic medicine catalogue  procureme
 import imgClinicalToolkit from "@/assets/clinical toolkit & structured care programs.png";
 import imgOpportunityDesk from "@/assets/opportunity desk & peer collaborative.png";
 import justMeyvedaLogo from "@/assets/just_meyveda.png";
-import justMeyvedDownLogo from "@/assets/just_meyved_down.png";
+import meyvedaFaviconSource from "@/assets/meyveda-favicon-source.png";
 import reinventYourLogo from "@/assets/REINVENT_YOU_transparent.png";
 import rishiVideo from "@/assets/Rishi_hero.mp4";
 import stage1Image from "@/assets/1.png";
@@ -3276,9 +3276,9 @@ export function CoreVaidyaSection() {
                 {/* Central Meyveda Logo Hub - Stays fixed */}
                 <div className="relative z-30 flex flex-col items-center justify-center size-[116px] lg:size-[128px] rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#EBE7DF] p-3.5 transition-transform duration-300 hover:scale-105 pointer-events-auto">
                   <img
-                    src={justMeyvedDownLogo}
+                    src={meyvedaFaviconSource}
                     alt="Meyveda Logo"
-                    className="max-h-[68px] max-w-[82px] w-auto h-auto object-contain select-none"
+                    className="max-h-[72px] max-w-[72px] lg:max-h-[80px] lg:max-w-[80px] w-auto h-auto object-contain select-none"
                   />
                   <span className="sr-only">Meyveda Ecosystem Core</span>
                 </div>
@@ -3426,7 +3426,7 @@ export function CoreVaidyaSection() {
             <div className="flex justify-center mb-5">
               <div className="flex flex-col items-center justify-center size-[88px] rounded-full bg-white shadow-md border border-[#EBE7DF] p-2.5">
                 <img
-                  src={justMeyvedDownLogo}
+                  src={meyvedaFaviconSource}
                   alt="Meyveda Logo"
                   className="max-h-[48px] max-w-[60px] w-auto h-auto object-contain select-none"
                 />
