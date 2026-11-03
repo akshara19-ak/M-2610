@@ -21,7 +21,6 @@ interface ImpactPillar {
   id: string;
   number: string;
   title: string;
-  tagline: string;
   summary: string;
   bullets: string[];
   metricLabel: string;
@@ -35,7 +34,6 @@ const IMPACT_PILLARS: ImpactPillar[] = [
     id: "credibility",
     number: "01",
     title: "Eliminating the Credibility Gap",
-    tagline: "Statutory Verification & National ABDM Gateway Integration",
     summary:
       "We elevate your professional identity with verified digital credentials, ensuring your traditional medical practice commands universal trust across the modern healthcare ecosystem.",
     bullets: [
@@ -52,8 +50,7 @@ const IMPACT_PILLARS: ImpactPillar[] = [
   {
     id: "supply-chain",
     number: "02",
-    title: "pharma supply chain",
-    tagline: "Doctor-Supervised, Zero-Inventory Direct Formulation Fulfillment",
+    title: "pharmaceutical supply chain",
     summary:
       "We replace risky direct-to-consumer self-medication with an authentic, doctor-guided distribution model. Every prescribed classical medicine reaches the patient under clinical supervision, backed by authenticated batch monographs and heavy-metal testing.",
     bullets: [
@@ -71,7 +68,6 @@ const IMPACT_PILLARS: ImpactPillar[] = [
     id: "real-world-evidence",
     number: "03",
     title: "Building Global Real-World Evidence (RWE)",
-    tagline: "Longitudinal Outcomes & Classical Root-Cause Clinical Research",
     summary:
       "By standardizing clinical intake, constitutional (Prakriti) assessment, and longitudinal outcomes, we aggregate structured clinical evidence that bridges millennia of classical healing with modern peer-reviewed integrative medical science.",
     bullets: [
@@ -89,7 +85,6 @@ const IMPACT_PILLARS: ImpactPillar[] = [
     id: "career-empowerment",
     number: "04",
     title: "Economic & Career Empowerment",
-    tagline: "Enterprise Software & Compliant Practice Scale for Independent Doctors",
     summary:
       "We provide independent practitioners and physical clinics with enterprise-grade clinical software, multi-center scheduling, and transparent practice revenue models — removing commercial marketing burdens and middleman exploitation.",
     bullets: [
@@ -265,10 +260,10 @@ export function AboutUsPage() {
                   key={layer.title}
                   className="rounded-2xl border border-[#EBE7DF] bg-white p-6 shadow-2xs transition-all duration-200 hover:border-[#E67230]/40 hover:-translate-y-0.5"
                 >
-                  <p className="text-base font-bold text-[#E67230] mb-1.5">
+                  <p className="text-base font-bold text-[#E67230] mb-1.5 text-center">
                     {layer.title}
                   </p>
-                  <p className="text-sm font-medium text-[#111111] leading-relaxed">
+                  <p className="text-sm font-medium text-[#111111] leading-relaxed text-center">
                     {layer.description}
                   </p>
                 </div>
@@ -305,9 +300,6 @@ export function AboutUsPage() {
                     <Compass className="size-6" />
                   </div>
 
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#E67230] block mb-2">
-                    Long-Term Aspiration
-                  </span>
 
                   <h3
                     className="text-2xl sm:text-3xl font-bold text-[#111111] tracking-tight mb-4"
@@ -330,10 +322,6 @@ export function AboutUsPage() {
                   <div className="flex size-12 items-center justify-center rounded-xl bg-white border border-[#EBE7DF] text-[#E67230] mb-6">
                     <Award className="size-6" />
                   </div>
-
-                  <span className="text-xs font-bold uppercase tracking-wider text-[#E67230] block mb-2">
-                    Actionable Mandate
-                  </span>
 
                   <h3
                     className="text-2xl sm:text-3xl font-bold text-[#111111] tracking-tight mb-4"
@@ -386,11 +374,10 @@ export function AboutUsPage() {
                     key={pillar.id}
                     type="button"
                     onClick={() => setActivePillarId(pillar.id)}
-                    className={`rounded-xl border p-4 sm:p-5 text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${
-                      isSelected
-                        ? "border-[#E67230] bg-white shadow-sm ring-1 ring-[#E67230]"
-                        : "border-[#EBE7DF] bg-white/70 hover:bg-white hover:border-[#E67230]/40"
-                    }`}
+                    className={`rounded-xl border p-4 sm:p-5 text-left transition-all duration-200 cursor-pointer flex flex-col justify-between ${isSelected
+                      ? "border-[#E67230] bg-white shadow-sm ring-1 ring-[#E67230]"
+                      : "border-[#EBE7DF] bg-white/70 hover:bg-white hover:border-[#E67230]/40"
+                      }`}
                   >
                     <div>
                       <div className="flex items-center justify-between mb-3">
@@ -398,11 +385,10 @@ export function AboutUsPage() {
                           {pillar.number}
                         </span>
                         <div
-                          className={`size-8 rounded-lg flex items-center justify-center ${
-                            isSelected
-                              ? "bg-[#E67230] text-white"
-                              : "bg-[#FAF9F6] text-[#777777] border border-[#EBE7DF]"
-                          }`}
+                          className={`size-8 rounded-lg flex items-center justify-center ${isSelected
+                            ? "bg-[#E67230] text-white"
+                            : "bg-[#FAF9F6] text-[#777777] border border-[#EBE7DF]"
+                            }`}
                         >
                           <Icon className="size-4" />
                         </div>
@@ -422,7 +408,7 @@ export function AboutUsPage() {
                 <div className="lg:col-span-8 space-y-5">
                   <div className="space-y-2">
                     <span className="font-mono text-xs font-bold text-[#E67230] uppercase tracking-wider">
-                      Deliverable {activePillar.number} · {activePillar.tagline}
+                      Deliverable {activePillar.number}
                     </span>
                     <h3
                       className="text-2xl sm:text-3xl font-extrabold text-[#111111] tracking-tight leading-tight"
@@ -461,9 +447,6 @@ export function AboutUsPage() {
                     </span>
                     <p className="text-xs font-bold uppercase tracking-wider text-[#111111]">
                       {activePillar.metricLabel}
-                    </p>
-                    <p className="text-xs text-[#777777] pt-1">
-                      Statutory assurance built into every layer of the Meyveda ecosystem.
                     </p>
                   </div>
 
