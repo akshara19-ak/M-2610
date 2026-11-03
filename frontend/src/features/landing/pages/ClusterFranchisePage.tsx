@@ -397,7 +397,7 @@ Submitted: ${d.timestamp}`;
       {/* -------------------------------------------------------------------- */}
       <section className="relative z-10 border-b border-[#EBE7DF] bg-[#FAF9F6] py-8 sm:py-10">
         <div className="mx-auto max-w-[1320px] px-5 sm:px-8 lg:px-12">
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 lg:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-5 lg:gap-6">
             {/* 100% Territory Monopoly */}
             <div className="rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 text-center shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-[#E67230]/40 hover:shadow-xs">
               <span
@@ -446,21 +446,7 @@ Submitted: ${d.timestamp}`;
               </p>
             </div>
 
-            {/* ISO 13485 QMS Compliant */}
-            <div className="rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 text-center shadow-2xs transition-all duration-200 hover:-translate-y-0.5 hover:border-[#E67230]/40 hover:shadow-xs">
-              <span
-                className="block text-3xl sm:text-4xl font-bold tracking-tight text-[#E67230]"
-                style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
-              >
-                ISO 13485
-              </span>
-              <p className="mt-2.5 text-xs sm:text-[13px] font-bold uppercase tracking-wider text-[#111111]">
-                QMS COMPLIANT
-              </p>
-              <p className="mt-1 text-xs text-[#666666] leading-relaxed">
-                Standardized AYUSH OS
-              </p>
-            </div>
+
           </div>
         </div>
       </section>
@@ -1408,8 +1394,8 @@ Submitted: ${d.timestamp}`;
             </p>
           </div>
 
-          {/* Four Core Feature Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6">
+          {/* Core Feature Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6">
             {/* Card 1: dynamicPMS Digital OS */}
             <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-start">
               <div className="flex size-11 items-center justify-center rounded-xl bg-[#FFF8F3] border border-[#F2DAC8] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
@@ -1436,18 +1422,7 @@ Submitted: ${d.timestamp}`;
               </p>
             </div>
 
-            {/* Card 3: ISO & Regulatory Standards */}
-            <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-start">
-              <div className="flex size-11 items-center justify-center rounded-xl bg-[#FFF8F3] border border-[#F2DAC8] text-[#E67230] mb-5 group-hover:bg-[#E67230] group-hover:text-white transition-colors duration-200">
-                <ShieldCheck className="size-5.5" />
-              </div>
-              <h3 className="text-base sm:text-lg font-bold tracking-tight text-[#111111] mb-2.5">
-                ISO &amp; Regulatory Standards
-              </h3>
-              <p className="text-xs sm:text-sm leading-relaxed text-[#555555]">
-                Built aligned with ISO 13485 QMS, CDSCO SaMD guidelines, and standard coding protocols (SNOMED CT, ICD-11 TM2, NAMASTE).
-              </p>
-            </div>
+
 
             {/* Card 4: Medical Camps & Touchpoints */}
             <div className="group rounded-2xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-2xs transition-all duration-200 hover:-translate-y-1 hover:border-[#E67230]/50 hover:shadow-md flex flex-col justify-start">
