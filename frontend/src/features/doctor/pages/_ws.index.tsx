@@ -13,7 +13,17 @@ import {
   Layers,
   Download,
   QrCode,
+  Loader2,
+  HelpCircle,
+  X,
 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import QRCode from "qrcode";
 import { useStore, getState } from "@/lib/store";
 import { seo } from "@/lib/seo";
@@ -53,6 +63,58 @@ export function Home() {
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
   const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
+
+  // Workflow challenge modal state
+  const [challengeModalOpen, setChallengeModalOpen] = useState(false);
+  const [challengeTitle, setChallengeTitle] = useState("");
+  const [challengeDescription, setChallengeDescription] = useState("");
+  const [challengeCategory, setChallengeCategory] = useState("EMR & Clinical Documentation");
+  const [submittingChallenge, setSubmittingChallenge] = useState(false);
+
+  const handleOpenChallengeModal = () => {
+    setChallengeTitle("");
+    setChallengeDescription("");
+    setChallengeModalOpen(true);
+  };
+
+  const handleSubmitChallenge = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!challengeTitle.trim() || challengeTitle.trim().length < 3) {
+      toast.error("Please provide a short summary of your challenge.");
+      return;
+    }
+    if (!challengeDescription.trim() || challengeDescription.trim().length < 10) {
+      toast.error("Please explain your challenge in at least 10 characters.");
+      return;
+    }
+
+    setSubmittingChallenge(true);
+    try {
+      const doctorName = (doctor as any)?.name || (doctor as any)?.full_name || "Practitioner";
+      const doctorEmail = (doctor as any)?.email || "doctor@meyveda.com";
+      const doctorPhone = (doctor as any)?.mobile || (doctor as any)?.phone || "+91 9986398332";
+
+      await apiClient.post("/contact", {
+        full_name: doctorName.startsWith("Dr.") ? doctorName : `Dr. ${doctorName}`,
+        email: doctorEmail,
+        phone: doctorPhone,
+        category: "Doctor Workflow Challenge",
+        subject: `[Workflow Challenge - ${challengeCategory}] ${challengeTitle.trim()}`,
+        message: challengeDescription.trim(),
+      });
+
+      toast.success("Thank you! Your workflow challenge has been submitted.", {
+        description: "Our engineering and clinical product team will review this to prioritize upcoming features.",
+      });
+      setChallengeModalOpen(false);
+      setChallengeTitle("");
+      setChallengeDescription("");
+    } catch (err: any) {
+      toast.error(err?.message || "Failed to submit challenge. Please try again.");
+    } finally {
+      setSubmittingChallenge(false);
+    }
+  };
 
   useEffect(() => {
     let active = true;
@@ -223,12 +285,14 @@ export function Home() {
 
         {/* Action CTAs: Share Survey, WhatsApp Community, Telegram Group */}
         <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-wrap">
-          <Link
-            to="/survey"
-            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
+          <button
+            type="button"
+            onClick={handleOpenChallengeModal}
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
           >
-            Share Your Biggest Workflow Challenge
-          </Link>
+            <Sparkles className="size-4" />
+            <span>Share Your Biggest Workflow Challenge</span>
+          </button>
 
           <a
             href={whatsappCommunityUrl}
@@ -384,6 +448,100 @@ export function Home() {
           </div>
         </div>
       </section>
+      {/* Dialog Popup for Workflow Challenge */}
+      <Dialog open={challengeModalOpen} onOpenChange={setChallengeModalOpen}>
+        <DialogContent className="max-w-lg p-6 sm:p-7 rounded-3xl bg-white border border-[#EBE7DF] shadow-2xl">
+          <DialogHeader className="space-y-1.5 text-left">
+            <div className="flex items-center gap-2 text-[#E67230] font-bold text-xs uppercase tracking-wider">
+              <Sparkles className="size-4" />
+              <span>Co-Create With Meyveda</span>
+            </div>
+            <DialogTitle className="text-xl sm:text-2xl font-bold text-[#111111]">
+              Share Your Workflow Challenge
+            </DialogTitle>
+            <DialogDescription className="text-sm text-[#666666] leading-relaxed">
+              Tell our product engineers what slows down your daily AYUSH clinical practice. Your feedback is sent directly to the Admin Desk to shape our development roadmap.
+            </DialogDescription>
+          </DialogHeader>
+
+          <form onSubmit={handleSubmitChallenge} className="mt-4 space-y-4">
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#333333] mb-1.5">
+                Area of Practice / Workflow
+              </label>
+              <select
+                value={challengeCategory}
+                onChange={(e) => setChallengeCategory(e.target.value)}
+                className="w-full rounded-xl border border-[#D5D0C7] bg-[#FAF9F6] px-3.5 py-2.5 text-sm text-[#111111] focus:border-[#E67230] focus:outline-none focus:ring-1 focus:ring-[#E67230]"
+              >
+                <option value="EMR & Clinical Documentation">EMR & Clinical Documentation (Nadi/Prakriti/Case Sheet)</option>
+                <option value="Pharmacy & Formulation Procurement">Pharmacy & Formulation Procurement</option>
+                <option value="Patient Scheduling & Follow-ups">Patient Scheduling, Adherence & Tele-consultations</option>
+                <option value="Insurance, NHCX & Cashless Claims">Insurance, NHCX & Cashless Claims</option>
+                <option value="Multi-Clinic Asset Management">Multi-Clinic & Asset Management</option>
+                <option value="Research, Protocol & Journal Archiving">Research, Protocol & Case Series Archiving</option>
+                <option value="Other Operational Bottleneck">Other Operational Bottleneck</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#333333] mb-1.5">
+                Challenge Headline *
+              </label>
+              <input
+                type="text"
+                value={challengeTitle}
+                onChange={(e) => setChallengeTitle(e.target.value)}
+                placeholder="e.g. Too much manual typing during Nadi Pariksha notes"
+                className="w-full rounded-xl border border-[#D5D0C7] bg-[#FAF9F6] px-3.5 py-2.5 text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:outline-none focus:ring-1 focus:ring-[#E67230]"
+                required
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#333333] mb-1.5">
+                Detailed Description *
+              </label>
+              <textarea
+                value={challengeDescription}
+                onChange={(e) => setChallengeDescription(e.target.value)}
+                rows={4}
+                placeholder="Describe what happens currently, how much time it consumes, and what ideal solution would save you hours every week..."
+                className="w-full rounded-xl border border-[#D5D0C7] bg-[#FAF9F6] px-3.5 py-2.5 text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:outline-none focus:ring-1 focus:ring-[#E67230] resize-none"
+                required
+              />
+            </div>
+
+            <div className="pt-2 flex items-center justify-end gap-3">
+              <button
+                type="button"
+                onClick={() => setChallengeModalOpen(false)}
+                className="rounded-xl border border-[#EBE7DF] px-4 py-2.5 text-sm font-semibold text-[#555555] hover:bg-[#FAF9F6] transition-colors"
+                disabled={submittingChallenge}
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                disabled={submittingChallenge}
+                className="inline-flex items-center gap-2 rounded-xl bg-[#E67230] px-5 py-2.5 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors disabled:opacity-60 cursor-pointer"
+              >
+                {submittingChallenge ? (
+                  <>
+                    <Loader2 className="size-4 animate-spin" />
+                    <span>Submitting...</span>
+                  </>
+                ) : (
+                  <>
+                    <Send className="size-4" />
+                    <span>Submit Challenge</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
