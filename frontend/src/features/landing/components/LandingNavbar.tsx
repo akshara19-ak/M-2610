@@ -166,18 +166,7 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
             <div className="flex items-center gap-3 sm:gap-4">
               <Link
                 to="/dashboard"
-                className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-[#FAF9F6] border border-[#EBE7DF] hover:border-[#E67230]/50 transition-colors"
-              >
-                <span className="size-8 rounded-full bg-[#E67230] text-white flex items-center justify-center text-sm font-bold shadow-xs">
-                  {activeDoctorDisplayName[0]?.toUpperCase() || "D"}
-                </span>
-                <span className="text-sm font-bold text-[#111111] leading-none">
-                  {activeDoctorDisplayName}
-                </span>
-              </Link>
-              <Link
-                to="/dashboard"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white text-sm font-bold transition-all shadow-sm hover:shadow-md"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white text-sm font-bold transition-all shadow-sm hover:shadow-md"
               >
                 <span>Dashboard</span>
                 <ArrowRight className="size-4" />
@@ -296,14 +285,6 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
             <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-3">
               {isDoctorSessionActive ? (
                 <div className="flex flex-col gap-3">
-                  <div className="flex items-center gap-3 p-3 rounded-xl bg-[#FAF9F6] border border-[#EBE7DF]">
-                    <span className="size-9 rounded-full bg-[#E67230] text-white flex items-center justify-center text-sm font-bold shadow-xs">
-                      {activeDoctorDisplayName[0]?.toUpperCase() || "D"}
-                    </span>
-                    <p className="text-base font-bold text-[#111111]">
-                      {activeDoctorDisplayName}
-                    </p>
-                  </div>
                   <Link
                     to="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
