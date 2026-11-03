@@ -3,6 +3,7 @@ import { LandingFooter } from "../components/LandingFooter";
 import { useState } from "react";
 import { Link } from "@tanstack/react-router";
 import meyvedaLogo2 from "@/assets/MEY_VEDA Logo2.png";
+import clinicianPartnerImg from "@/assets/image03.jpeg";
 import {
   ArrowRight,
   ShieldCheck,
@@ -235,23 +236,14 @@ export function AboutUsPage() {
                 </div>
               </div>
 
-              {/* Right Column: Balanced Logo Presentation */}
+              {/* Right Column: Full Image Showcase */}
               <div className="lg:col-span-5 flex items-center justify-center py-4 lg:py-0">
-                <div className="relative w-full max-w-[380px] lg:max-w-[420px] rounded-3xl border border-[#EBE7DF] bg-gradient-to-b from-[#FFFBF8] via-[#FAF9F6] to-[#FAF7F2] p-8 sm:p-10 shadow-[0_12px_40px_-12px_rgba(230,114,48,0.12)] flex flex-col items-center justify-center text-center group transition-all duration-300 hover:border-[#E67230]/40 hover:shadow-[0_16px_48px_-12px_rgba(230,114,48,0.2)]">
-                  <div className="absolute -inset-0.5 rounded-3xl bg-gradient-to-br from-[#E67230]/15 to-transparent opacity-40 blur-sm pointer-events-none" />
+                <div className="relative w-full max-w-[440px] lg:max-w-[480px] overflow-hidden rounded-3xl border border-[#EBE7DF] bg-white shadow-[0_12px_40px_-12px_rgba(230,114,48,0.12)] group transition-all duration-300 hover:border-[#E67230]/40 hover:shadow-[0_16px_48px_-12px_rgba(230,114,48,0.2)]">
                   <img
-                    src={meyvedaLogo2}
-                    alt="Meyveda Official Emblem"
-                    className="relative z-10 w-full max-h-[220px] sm:max-h-[260px] object-contain select-none transition-transform duration-300 group-hover:scale-103 drop-shadow-sm"
+                    src={clinicianPartnerImg}
+                    alt="Meyveda Clinician-First Partner"
+                    className="w-full h-auto object-cover select-none transition-transform duration-500 group-hover:scale-102 block"
                   />
-                  <div className="mt-6 relative z-10 pt-4 border-t border-[#EBE7DF] w-full text-center">
-                    <p className="text-xs font-bold tracking-wider uppercase text-[#E67230]">
-                      Meyveda Ayush Pvt Ltd
-                    </p>
-                    <p className="mt-1 text-[11.5px] text-[#777777]">
-                      Clinician-First AYUSH Ecosystem · Phygital Infrastructure
-                    </p>
-                  </div>
                 </div>
               </div>
             </div>
