@@ -5552,7 +5552,7 @@ export function MeyvedaDoctorsPage() {
                   <MapPin className="size-4 text-[#E67230] shrink-0 mt-0.5" />
                   <div>
                     <a
-                      href="https://maps.google.com/?q=200+Feet+Radial+Rd%2C+Boopathy+Nagar%2C+Kovilambakkam%2C+Tambaram%2C+Tamil+Nadu+600117"
+                      href="https://maps.app.goo.gl/WHz1KTARf1hsfqJx9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-[#E67230] transition-colors underline flex items-center gap-1"
