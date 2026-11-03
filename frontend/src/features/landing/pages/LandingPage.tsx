@@ -2736,7 +2736,7 @@ function PracticeSuiteCardPreview({ type }: { type: string }) {
   }
 
   return (
-    <div className="relative flex h-40 w-full items-center justify-center overflow-hidden p-2 select-none">
+    <div className="relative flex h-36 w-full items-center justify-center overflow-hidden p-1 sm:p-2 select-none">
       <img
         src={imgSrc}
         alt={imgAlt}
@@ -2859,12 +2859,12 @@ function PracticeSuiteScrollSection({
       <div
         className={
           isDesktop && !reducedMotion
-            ? "sticky top-20 flex h-[calc(100vh-5rem)] flex-col justify-center overflow-hidden py-8"
+            ? "sticky top-20 flex min-h-[600px] h-[calc(100vh-5rem)] flex-col justify-center overflow-hidden py-4 sm:py-6"
             : "mx-auto max-w-[1216px] px-5 sm:px-8 lg:px-12"
         }
       >
         {/* Section Header with Controls & Progress */}
-        <div className="mx-auto w-full max-w-[1216px] px-5 sm:px-8 lg:px-12 mb-7">
+        <div className="mx-auto w-full max-w-[1216px] px-5 sm:px-8 lg:px-12 mb-3 sm:mb-4">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
             <div>
               <p className="text-xs font-bold uppercase tracking-wider text-[#E67230]">
@@ -2920,7 +2920,7 @@ function PracticeSuiteScrollSection({
 
         {/* Scroll-Driven Horizontal Track (Desktop) */}
         {isDesktop && !reducedMotion ? (
-          <div className="mx-auto w-full max-w-[1216px] px-5 sm:px-8 lg:px-12 overflow-hidden">
+          <div className="mx-auto w-full max-w-[1216px] px-5 sm:px-8 lg:px-12 py-3 overflow-hidden">
             <div
               ref={trackRef}
               style={{
@@ -2936,7 +2936,7 @@ function PracticeSuiteScrollSection({
                     <a
                       href={item.href}
                       onClick={(e) => handleNavClick(e, item.href)}
-                      className={`group relative flex h-full flex-col justify-start rounded-2xl border bg-white p-5 sm:p-6 transition-all duration-300 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E67230] motion-reduce:transition-none ${isActive
+                      className={`group relative flex h-full flex-col justify-start rounded-2xl border bg-white p-4 sm:p-5 transition-all duration-300 hover:border-[#E67230]/60 hover:bg-[#FFFBF8] hover:shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#E67230] motion-reduce:transition-none ${isActive
                         ? "border-[#E67230]/60 shadow-xs ring-1 ring-[#E67230]/25"
                         : "border-[#EBE7DF] shadow-2xs"
                         }`}
@@ -2961,7 +2961,7 @@ function PracticeSuiteScrollSection({
                         </p>
 
                         {/* Reference Detail Strip */}
-                        <div className="mt-4 flex items-center gap-2 rounded-lg border border-[#EBE7DF]/80 bg-[#FAF9F6] px-3 py-2 text-xs text-[#333333] transition-colors group-hover:bg-white group-hover:border-[#E67230]/30">
+                        <div className="mt-3 flex items-center gap-2 rounded-lg border border-[#EBE7DF]/80 bg-[#FAF9F6] px-3 py-1.5 text-xs text-[#333333] transition-colors group-hover:bg-white group-hover:border-[#E67230]/30">
                           <span className="size-1.5 rounded-full bg-[#E67230] shrink-0" />
                           <span className="font-mono text-[11px] text-[#666666] truncate">
                             {item.referenceDetail}
@@ -2977,7 +2977,7 @@ function PracticeSuiteScrollSection({
             </div>
 
             {/* Pagination Indicators below track */}
-            <div className="mt-8 flex items-center justify-between border-t border-[#EBE7DF]/70 pt-4">
+            <div className="mt-4 sm:mt-5 flex items-center justify-between border-t border-[#EBE7DF]/70 pt-3">
               <div
                 className="flex items-center gap-2"
                 role="tablist"
