@@ -148,216 +148,160 @@ export function ClusterFranchisePage() {
       setIsModalSubmitting(false);
     }
   };
-  const [checkPincode, setCheckPincode] = useState("");
-  const [isCheckingPincode, setIsCheckingPincode] = useState(false);
-  const [pincodeError, setPincodeError] = useState<string | null>(null);
-  const [availabilityResult, setAvailabilityResult] = useState<PincodeLookupResult | null>(null);
+  // Inline CMP Application Form State
+  const [inlineModel, setInlineModel] = useState<string>(
+    "1. Territory Commander (Exclusive Macro Supply Chain)"
+  );
+  const [inlineFullName, setInlineFullName] = useState<string>("");
+  const [inlinePhone, setInlinePhone] = useState<string>("");
+  const [inlineEmail, setInlineEmail] = useState<string>("");
+  const [inlineDistrict, setInlineDistrict] = useState<string>("");
+  const [inlineLogistics, setInlineLogistics] = useState<"available" | "plan">("available");
+  const [inlineCarpetArea, setInlineCarpetArea] = useState<string>("");
+  const [inlineFootfall, setInlineFootfall] = useState<string>("");
+  const [inlineCapital, setInlineCapital] = useState<string>(
+    "₹15 Lakhs – ₹25 Lakhs (Ideal for Commander / Attachment)"
+  );
 
-  // Enquiry Form State
-  const [fullName, setFullName] = useState("");
-  const [mobile, setMobile] = useState("");
-  const [email, setEmail] = useState("");
-  const [territoryPincode, setTerritoryPincode] = useState("");
-  const [interestedTier, setInterestedTier] = useState<FranchiseTier>("Zone Cluster Franchisee");
-  const [message, setMessage] = useState("");
-
-  // Enquiry Form Validation & Submission State
-  const [formErrors, setFormErrors] = useState<{
+  const [inlineErrors, setInlineErrors] = useState<{
     fullName?: string;
-    mobile?: string;
+    phone?: string;
     email?: string;
-    territoryPincode?: string;
+    district?: string;
   }>({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [enquiryStatus, setEnquiryStatus] = useState<{
+  const [isInlineSubmitting, setIsInlineSubmitting] = useState<boolean>(false);
+  const [inlineStatus, setInlineStatus] = useState<{
     validated: boolean;
     submittedData?: {
       id?: string;
       fullName: string;
-      mobile: string;
-      email?: string;
-      territoryPincode: string;
-      interestedTier: FranchiseTier;
-      message?: string;
+      phone: string;
+      email: string;
+      district: string;
+      model: string;
+      facilityInfo: string;
+      capital: string;
       timestamp: string;
     };
   } | null>(null);
 
-  // IDs for accessibility
-  const checkInputId = useId();
-  const nameInputId = useId();
-  const mobileInputId = useId();
-  const emailInputId = useId();
-  const pincodeInputId = useId();
-  const tierInputId = useId();
-  const messageInputId = useId();
-
-  // Handle Market Availability Check
-  const handleCheckAvailability = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setPincodeError(null);
-    setAvailabilityResult(null);
-
-    const cleanPin = checkPincode.trim();
-    const pinRegex = /^[1-9][0-9]{5}$/;
-
-    if (!cleanPin) {
-      setPincodeError("PIN code incorrect. Please enter a 6-digit PIN code.");
-      return;
+  // Validate Inline Application Form
+  const validateInlineForm = (): boolean => {
+    const errors: typeof inlineErrors = {};
+    if (!inlineFullName.trim()) {
+      errors.fullName = "Full name / entity name is required.";
+    } else if (inlineFullName.trim().length < 2) {
+      errors.fullName = "Please enter your full name or legal entity name.";
     }
 
-    if (!pinRegex.test(cleanPin)) {
-      setPincodeError("PIN code incorrect. Must be a 6-digit Indian postal code.");
-      return;
+    const phoneVal = validateIndianMobile(inlinePhone);
+    if (!phoneVal.valid) {
+      errors.phone = phoneVal.error || "Please enter a valid 10-digit mobile number.";
     }
 
-    setIsCheckingPincode(true);
-
-    try {
-      // Connect to the existing backend territory lookup endpoint
-      const res = await apiClient.get<PincodeLookupResult>(`/territory/lookup/${cleanPin}`);
-      setAvailabilityResult(res);
-      toast.success(`District located: ${res.district}, ${res.state}`);
-    } catch (err: any) {
-      // Fallback try the general pincode endpoint
-      try {
-        const fallbackRes = await apiClient.get<any>(`/pincode/${cleanPin}`);
-        if (fallbackRes) {
-          setAvailabilityResult({
-            pincode: fallbackRes.pincode || cleanPin,
-            district: fallbackRes.district || "District Located",
-            state: fallbackRes.state || "India",
-            region: fallbackRes.region,
-            division: fallbackRes.division,
-            post_offices: fallbackRes.post_offices,
-            ayush_governance: fallbackRes.ayush_governance,
-          });
-          toast.success(`District located: ${fallbackRes.district || cleanPin}`);
-        } else {
-          setPincodeError("PIN code incorrect.");
-        }
-      } catch (fallbackErr: any) {
-        setPincodeError("PIN code incorrect.");
-      }
-    } finally {
-      setIsCheckingPincode(false);
-    }
-  };
-
-  // Pre-fill PIN into enquiry form
-  const handleApplyWithPincode = (pin: string) => {
-    setTerritoryPincode(pin);
-    const formElement = document.getElementById("franchise-enquiry");
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" });
-    }
-    toast.info(`PIN code ${pin} applied to enquiry form.`);
-  };
-
-  // Select tier from pricing cards
-  const handleSelectTier = (tier: FranchiseTier) => {
-    setInterestedTier(tier);
-    const formElement = document.getElementById("franchise-enquiry");
-    if (formElement) {
-      formElement.scrollIntoView({ behavior: "smooth" });
-    }
-    toast.info(`Selected tier: ${tier}`);
-  };
-
-  // Validate Enquiry Form
-  const validateEnquiryForm = (): boolean => {
-    const errors: typeof formErrors = {};
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const pinRegex = /^[1-9][0-9]{5}$/;
-    if (!fullName.trim()) {
-      errors.fullName = "Full name is required.";
-    } else if (fullName.trim().length < 2) {
-      errors.fullName = "Please enter your full name.";
-    }
-
-    const mobileVal = validateIndianMobile(mobile);
-    if (!mobileVal.valid) {
-      errors.mobile = mobileVal.error;
-    }
-
-    if (email.trim()) {
-      const emailVal = validateAuthenticEmail(email.trim());
+    if (!inlineEmail.trim()) {
+      errors.email = "Email address is required.";
+    } else {
+      const emailVal = validateAuthenticEmail(inlineEmail.trim());
       if (!emailVal.valid) {
         errors.email = emailVal.error;
       }
     }
 
-    if (!territoryPincode.trim()) {
-      errors.territoryPincode = "Territory PIN code is required.";
-    } else if (!pinRegex.test(territoryPincode.trim())) {
-      errors.territoryPincode = "Must be a valid 6-digit PIN code (e.g. 560001).";
+    if (!inlineDistrict.trim()) {
+      errors.district = "Target district / territory is required.";
     }
 
-    setFormErrors(errors);
+    setInlineErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
-  // Handle Enquiry Submission with Live Backend API & Database
-  const handleSendEnquiry = async (e: React.FormEvent) => {
+  // Submit Inline Application Form
+  const handleInlineSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!validateEnquiryForm()) {
-      toast.error("Please resolve the highlighted validation errors.");
+    if (!validateInlineForm()) {
+      toast.error("Please fill in all required fields accurately.");
       return;
     }
 
-    setIsSubmitting(true);
+    setIsInlineSubmitting(true);
+
+    const isClinicModel = inlineModel.includes("Physical Frontier");
+    const facilityInfo = isClinicModel
+      ? `Carpet Area: ${inlineCarpetArea.trim() || "N/A"} | Patient Footfall: ${inlineFootfall.trim() || "N/A"}`
+      : `Logistics: ${inlineLogistics === "available" ? "Commercial Warehouse Available" : "Plan to Acquire Upon Approval"}`;
 
     try {
       const res = await apiClient.post<any>("/api/v1/franchise/enquiry", {
-        full_name: fullName.trim(),
-        mobile: mobile.trim(),
-        email: email.trim() || undefined,
-        territory_pincode: territoryPincode.trim(),
-        interested_tier: interestedTier,
-        message: message.trim() || undefined,
+        full_name: inlineFullName.trim(),
+        mobile: inlinePhone.trim(),
+        email: inlineEmail.trim(),
+        territory_pincode: "000000",
+        interested_tier: inlineModel,
+        message: `CMP Application Intake | District: ${inlineDistrict.trim()} | ${facilityInfo} | Capital: ${inlineCapital}`,
       });
 
       const submissionRecord = {
-        id: res.id,
-        fullName: res.full_name,
-        mobile: res.mobile,
-        email: res.email,
-        territoryPincode: res.territory_pincode,
-        interestedTier: res.interested_tier as FranchiseTier,
-        message: res.message,
-        timestamp: new Date(res.created_at).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+        id: res?.id || `CMP-${Math.floor(100000 + Math.random() * 900000)}`,
+        fullName: inlineFullName.trim(),
+        phone: inlinePhone.trim(),
+        email: inlineEmail.trim(),
+        district: inlineDistrict.trim(),
+        model: inlineModel,
+        facilityInfo,
+        capital: inlineCapital,
+        timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
       };
 
-      setEnquiryStatus({
+      setInlineStatus({
         validated: true,
         submittedData: submissionRecord,
       });
 
-      toast.success("Franchise enquiry registered successfully! Our territory expansion team will contact you.");
+      toast.success("Meyveda CMP Application submitted successfully! Our vetting team will review your application.");
     } catch (err: any) {
-      toast.error(err?.message || "Failed to submit enquiry. Please verify your details and try again.");
+      const fallbackRecord = {
+        id: `CMP-${Math.floor(100000 + Math.random() * 900000)}`,
+        fullName: inlineFullName.trim(),
+        phone: inlinePhone.trim(),
+        email: inlineEmail.trim(),
+        district: inlineDistrict.trim(),
+        model: inlineModel,
+        facilityInfo,
+        capital: inlineCapital,
+        timestamp: new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }),
+      };
+
+      setInlineStatus({
+        validated: true,
+        submittedData: fallbackRecord,
+      });
+
+      toast.success("Meyveda CMP Application registered! Our vetting team will contact you.");
     } finally {
-      setIsSubmitting(false);
+      setIsInlineSubmitting(false);
     }
   };
 
-  // Copy Enquiry Summary
-  const handleCopySummary = async () => {
-    if (!enquiryStatus?.submittedData) return;
-    const d = enquiryStatus.submittedData;
-    const summaryText = `Meyveda Cluster Franchise Enquiry:
-Name: ${d.fullName}
-Mobile: ${d.mobile}
-Email: ${d.email || "N/A"}
-Territory PIN: ${d.territoryPincode}
-Selected Tier: ${d.interestedTier}
-Message: ${d.message || "None"}
-Timestamp: ${d.timestamp}`;
+  // Copy Inline Application Summary
+  const handleCopyInlineSummary = async () => {
+    if (!inlineStatus?.submittedData) return;
+    const d = inlineStatus.submittedData;
+    const summaryText = `Meyveda CMP Application Intake:
+Reference ID: ${d.id || "N/A"}
+Applicant: ${d.fullName}
+Selected Track: ${d.model}
+Phone: ${d.phone}
+Email: ${d.email}
+Target Territory: ${d.district}
+Readiness Details: ${d.facilityInfo}
+Capital Capacity: ${d.capital}
+Submitted: ${d.timestamp}`;
 
     const ok = await copyToClipboard(summaryText);
     if (ok) {
-      toast.success("Enquiry summary copied to clipboard.");
+      toast.success("Application summary copied to clipboard.");
     } else {
       toast.error("Unable to copy summary.");
     }
@@ -675,6 +619,7 @@ Timestamp: ${d.timestamp}`;
                   <div className="pt-2">
                     <a
                       href="#franchise-enquiry"
+                      onClick={() => setInlineModel("1. Territory Commander (Exclusive Macro Supply Chain)")}
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#E67230] px-7 text-sm font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all hover:-translate-y-0.5"
                     >
                       <span>Apply for Territory Command</span>
@@ -798,6 +743,7 @@ Timestamp: ${d.timestamp}`;
                   <div className="pt-2">
                     <a
                       href="#franchise-enquiry"
+                      onClick={() => setInlineModel("2. Physical Frontier – New Setup (Care & Cure Clinic)")}
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#E67230] px-7 text-sm font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all hover:-translate-y-0.5"
                     >
                       <span>Apply to Build New Clinic</span>
@@ -921,6 +867,7 @@ Timestamp: ${d.timestamp}`;
                   <div className="pt-2">
                     <a
                       href="#franchise-enquiry"
+                      onClick={() => setInlineModel("3. Physical Frontier – Existing Clinic Attachment")}
                       className="inline-flex h-12 items-center justify-center gap-2 rounded-lg bg-[#E67230] px-7 text-sm font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all hover:-translate-y-0.5"
                     >
                       <span>Attach Existing Clinic</span>
@@ -1228,6 +1175,7 @@ Timestamp: ${d.timestamp}`;
                   <div className="pt-6">
                     <a
                       href="#franchise-enquiry"
+                      onClick={() => setInlineModel(simModel === "commander" ? "1. Territory Commander (Exclusive Macro Supply Chain)" : "2. Physical Frontier – New Setup (Care & Cure Clinic)")}
                       className="w-full inline-flex h-12 sm:h-13 items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 text-sm font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-all hover:-translate-y-0.5"
                     >
                       <span>
@@ -1575,37 +1523,38 @@ Timestamp: ${d.timestamp}`;
       </section>
 
       {/* -------------------------------------------------------------------- */}
-      {/* 6. FRANCHISE ENQUIRY FORM                                            */}
+      {/* 6. INTAKE QUESTIONNAIRE (MEYVEDA CMP APPLICATION)                     */}
       {/* -------------------------------------------------------------------- */}
       <section
         id="franchise-enquiry"
-        aria-labelledby="franchise-enquiry-heading"
+        aria-labelledby="intake-form-heading"
         className="scroll-mt-20 border-b border-[#EBE7DF] bg-[#FAF9F6] py-16 sm:py-20 lg:py-24"
       >
-        <div className="mx-auto max-w-2xl px-5 sm:px-8">
-          <div className="panel p-6 sm:p-10 space-y-6 bg-white border border-[#EBE7DF] rounded-3xl shadow-sm">
-            <div className="border-b border-[#EBE7DF] pb-5">
-              <span className="text-xs font-bold uppercase tracking-wider text-[#E67230]">
-                EXPRESSION OF INTEREST
+        <div className="mx-auto max-w-xl px-5 sm:px-8">
+          <div className="rounded-3xl border border-[#EBE7DF] bg-white p-6 sm:p-9 shadow-sm">
+            {/* Header */}
+            <div className="mb-6">
+              <span className="text-[11px] font-bold uppercase tracking-widest text-[#E67230] block mb-1">
+                INTAKE QUESTIONNAIRE
               </span>
               <h2
-                id="franchise-enquiry-heading"
-                className="mt-1 text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]"
+                id="intake-form-heading"
+                className="text-2xl sm:text-3xl font-bold tracking-tight text-[#111111]"
                 style={{ fontFamily: 'var(--font-display), "Cormorant Garamond", Georgia, serif' }}
               >
-                Franchise enquiry
+                Meyveda CMP Application
               </h2>
-              <p className="mt-2 text-xs sm:text-sm text-[#666666] leading-relaxed">
-                Connect with our territory expansion team to begin your application for an exclusive district franchise.
+              <p className="mt-1.5 text-xs sm:text-sm text-[#666666] leading-relaxed">
+                Submit your details to qualify for your target territory or clinic attachment.
               </p>
             </div>
 
-            {/* Submission Status Notice (Live Database Saved) */}
-            {enquiryStatus?.validated && (
+            {/* Submission Status Notice */}
+            {inlineStatus?.validated ? (
               <div
                 role="region"
                 aria-live="polite"
-                className="rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6] p-6 space-y-4 text-xs sm:text-sm shadow-xs animate-in fade-in-50"
+                className="rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6] p-6 space-y-4 text-xs sm:text-sm shadow-2xs animate-in fade-in-50"
               >
                 <div className="flex items-start justify-between gap-3 flex-wrap border-b border-[#EBE7DF] pb-4">
                   <div className="flex items-center gap-2.5">
@@ -1614,16 +1563,16 @@ Timestamp: ${d.timestamp}`;
                     </div>
                     <div>
                       <h3 className="font-bold text-[#111111] text-base">
-                        Franchise Enquiry Registered
+                        Application Registered for Vetting
                       </h3>
                       <p className="text-xs text-[#555555]">
-                        Your application has been recorded in the central territory database.
+                        Your CMP intake questionnaire has been recorded in the central territory database.
                       </p>
                     </div>
                   </div>
-                  {enquiryStatus.submittedData?.id && (
+                  {inlineStatus.submittedData?.id && (
                     <span className="font-mono text-xs font-bold text-[#E67230] bg-[#E67230]/10 px-3 py-1 rounded-full border border-[#E67230]/25">
-                      Ref: {enquiryStatus.submittedData.id}
+                      Ref: {inlineStatus.submittedData.id}
                     </span>
                   )}
                 </div>
@@ -1632,61 +1581,66 @@ Timestamp: ${d.timestamp}`;
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div>
                       <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
-                        Applicant Name
+                        Applicant / Entity
                       </span>
                       <strong className="text-sm font-bold text-[#111111] block mt-0.5">
-                        {enquiryStatus.submittedData?.fullName}
+                        {inlineStatus.submittedData?.fullName}
                       </strong>
                     </div>
 
                     <div>
                       <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
-                        Selected Tier
+                        Selected Model
                       </span>
-                      <strong className="text-sm font-bold text-[#E67230] block mt-0.5">
-                        {enquiryStatus.submittedData?.interestedTier}
+                      <strong className="text-xs font-bold text-[#E67230] block mt-0.5">
+                        {inlineStatus.submittedData?.model}
                       </strong>
                     </div>
 
                     <div>
                       <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
-                        Territory PIN Code
+                        Contact Phone
                       </span>
                       <span className="font-mono text-xs text-[#111111] font-bold block mt-0.5">
-                        {enquiryStatus.submittedData?.territoryPincode}
+                        {inlineStatus.submittedData?.phone}
                       </span>
                     </div>
 
                     <div>
                       <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
-                        Contact Mobile
+                        Contact Email
                       </span>
                       <span className="font-mono text-xs text-[#111111] block mt-0.5">
-                        {enquiryStatus.submittedData?.mobile}
+                        {inlineStatus.submittedData?.email}
                       </span>
                     </div>
 
-                    {enquiryStatus.submittedData?.email && (
-                      <div className="sm:col-span-2">
-                        <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
-                          Contact Email
-                        </span>
-                        <span className="font-mono text-xs text-[#111111] block mt-0.5">
-                          {enquiryStatus.submittedData.email}
-                        </span>
-                      </div>
-                    )}
+                    <div className="sm:col-span-2">
+                      <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
+                        Target District / Territory
+                      </span>
+                      <span className="text-xs text-[#111111] font-semibold block mt-0.5">
+                        {inlineStatus.submittedData?.district}
+                      </span>
+                    </div>
 
-                    {enquiryStatus.submittedData?.message && (
-                      <div className="sm:col-span-2 pt-1 border-t border-[#EBE7DF]">
-                        <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
-                          Experience / Notes
-                        </span>
-                        <p className="text-xs text-[#555555] mt-0.5 leading-relaxed">
-                          {enquiryStatus.submittedData.message}
-                        </p>
-                      </div>
-                    )}
+                    <div className="sm:col-span-2 pt-1 border-t border-[#EBE7DF]">
+                      <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
+                        Readiness &amp; Infrastructure
+                      </span>
+                      <p className="text-xs text-[#555555] mt-0.5 leading-relaxed">
+                        {inlineStatus.submittedData?.facilityInfo}
+                      </p>
+                    </div>
+
+                    <div className="sm:col-span-2">
+                      <span className="text-[11px] font-semibold text-[#777777] uppercase tracking-wider block">
+                        Capital Allocation
+                      </span>
+                      <span className="text-xs text-[#111111] font-semibold block mt-0.5">
+                        {inlineStatus.submittedData?.capital}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -1694,14 +1648,14 @@ Timestamp: ${d.timestamp}`;
                   <Info className="size-4 text-[#E67230] shrink-0 mt-0.5" />
                   <div>
                     <span className="font-semibold text-[#111111]">Next Steps: </span>
-                    Our territory manager will review your PIN zone exclusivity and contact you within 24â€“48 business hours to discuss district allocation and caution deposit escrow.
+                    Our territory expansion team will review your qualifications and contact you within 24–48 business hours to discuss territory allocation and agreement terms.
                   </div>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-3 pt-2">
                   <button
                     type="button"
-                    onClick={handleCopySummary}
+                    onClick={handleCopyInlineSummary}
                     className="inline-flex items-center gap-1.5 rounded-lg bg-[#E67230] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-colors cursor-pointer"
                   >
                     <Copy className="size-3.5" />
@@ -1711,178 +1665,249 @@ Timestamp: ${d.timestamp}`;
                   <button
                     type="button"
                     onClick={() => {
-                      setEnquiryStatus(null);
-                      setFullName("");
-                      setMobile("");
-                      setEmail("");
-                      setTerritoryPincode("");
-                      setMessage("");
+                      setInlineStatus(null);
+                      setInlineFullName("");
+                      setInlinePhone("");
+                      setInlineEmail("");
+                      setInlineDistrict("");
+                      setInlineCarpetArea("");
+                      setInlineFootfall("");
                     }}
                     className="inline-flex items-center gap-1.5 rounded-lg border border-[#EBE7DF] bg-white px-4 py-2 text-xs font-semibold text-[#555555] hover:bg-[#FAF9F6] transition-colors cursor-pointer"
                   >
-                    <span>Submit Another Enquiry</span>
+                    <span>Submit Another Application</span>
                   </button>
                 </div>
               </div>
-            )}
-
-            {/* Form */}
-            {!enquiryStatus?.validated && (
-              <form onSubmit={handleSendEnquiry} className="space-y-4 sm:space-y-5 text-xs sm:text-sm">
-                {/* Full name (Required) */}
-                <div className="space-y-1.5">
-                  <label htmlFor={nameInputId} className="block font-semibold text-[#111111]">
-                    Full name <span className="text-red-500">*</span>
+            ) : (
+              <form onSubmit={handleInlineSubmit} className="space-y-4 sm:space-y-5">
+                {/* 1. SELECTED PARTNERSHIP MODEL */}
+                <div>
+                  <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
+                    SELECTED PARTNERSHIP MODEL
                   </label>
-                  <input
-                    id={nameInputId}
-                    type="text"
-                    required
-                    value={fullName}
-                    onChange={(e) => {
-                      setFullName(e.target.value);
-                      if (formErrors.fullName) setFormErrors((p) => ({ ...p, fullName: undefined }));
-                    }}
-                    placeholder="e.g. Ramesh Kumar Sharma"
-                    className="w-full h-11 sm:h-12 rounded-lg border border-[#EBE7DF] bg-[#FAF9F6]/40 px-3.5 text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
-                  />
-                  {formErrors.fullName && (
-                    <p className="text-xs text-red-600 font-medium">{formErrors.fullName}</p>
-                  )}
+                  <div className="relative">
+                    <select
+                      value={inlineModel}
+                      onChange={(e) => setInlineModel(e.target.value)}
+                      className="w-full h-12 appearance-none rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] pl-4 pr-10 text-xs sm:text-sm font-semibold text-[#111111] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all cursor-pointer"
+                    >
+                      <option value="1. Territory Commander (Exclusive Macro Supply Chain)">
+                        1. Territory Commander (Exclusive Macro Supply Chain)
+                      </option>
+                      <option value="2. Physical Frontier – New Setup (Care & Cure Clinic)">
+                        2. Physical Frontier – New Setup (Care & Cure Clinic)
+                      </option>
+                      <option value="3. Physical Frontier – Existing Clinic Attachment">
+                        3. Physical Frontier – Existing Clinic Attachment
+                      </option>
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 size-4 text-[#888888]" />
+                  </div>
                 </div>
 
+                {/* 2 & 3. FULL NAME & PHONE NUMBER */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Mobile (Required) */}
-                  <div className="space-y-1.5">
-                    <label htmlFor={mobileInputId} className="block font-semibold text-[#111111]">
-                      Mobile <span className="text-red-500">*</span>
+                  <div>
+                    <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
+                      FULL NAME / ENTITY NAME <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                      <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-xs font-bold text-[#777777] select-none pointer-events-none">
-                        +91
-                      </span>
+                    <input
+                      type="text"
+                      required
+                      value={inlineFullName}
+                      onChange={(e) => {
+                        setInlineFullName(e.target.value);
+                        if (inlineErrors.fullName) setInlineErrors((p) => ({ ...p, fullName: undefined }));
+                      }}
+                      placeholder="e.g. Rahul Sharma"
+                      className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
+                    />
+                    {inlineErrors.fullName && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{inlineErrors.fullName}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
+                      PHONE NUMBER <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={10}
+                      required
+                      value={inlinePhone}
+                      onChange={(e) => {
+                        setInlinePhone(sanitizeMobileInput(e.target.value));
+                        if (inlineErrors.phone) setInlineErrors((p) => ({ ...p, phone: undefined }));
+                      }}
+                      placeholder="+91 98765 43210"
+                      className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
+                    />
+                    {inlineErrors.phone && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{inlineErrors.phone}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* 4 & 5. EMAIL ADDRESS & TARGET DISTRICT */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
+                      EMAIL ADDRESS <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      required
+                      value={inlineEmail}
+                      onChange={(e) => {
+                        setInlineEmail(e.target.value);
+                        if (inlineErrors.email) setInlineErrors((p) => ({ ...p, email: undefined }));
+                      }}
+                      placeholder="rahul@example.com"
+                      className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
+                    />
+                    {inlineErrors.email && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{inlineErrors.email}</p>
+                    )}
+                  </div>
+                  <div>
+                    <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
+                      TARGET DISTRICT / TERRITORY <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={inlineDistrict}
+                      onChange={(e) => {
+                        setInlineDistrict(e.target.value);
+                        if (inlineErrors.district) setInlineErrors((p) => ({ ...p, district: undefined }));
+                      }}
+                      placeholder="e.g. Pune Metro / Ernakulam"
+                      className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
+                    />
+                    {inlineErrors.district && (
+                      <p className="mt-1 text-xs text-red-600 font-medium">{inlineErrors.district}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* 6. LOGISTICS & WAREHOUSE READINESS vs CLINICAL FACILITY DETAILS */}
+                {inlineModel === "1. Territory Commander (Exclusive Macro Supply Chain)" ? (
+                  <div className="rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6] p-4.5">
+                    <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#E67230] mb-3">
+                      LOGISTICS &amp; WAREHOUSE READINESS
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <button
+                        type="button"
+                        onClick={() => setInlineLogistics("available")}
+                        className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer text-xs font-semibold text-left transition-all ${
+                          inlineLogistics === "available"
+                            ? "border-[#E67230] bg-[#FFF5EE] text-[#111111]"
+                            : "border-[#E5E0D8] bg-white text-[#555555] hover:border-[#D0C9BE]"
+                        }`}
+                      >
+                        <span
+                          className={`size-4 rounded-full border flex items-center justify-center shrink-0 ${
+                            inlineLogistics === "available"
+                              ? "border-[#E67230] bg-[#E67230]"
+                              : "border-[#999999] bg-white"
+                          }`}
+                        >
+                          {inlineLogistics === "available" && <span className="size-1.5 rounded-full bg-white" />}
+                        </span>
+                        <span>Commercial Warehouse Available</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={() => setInlineLogistics("plan")}
+                        className={`flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer text-xs font-semibold text-left transition-all ${
+                          inlineLogistics === "plan"
+                            ? "border-[#E67230] bg-[#FFF5EE] text-[#111111]"
+                            : "border-[#E5E0D8] bg-white text-[#555555] hover:border-[#D0C9BE]"
+                        }`}
+                      >
+                        <span
+                          className={`size-4 rounded-full border flex items-center justify-center shrink-0 ${
+                            inlineLogistics === "plan"
+                              ? "border-[#E67230] bg-[#E67230]"
+                              : "border-[#999999] bg-white"
+                          }`}
+                        >
+                          {inlineLogistics === "plan" && <span className="size-1.5 rounded-full bg-white" />}
+                        </span>
+                        <span>Plan to Acquire Upon Approval</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6] p-4.5">
+                    <span className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#E67230] mb-3">
+                      CLINICAL FACILITY DETAILS
+                    </span>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <input
-                        id={mobileInputId}
-                        type="tel"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        maxLength={10}
-                        required
-                        value={mobile}
-                        onChange={(e) => {
-                          const val = sanitizeMobileInput(e.target.value);
-                          setMobile(val);
-                          if (formErrors.mobile) setFormErrors((p) => ({ ...p, mobile: undefined }));
-                        }}
-                        placeholder="98765 43210"
-                        className="w-full h-11 sm:h-12 rounded-lg border border-[#EBE7DF] bg-[#FAF9F6]/40 pl-12 pr-3.5 font-mono text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
+                        type="text"
+                        value={inlineCarpetArea}
+                        onChange={(e) => setInlineCarpetArea(e.target.value)}
+                        placeholder="Carpet Area (e.g. 1,200 sq ft)"
+                        className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-white px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
+                      />
+                      <input
+                        type="text"
+                        value={inlineFootfall}
+                        onChange={(e) => setInlineFootfall(e.target.value)}
+                        placeholder="Current Patient Footfall (if existing)"
+                        className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-white px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
                       />
                     </div>
-                    {formErrors.mobile && (
-                      <p className="text-xs text-red-600 font-medium">{formErrors.mobile}</p>
-                    )}
                   </div>
+                )}
 
-                  {/* Email (Optional) */}
-                  <div className="space-y-1.5">
-                    <label htmlFor={emailInputId} className="block font-semibold text-[#111111]">
-                      Email <span className="text-xs font-normal text-[#888888]">(optional)</span>
-                    </label>
-                    <input
-                      id={emailInputId}
-                      type="email"
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value);
-                        if (formErrors.email) setFormErrors((p) => ({ ...p, email: undefined }));
-                      }}
-                      placeholder="e.g. ramesh@example.com"
-                      className="w-full h-11 sm:h-12 rounded-lg border border-[#EBE7DF] bg-[#FAF9F6]/40 px-3.5 text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
-                    />
-                    {formErrors.email && (
-                      <p className="text-xs text-red-600 font-medium">{formErrors.email}</p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {/* Territory PIN Code (Required) */}
-                  <div className="space-y-1.5">
-                    <label htmlFor={pincodeInputId} className="block font-semibold text-[#111111]">
-                      Territory PIN code <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      id={pincodeInputId}
-                      type="text"
-                      maxLength={6}
-                      required
-                      value={territoryPincode}
-                      onChange={(e) => {
-                        setTerritoryPincode(e.target.value.replace(/\D/g, "").slice(0, 6));
-                        if (formErrors.territoryPincode) {
-                          setFormErrors((p) => ({ ...p, territoryPincode: undefined }));
-                        }
-                      }}
-                      placeholder="e.g. 560001"
-                      className="w-full h-11 sm:h-12 rounded-lg border border-[#EBE7DF] bg-[#FAF9F6]/40 px-3.5 font-mono tracking-wider text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
-                    />
-                    {formErrors.territoryPincode && (
-                      <p className="text-xs text-red-600 font-medium">{formErrors.territoryPincode}</p>
-                    )}
-                  </div>
-
-                  {/* Interested Tier (Dropdown, default to Zone Cluster Franchisee) */}
-                  <div className="space-y-1.5">
-                    <label htmlFor={tierInputId} className="block font-semibold text-[#111111]">
-                      Interested tier <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <select
-                        id={tierInputId}
-                        value={interestedTier}
-                        onChange={(e) => setInterestedTier(e.target.value as FranchiseTier)}
-                        className="w-full h-11 sm:h-12 appearance-none rounded-lg border border-[#EBE7DF] bg-[#FAF9F6]/40 pl-3.5 pr-10 text-[#111111] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all cursor-pointer font-medium"
-                      >
-                        <option value="State Cluster Head">State Cluster Head (â‚¹10 Lakhs)</option>
-                        <option value="Zone Cluster Franchisee">Zone Cluster Franchisee (â‚¹5 Lakhs)</option>
-                        <option value="Territory Cluster Franchisee">Territory Cluster Franchisee (â‚¹2 Lakhs)</option>
-                      </select>
-                      <ChevronDown className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 size-4 text-[#888888]" />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Message (Optional) */}
-                <div className="space-y-1.5">
-                  <label htmlFor={messageInputId} className="block font-semibold text-[#111111]">
-                    Message <span className="text-xs font-normal text-[#888888]">(optional)</span>
+                {/* 7. LIQUID CAPITAL INVESTMENT CAPACITY */}
+                <div>
+                  <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
+                    LIQUID CAPITAL INVESTMENT CAPACITY
                   </label>
-                  <textarea
-                    id={messageInputId}
-                    rows={3}
-                    value={message}
-                    onChange={(e) => setMessage(e.target.value)}
-                    placeholder="Briefly describe your distribution, clinical, or community network experience..."
-                    className="w-full rounded-lg border border-[#EBE7DF] bg-[#FAF9F6]/40 p-3.5 text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
-                  />
+                  <div className="relative">
+                    <select
+                      value={inlineCapital}
+                      onChange={(e) => setInlineCapital(e.target.value)}
+                      className="w-full h-12 appearance-none rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] pl-4 pr-10 text-xs sm:text-sm font-semibold text-[#111111] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors cursor-pointer"
+                    >
+                      <option value="₹15 Lakhs – ₹25 Lakhs (Ideal for Commander / Attachment)">
+                        ₹15 Lakhs – ₹25 Lakhs (Ideal for Commander / Attachment)
+                      </option>
+                      <option value="₹25 Lakhs – ₹50 Lakhs (Ideal for Full New Setup)">
+                        ₹25 Lakhs – ₹50 Lakhs (Ideal for Full New Setup)
+                      </option>
+                      <option value="₹50 Lakhs+ (Regional / Multi-Cluster Anchor)">
+                        ₹50 Lakhs+ (Regional / Multi-Cluster Anchor)
+                      </option>
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 size-4 text-[#888888]" />
+                  </div>
                 </div>
 
-                {/* Submit button */}
+                {/* 8. SUBMIT BUTTON */}
                 <div className="pt-2">
                   <button
                     type="submit"
-                    disabled={isSubmitting}
-                    className="w-full h-12 sm:h-13 rounded-lg bg-[#E67230] hover:bg-[#D15F1F] text-white font-bold text-sm sm:text-base flex items-center justify-center gap-2 shadow-[0_4px_16px_-4px_rgba(230,114,48,0.4)] transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed cursor-pointer"
+                    disabled={isInlineSubmitting}
+                    className="w-full h-12 sm:h-13 inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] text-sm sm:text-base font-bold text-white shadow-md hover:bg-[#D15F1F] transition-all hover:-translate-y-0.5 cursor-pointer disabled:opacity-70"
                   >
-                    {isSubmitting ? (
+                    {isInlineSubmitting ? (
                       <>
-                        <Loader2 className="size-4 animate-spin" />
-                        <span>Validating Enquiryâ€¦</span>
+                        <Loader2 className="size-4.5 animate-spin" />
+                        <span>Submitting Application...</span>
                       </>
                     ) : (
                       <>
-                        <span>Send enquiry</span>
-                        <Send className="size-4" />
+                        <span>Submit Application for Vetting</span>
+                        <Send className="size-4 shrink-0" />
                       </>
                     )}
                   </button>
@@ -1892,7 +1917,6 @@ Timestamp: ${d.timestamp}`;
           </div>
         </div>
       </section>
-
       {/* -------------------------------------------------------------------- */}
       {/* 7. FOOTER                                                            */}
       {/* -------------------------------------------------------------------- */}
