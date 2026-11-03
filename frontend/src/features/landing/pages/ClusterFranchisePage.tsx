@@ -1871,21 +1871,12 @@ Submitted: ${d.timestamp}`;
                       <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555]">
                         PIN CODE <span className="text-red-500">*</span>
                       </label>
-                      {inlinePincodeLoading ? (
+                      {inlinePincodeLoading && (
                         <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#E67230]">
                           <Loader2 className="size-3 animate-spin" />
                           <span>Locating...</span>
                         </span>
-                      ) : inlineDistrict ? (
-                        <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                          <CheckCircle2 className="size-3 text-emerald-600" />
-                          <span>
-                            {inlineModel.includes("Territory Commander")
-                              ? `District: ${inlineDistrict}`
-                              : `Block: ${inlineBlock || inlineDistrict}`}
-                          </span>
-                        </span>
-                      ) : null}
+                      )}
                     </div>
                     <div className="relative">
                       <input
@@ -2174,21 +2165,12 @@ Submitted: ${d.timestamp}`;
                     <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555]">
                       PIN CODE *
                     </label>
-                    {modalPincodeLoading ? (
+                    {modalPincodeLoading && (
                       <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#E67230]">
                         <Loader2 className="size-3 animate-spin" />
                         <span>Locating...</span>
                       </span>
-                    ) : modalDistrict ? (
-                      <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
-                        <CheckCircle2 className="size-3 text-emerald-600" />
-                        <span>
-                          {modalModel.includes("Territory Commander")
-                            ? `District: ${modalDistrict}`
-                            : `Block: ${modalBlock || modalDistrict}`}
-                        </span>
-                      </span>
-                    ) : null}
+                    )}
                   </div>
                   <div className="relative">
                     <input
