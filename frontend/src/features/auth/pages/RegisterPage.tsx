@@ -918,20 +918,7 @@ export function Register() {
               {/* Statutory Medical Council Card - Shown below PIN code without official portal link */}
               {governingCouncil && !isDetectingCity && (
                 <div className="rounded-xl border border-[#E67230]/35 bg-gradient-to-br from-[#FFFDFB] to-[#FFF6EE] p-4 sm:p-4.5 shadow-2xs space-y-3 animate-in fade-in-50 duration-200">
-                  <div className="flex items-center justify-between flex-wrap gap-2">
-                    <div className="flex items-center gap-1.5">
-                      <div className="size-6 rounded-full bg-[#E67230]/15 flex items-center justify-center text-[#E67230]">
-                        <Scale className="size-3.5" />
-                      </div>
-                      <span className="text-xs font-bold text-[#E67230] uppercase tracking-wider">
-                        Governing Statutory Medical Council
-                      </span>
-                    </div>
-                    <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-white text-[11px] font-bold text-[#111111] border border-[#EBE7DF] shadow-2xs">
-                      <ShieldCheck className="size-3 text-[#E67230]" />
-                      {governingCouncil.board_type || "State Statutory Board"}
-                    </span>
-                  </div>
+
 
                   <div>
                     <h4 className="text-sm sm:text-base font-extrabold text-[#111111] leading-snug">
