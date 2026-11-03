@@ -135,8 +135,8 @@ export function Home() {
   const whatsappShareUrl = `https://api.whatsapp.com/send?text=${shareText}`;
 
   // Community links (Telegram & WhatsApp Community channel)
-  const whatsappCommunityUrl = "https://chat.whatsapp.com/";
-  const telegramCommunityUrl = "https://t.me/";
+  const whatsappCommunityUrl = "https://www.whatsapp.com/channel/0029Vb5lp2eICVfeN93oxw11";
+  const telegramCommunityUrl = "https://t.me/meyveda";
 
   return (
     <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12 space-y-10 text-[#111111]">
