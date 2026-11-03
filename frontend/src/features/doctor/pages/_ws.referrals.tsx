@@ -328,303 +328,292 @@ export function ReferralsPage() {
 
       {/* TAB 1: OVERVIEW & QR CODE */}
       {activeTab === "overview" && (
-        <div className="space-y-8">
-          {/* Metrics Overview Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="rounded-3xl border border-[#EBE7DF] bg-white p-7 shadow-sm space-y-2">
-              <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
-                Invited Colleagues
-              </span>
-              <div className="text-3xl font-extrabold text-[#111111]">
-                {(referralAccount.totalInvited ?? 0) || referrals.length}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                Colleagues nominated or registered
-              </p>
-            </div>
-
-            <div className="rounded-3xl border border-[#EBE7DF] bg-white p-7 shadow-sm space-y-2">
-              <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
-                Completed Registrations
-              </span>
-              <div className="text-3xl font-extrabold text-[#E67230]">
-                {verifiedCount}
-              </div>
-              <p className="text-sm text-muted-foreground">
-                AYUSH practitioners onboarded
-              </p>
-            </div>
-
-            <div className="rounded-3xl border border-[#EBE7DF] bg-white p-7 shadow-sm space-y-2">
-              <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider block">
-                Early Access Points
-              </span>
-              <div className="text-3xl font-extrabold text-[#111111]">
-                {referralAccount.referralPoints ?? 0} pts
-              </div>
-              <p className="text-sm text-muted-foreground">
-                10 reward points per verified colleague
-              </p>
-            </div>
-          </div>
-
-          {/* Unique Referral Invite Link & QR Code Card */}
-          <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-8">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE7DF] pb-5">
-              <div>
-                <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">
-                  Your Unique Referral Invite Link &amp; QR Code
-                </h2>
-                <p className="text-sm text-muted-foreground mt-1">
-                  Colleagues can scan the QR code directly or register via your personal invitation link.
-                </p>
-              </div>
-
-              <div className="flex items-center gap-2 self-start sm:self-auto">
-                <span className="text-sm text-muted-foreground font-medium">Your Code:</span>
-                <span className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-1.5 font-mono text-base font-bold text-[#E67230]">
-                  {inviteCode}
-                </span>
-                <button
-                  type="button"
-                  onClick={handleCopyCode}
-                  className="rounded-xl border border-[#EBE7DF] bg-white p-2 text-[#666666] hover:text-[#E67230] hover:border-[#E67230] transition-colors cursor-pointer"
-                  title="Copy code"
-                >
-                  {copiedCode ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
-                </button>
-              </div>
-            </div>
-
-            {/* Split layout: Link Actions on Left, QR Code on Right */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
-              {/* Left Column: Link input & share buttons */}
-              <div className="lg:col-span-7 space-y-5">
-                <div className="space-y-2">
-                  <label className="text-sm font-bold text-[#111111]">
-                    Direct Registration URL:
-                  </label>
-                  <input
-                    type="text"
-                    readOnly
-                    value={fullInviteUrl}
-                    className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 font-mono text-sm text-[#222222] focus:outline-none select-all"
-                  />
+        <div className="space-y-6">
+          {/* Top Row: Left = Metrics & QR Card, Right = Quick Colleague Invite Box */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+            {/* Left 7 Columns: Metrics Counters & QR Referral Link */}
+            <div className="lg:col-span-7 space-y-6">
+              {/* Metrics Overview Cards */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5">
+                <div className="rounded-2xl border border-[#EBE7DF] bg-white p-5 shadow-xs space-y-1">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                    Invited Colleagues
+                  </span>
+                  <div className="text-2xl font-extrabold text-[#111111]">
+                    {(referralAccount.totalInvited ?? 0) || referrals.length}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Colleagues nominated
+                  </p>
                 </div>
 
-                <div className="flex flex-wrap gap-3 pt-1">
-                  <button
-                    type="button"
-                    onClick={handleCopyLink}
-                    className="flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors cursor-pointer"
-                  >
-                    {copiedLink ? (
-                      <>
-                        <Check className="h-4 w-4" /> Copied Link
-                      </>
-                    ) : (
-                      <>
-                        <Copy className="h-4 w-4" /> Copy Link
-                      </>
-                    )}
-                  </button>
+                <div className="rounded-2xl border border-[#EBE7DF] bg-white p-5 shadow-xs space-y-1">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                    Registrations
+                  </span>
+                  <div className="text-2xl font-extrabold text-[#E67230]">
+                    {verifiedCount}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    Practitioners onboarded
+                  </p>
+                </div>
 
-                  <a
-                    href={whatsappShareUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors cursor-pointer"
-                  >
-                    <MessageCircle className="h-4 w-4" /> Share on WhatsApp
-                  </a>
+                <div className="rounded-2xl border border-[#EBE7DF] bg-white p-5 shadow-xs space-y-1">
+                  <span className="text-[11px] font-bold text-muted-foreground uppercase tracking-wider block">
+                    Access Points
+                  </span>
+                  <div className="text-2xl font-extrabold text-[#111111]">
+                    {referralAccount.referralPoints ?? 0} pts
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    10 pts / verified colleague
+                  </p>
+                </div>
+              </div>
 
-                  {qrCodeDataUrl && (
+              {/* Unique Referral Invite Link & QR Code Card */}
+              <section className="rounded-3xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-xs space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-[#EBE7DF] pb-4">
+                  <div>
+                    <h2 className="text-lg sm:text-xl font-bold text-[#111111]">
+                      Your Referral Link &amp; QR Code
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Colleagues can scan directly or register with your code.
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 self-start sm:self-auto">
+                    <span className="text-xs text-muted-foreground font-medium">Code:</span>
+                    <span className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-3 py-1 font-mono text-sm font-bold text-[#E67230]">
+                      {inviteCode}
+                    </span>
                     <button
                       type="button"
-                      onClick={handleDownloadQr}
-                      className="flex items-center justify-center gap-2 rounded-xl border border-[#EBE7DF] bg-white px-5 py-3 text-sm font-bold text-[#111111] hover:border-[#E67230] hover:text-[#E67230] transition-colors cursor-pointer"
+                      onClick={handleCopyCode}
+                      className="rounded-xl border border-[#EBE7DF] bg-white p-1.5 text-[#666666] hover:text-[#E67230] hover:border-[#E67230] transition-colors cursor-pointer"
+                      title="Copy code"
                     >
-                      <Download className="h-4 w-4" /> Download QR
+                      {copiedCode ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
                     </button>
-                  )}
-                </div>
-
-                <p className="text-xs text-muted-foreground leading-relaxed pt-2">
-                  When invitees register using this URL or scan your QR code, your practitioner referral code is automatically locked in and reward points are attributed upon state council verification.
-                </p>
-              </div>
-
-              {/* Right Column: High-Clarity QR Code Display */}
-              <div className="lg:col-span-5 flex flex-col items-center justify-center p-6 rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6]">
-                <div className="rounded-2xl bg-white p-4 shadow-sm border border-[#EBE7DF]">
-                  {qrCodeDataUrl ? (
-                    <img
-                      src={qrCodeDataUrl}
-                      alt={`Meyveda Referral QR Code for ${inviteCode}`}
-                      className="w-48 h-48 sm:w-52 sm:h-52 object-contain"
-                    />
-                  ) : (
-                    <div className="w-48 h-48 flex items-center justify-center text-xs text-muted-foreground">
-                      Generating QR...
-                    </div>
-                  )}
-                </div>
-
-                <div className="text-center mt-3">
-                  <p className="text-xs font-bold text-[#111111] flex items-center justify-center gap-1.5">
-                    <QrCode className="h-3.5 w-3.5 text-[#E67230]" />
-                    Scan to Join Meyveda
-                  </p>
-                  <p className="text-[11px] text-muted-foreground">Code: {inviteCode}</p>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          {/* Direct Colleague Nomination & Dispatch Form (3 Questions) */}
-          <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-6">
-            <div className="border-b border-[#EBE7DF] pb-4 space-y-1">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#111111]">
-                Invite a Colleague to Meyveda
-              </h2>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                Provide your colleague&apos;s details below. An official invitation will be dispatched with your exclusive code and a 1-click registration link.
-              </p>
-            </div>
-
-            {inviteSuccessInfo ? (
-              <div className="rounded-2xl border border-emerald-200 bg-emerald-50/50 p-6 space-y-5">
-                <div className="flex items-center gap-3 text-emerald-700">
-                  <CheckCircle2 className="h-6 w-6" />
-                  <h3 className="text-base font-bold">Invitation Dispatched Successfully!</h3>
-                </div>
-
-                <div className="space-y-1 text-sm text-[#333333]">
-                  <p>
-                    Recipient: <strong>{inviteSuccessInfo.name}</strong> ({inviteSuccessInfo.qualification})
-                  </p>
-                  <p>Email: {inviteSuccessInfo.email}</p>
-                  <p>Mobile: +91 {inviteSuccessInfo.mobile}</p>
-                </div>
-
-                <div className="flex gap-3 pt-2">
-                  <button
-                    type="button"
-                    onClick={() => setInviteSuccessInfo(null)}
-                    className="rounded-xl bg-[#E67230] px-5 py-2.5 text-xs font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
-                  >
-                    Invite Another Colleague
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => updateSearch({ tab: "history" })}
-                    className="rounded-xl border border-[#EBE7DF] bg-white px-5 py-2.5 text-xs font-bold text-[#111111] hover:bg-muted/40 transition-colors"
-                  >
-                    View Referral Records
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <form onSubmit={handleSendInvite} className="space-y-5">
-                {/* 1. Name */}
-                <div className="space-y-1.5">
-                  <label className="text-sm font-bold text-[#111111] block">
-                    1. Colleague&apos;s Full Name *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={inviteName}
-                    onChange={(e) => {
-                      setInviteName(e.target.value);
-                      if (formErrors.name) setFormErrors((p) => ({ ...p, name: undefined }));
-                    }}
-                    placeholder="e.g. Dr. Rajesh K. Varma"
-                    className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
-                  />
-                  {formErrors.name && (
-                    <p className="text-xs text-red-500 font-medium">{formErrors.name}</p>
-                  )}
-                </div>
-
-                {/* 2. Email */}
-                <div className="space-y-1.5">
-                  <label className="text-sm font-bold text-[#111111] block">
-                    2. Colleague&apos;s Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={inviteEmail}
-                    onChange={(e) => {
-                      setInviteEmail(e.target.value);
-                      if (formErrors.email) setFormErrors((p) => ({ ...p, email: undefined }));
-                    }}
-                    placeholder="e.g. dr.rajesh@ayurveda-institute.org"
-                    className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
-                  />
-                  {formErrors.email && (
-                    <p className="text-xs text-red-500 font-medium">{formErrors.email}</p>
-                  )}
-                </div>
-
-                {/* 3. Mobile & 4. Qualification */}
-                <div className="space-y-1.5">
-                  <label className="text-sm font-bold text-[#111111] block">
-                    3. Mobile Number *
-                  </label>
-                  <div className="relative">
-                    <span className="absolute inset-y-0 left-0 flex items-center pl-3.5 text-xs font-bold text-muted-foreground select-none pointer-events-none">
-                      +91
-                    </span>
-                    <input
-                      type="tel"
-                      maxLength={10}
-                      required
-                      value={inviteMobile}
-                      onChange={(e) => {
-                        const val = sanitizeMobileInput(e.target.value);
-                        setInviteMobile(val);
-                        if (formErrors.mobile) setFormErrors((p) => ({ ...p, mobile: undefined }));
-                      }}
-                      placeholder="98765 43210"
-                      className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] pl-12 pr-4 py-3 font-mono text-sm text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
-                    />
                   </div>
-                  {formErrors.mobile && (
-                    <p className="text-xs text-red-500 font-medium">{formErrors.mobile}</p>
-                  )}
                 </div>
 
-                <div className="pt-3 border-t border-[#EBE7DF] flex items-center justify-end gap-3">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setInviteName("");
-                      setInviteEmail("");
-                      setInviteMobile("");
-                      setFormErrors({});
-                    }}
-                    className="text-sm font-semibold text-muted-foreground hover:text-foreground cursor-pointer px-4 py-2"
-                  >
-                    Clear Form
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 rounded-xl bg-[#E67230] px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors disabled:opacity-50 cursor-pointer"
-                  >
-                    <Send className="h-4 w-4" />
-                    {isSubmitting ? "Dispatching..." : "Send Colleague Invitation"}
-                  </button>
+                {/* Link and QR Row */}
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-5 items-center">
+                  <div className="sm:col-span-7 space-y-3.5">
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#111111]">
+                        Direct Registration Link:
+                      </label>
+                      <input
+                        type="text"
+                        readOnly
+                        value={fullInviteUrl}
+                        className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-3.5 py-2 font-mono text-xs text-[#222222] focus:outline-none select-all"
+                      />
+                    </div>
+
+                    <div className="flex flex-wrap gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={handleCopyLink}
+                        className="flex items-center justify-center gap-1.5 rounded-xl bg-[#E67230] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-colors cursor-pointer"
+                      >
+                        {copiedLink ? (
+                          <>
+                            <Check className="h-3.5 w-3.5" /> Copied Link
+                          </>
+                        ) : (
+                          <>
+                            <Copy className="h-3.5 w-3.5" /> Copy Link
+                          </>
+                        )}
+                      </button>
+
+                      <a
+                        href={whatsappShareUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-1.5 rounded-xl bg-[#25D366] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#1EBE5D] transition-colors cursor-pointer"
+                      >
+                        <MessageCircle className="h-3.5 w-3.5" /> WhatsApp
+                      </a>
+
+                      {qrCodeDataUrl && (
+                        <button
+                          type="button"
+                          onClick={handleDownloadQr}
+                          className="flex items-center justify-center gap-1.5 rounded-xl border border-[#EBE7DF] bg-white px-3.5 py-2 text-xs font-bold text-[#111111] hover:border-[#E67230] hover:text-[#E67230] transition-colors cursor-pointer"
+                        >
+                          <Download className="h-3.5 w-3.5" /> QR
+                        </button>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="sm:col-span-5 flex flex-col items-center justify-center p-3.5 rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6]">
+                    <div className="rounded-xl bg-white p-2 shadow-xs border border-[#EBE7DF]">
+                      {qrCodeDataUrl ? (
+                        <img
+                          src={qrCodeDataUrl}
+                          alt={`Meyveda Referral QR Code for ${inviteCode}`}
+                          className="w-32 h-32 object-contain"
+                        />
+                      ) : (
+                        <div className="w-32 h-32 flex items-center justify-center text-[10px] text-muted-foreground">
+                          Generating QR...
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-[11px] font-bold text-[#111111] mt-2">
+                      Scan to Register
+                    </p>
+                  </div>
                 </div>
-              </form>
-            )}
-          </section>
+              </section>
+            </div>
+
+            {/* Right 5 Columns: Compact Straightforward Invite Box in Top Right */}
+            <div className="lg:col-span-5">
+              <section className="rounded-3xl border border-[#EBE7DF] bg-white p-6 sm:p-7 shadow-xs space-y-4">
+                <div className="border-b border-[#EBE7DF] pb-3 space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <span className="flex h-2 w-2 rounded-full bg-[#E67230]" />
+                    <h2 className="text-base sm:text-lg font-bold text-[#111111]">
+                      Invite a Colleague
+                    </h2>
+                  </div>
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Dispatch an official invite with your code &amp; 1-click link.
+                  </p>
+                </div>
+
+                {inviteSuccessInfo ? (
+                  <div className="rounded-2xl border border-emerald-200 bg-emerald-50/60 p-4 space-y-3.5">
+                    <div className="flex items-center gap-2 text-emerald-700">
+                      <CheckCircle2 className="h-4 w-4" />
+                      <h3 className="text-xs font-bold">Invitation Dispatched!</h3>
+                    </div>
+
+                    <div className="space-y-0.5 text-xs text-[#333333]">
+                      <p>Recipient: <strong>{inviteSuccessInfo.name}</strong></p>
+                      <p className="text-muted-foreground">{inviteSuccessInfo.email}</p>
+                      <p className="text-muted-foreground font-mono">+91 {inviteSuccessInfo.mobile}</p>
+                    </div>
+
+                    <div className="flex flex-col gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => setInviteSuccessInfo(null)}
+                        className="w-full rounded-xl bg-[#E67230] py-2 text-xs font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-colors cursor-pointer"
+                      >
+                        Invite Another Colleague
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <form onSubmit={handleSendInvite} className="space-y-3">
+                    {/* 1. Name */}
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#111111] block">
+                        1. Colleague's Full Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        value={inviteName}
+                        onChange={(e) => {
+                          setInviteName(e.target.value);
+                          if (formErrors.name) setFormErrors((p) => ({ ...p, name: undefined }));
+                        }}
+                        placeholder="e.g. Dr. Rajesh K. Varma"
+                        className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-3.5 py-2 text-xs text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
+                      />
+                      {formErrors.name && (
+                        <p className="text-[11px] text-red-500 font-medium">{formErrors.name}</p>
+                      )}
+                    </div>
+
+                    {/* 2. Email */}
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#111111] block">
+                        2. Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={inviteEmail}
+                        onChange={(e) => {
+                          setInviteEmail(e.target.value);
+                          if (formErrors.email) setFormErrors((p) => ({ ...p, email: undefined }));
+                        }}
+                        placeholder="e.g. dr.rajesh@clinic.com"
+                        className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-3.5 py-2 text-xs text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
+                      />
+                      {formErrors.email && (
+                        <p className="text-[11px] text-red-500 font-medium">{formErrors.email}</p>
+                      )}
+                    </div>
+
+                    {/* 3. Mobile */}
+                    <div className="space-y-1">
+                      <label className="text-xs font-bold text-[#111111] block">
+                        3. Mobile Number *
+                      </label>
+                      <div className="relative">
+                        <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-xs font-bold text-muted-foreground select-none pointer-events-none">
+                          +91
+                        </span>
+                        <input
+                          type="tel"
+                          maxLength={10}
+                          required
+                          value={inviteMobile}
+                          onChange={(e) => {
+                            const val = sanitizeMobileInput(e.target.value);
+                            setInviteMobile(val);
+                            if (formErrors.mobile) setFormErrors((p) => ({ ...p, mobile: undefined }));
+                          }}
+                          placeholder="98765 43210"
+                          className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] pl-10 pr-3 py-2 font-mono text-xs text-[#111111] focus:border-[#E67230] focus:bg-white focus:outline-none placeholder:text-muted-foreground"
+                        />
+                      </div>
+                      {formErrors.mobile && (
+                        <p className="text-[11px] text-red-500 font-medium">{formErrors.mobile}</p>
+                      )}
+                    </div>
+
+                    <div className="pt-2 flex items-center justify-between gap-2 border-t border-[#EBE7DF]">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setInviteName("");
+                          setInviteEmail("");
+                          setInviteMobile("");
+                          setFormErrors({});
+                        }}
+                        className="text-xs font-semibold text-muted-foreground hover:text-foreground cursor-pointer py-1"
+                      >
+                        Clear
+                      </button>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="inline-flex items-center justify-center gap-1.5 rounded-xl bg-[#E67230] px-4 py-2 text-xs font-bold text-white shadow-xs hover:bg-[#D15F1F] transition-colors disabled:opacity-50 cursor-pointer"
+                      >
+                        <Send className="h-3.5 w-3.5" />
+                        {isSubmitting ? "Sending..." : "Send Invitation"}
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </section>
+            </div>
+          </div>
         </div>
       )}
-
-      
 
       {/* TAB 3: REFERRAL RECORDS TABLE */}
       {activeTab === "history" && (
