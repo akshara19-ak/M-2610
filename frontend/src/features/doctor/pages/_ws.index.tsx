@@ -3,23 +3,24 @@ import { useState, useEffect } from "react";
 import {
   Copy,
   Check,
-  Share2,
-  Users,
-  Award,
-  Sparkles,
   ArrowRight,
   ClipboardList,
-  CheckCircle2,
   MessageCircle,
   ExternalLink,
+  Send,
+  Users2,
+  Sparkles,
+  Layers,
+  Download,
+  QrCode,
 } from "lucide-react";
-import { VerificationBadge } from "@/components/ui-kit";
+import QRCode from "qrcode";
 import { useStore, getState } from "@/lib/store";
 import { seo } from "@/lib/seo";
 import { apiClient } from "@/services/apiClient";
 import { toast } from "sonner";
 import { copyToClipboard } from "@/lib/clipboard";
-import dhanvantari from "@/assets/Dhanvantari2.png";
+import { Mascot } from "@/components/ui/mascot";
 
 export const Route = createFileRoute("/_ws/")({
   beforeLoad: () => {
@@ -33,47 +34,26 @@ export const Route = createFileRoute("/_ws/")({
   head: () =>
     seo(
       "Doctor Workspace | Meyveda",
-      "Practitioner registration dashboard, unique referral invite link, and early access onboarding.",
+      "Practitioner early-bird registration confirmed. AYUSH digital infrastructure pioneer group.",
     ),
   component: Home,
 });
 
-function greetingFor(date: Date) {
-  const hour = date.getHours();
-  if (hour < 12) return "Good morning";
-  if (hour < 17) return "Good afternoon";
-  return "Good evening";
-}
-
-function familiarName(name: string) {
-  const given = name
-    .replace(/^Dr\.?\s+/i, "")
-    .split(" ")
-    .filter(Boolean)[0];
-  if (!given) return name;
-  return /^Dr\.?\s+/i.test(name) ? `Dr. ${given}` : given;
+function getDoctorDisplayName(name?: string) {
+  if (!name) return "Practitioner";
+  const clean = name.replace(/^Dr\.?\s+/i, "").trim();
+  return clean || "Practitioner";
 }
 
 export function Home() {
   const doctor = useStore((s) => s.doctor);
-  const now = new Date();
 
-  // Unique invite code: 3 uppercase letters + 2 numbers (e.g. MSV77)
   const defaultCode = (doctor as any)?.inviteCode || "MSV77";
   const [inviteCode, setInviteCode] = useState<string>(defaultCode);
-  const [referralCount, setReferralCount] = useState<number>(0);
-  const [totalRewards, setTotalRewards] = useState<number>(0);
-  const [joinedDoctors, setJoinedDoctors] = useState<Array<{
-    id: string;
-    name: string;
-    qualification?: string;
-    status: string;
-    registered_at: string;
-  }>>([]);
   const [copiedLink, setCopiedLink] = useState(false);
   const [copiedCode, setCopiedCode] = useState(false);
+  const [qrCodeDataUrl, setQrCodeDataUrl] = useState<string>("");
 
-  // Fetch live referral summary and invite code from backend
   useEffect(() => {
     let active = true;
     async function fetchReferralSummary() {
@@ -81,25 +61,12 @@ export function Home() {
         const res = await apiClient.get<{
           invite_code: string;
           invite_url: string;
-          referral_count: number;
-          total_rewards: number;
-          joined_doctors?: Array<{
-            id: string;
-            name: string;
-            qualification?: string;
-            status: string;
-            registered_at: string;
-          }>;
         }>("/referrals/my-summary");
 
         if (active && res) {
           if (res.invite_code) setInviteCode(res.invite_code);
-          setReferralCount(res.referral_count || 0);
-          setTotalRewards(res.total_rewards || 0);
-          if (res.joined_doctors) setJoinedDoctors(res.joined_doctors);
         }
       } catch {
-        // Fallback to doctor profile or stored data
         if ((doctor as any)?.invite_code) {
           setInviteCode((doctor as any).invite_code);
         }
@@ -113,6 +80,21 @@ export function Home() {
 
   const origin = typeof window !== "undefined" ? window.location.origin : "http://localhost:5173";
   const fullInviteUrl = `${origin}/register?ref=${inviteCode}`;
+
+  // Generate QR Code for fullInviteUrl
+  useEffect(() => {
+    if (!fullInviteUrl) return;
+    QRCode.toDataURL(fullInviteUrl, {
+      width: 260,
+      margin: 1.5,
+      color: {
+        dark: "#111111",
+        light: "#FFFFFF",
+      },
+    })
+      .then((url) => setQrCodeDataUrl(url))
+      .catch((err) => console.error("QR Code error:", err));
+  }, [fullInviteUrl]);
 
   const handleCopyLink = async () => {
     const success = await copyToClipboard(fullInviteUrl);
@@ -136,103 +118,209 @@ export function Home() {
     }
   };
 
+  const handleDownloadQr = () => {
+    if (!qrCodeDataUrl) return;
+    const a = document.createElement("a");
+    a.href = qrCodeDataUrl;
+    a.download = `meyveda-invite-qr-${inviteCode}.png`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    toast.success("QR Code downloaded!");
+  };
+
   const shareText = encodeURIComponent(
     `Namaste Doctor, I invite you to join Meyveda — verified AYUSH clinical network & research repository. Register with my invite code ${inviteCode}: ${fullInviteUrl}`,
   );
-  const whatsappUrl = `https://api.whatsapp.com/send?text=${shareText}`;
+  const whatsappShareUrl = `https://api.whatsapp.com/send?text=${shareText}`;
+
+  // Community links (Telegram & WhatsApp Community channel)
+  const whatsappCommunityUrl = "https://www.whatsapp.com/channel/0029Vb5lp2eICVfeN93oxw11";
+  const telegramCommunityUrl = "https://t.me/meyveda";
 
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-6 md:px-8 md:py-8 space-y-6">
-      {/* 1. Minimal Header Greeting */}
-      <section className="relative overflow-hidden rounded-2xl border border-border bg-white p-6 md:p-8 shadow-soft">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 flex-1">
-            <div className="flex items-center gap-3">
-              <span className="text-xs text-muted-foreground font-medium">
-                {now.toLocaleDateString("en-IN", {
-                  weekday: "long",
-                  day: "numeric",
-                  month: "long",
-                })}
-              </span>
-              <VerificationBadge status={doctor.verification} />
+    <div className="mx-auto w-full max-w-6xl px-4 py-8 md:px-8 md:py-12 space-y-10 text-[#111111]">
+      {/* 1. Greeting & Early-Bird Welcome Header */}
+      <section className="relative overflow-hidden rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+          <div className="space-y-4 flex-1">
+            <div>
+              <h1 className="text-3xl sm:text-4xl font-extrabold text-[#111111] tracking-tight">
+                Greetings! Dr. {getDoctorDisplayName(doctor.name)}
+              </h1>
+              <p className="text-sm text-[#777777] mt-1.5 font-medium">
+                Verification status:{" "}
+                <span className={doctor.verification === "Verified" ? "text-emerald-700 font-bold" : "text-[#D15F1F] font-bold"}>
+                  {doctor.verification || "Pending Verification"}
+                </span>
+              </p>
             </div>
 
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-foreground tracking-tight">
-              {greetingFor(now)}, {familiarName(doctor.name)}.
-            </h1>
+            <p className="text-lg sm:text-xl text-[#333333] font-semibold leading-relaxed max-w-3xl">
+              Your early-bird registration is confirmed. Welcome to the pioneer group redefining AYUSH digital infrastructure.
+            </p>
 
-            <p className="text-sm text-muted-foreground leading-relaxed max-w-xl">
-              Welcome to the Meyveda early practitioner network. Share your exclusive invite link with fellow <strong className="font-bold text-[#E65C24]">AYUSH</strong> doctors to unlock early access rewards.
+            <p className="text-base text-[#555555] leading-relaxed max-w-3xl">
+              We opened this early access to build Meyveda with you. Generic clinic software fails to capture the nuances of holistic care, so your real-time clinical insights will directly shape our dynamicPMS and automation tools before the public launch.
             </p>
           </div>
 
-          {/* Lord Dhanvantari Icon */}
+          {/* Interactive Doctor Mascot */}
           <div className="relative flex shrink-0 items-center justify-center self-center pointer-events-none select-none">
-            <div className="hero-dhanvantari-float motion-reduce:animate-none">
-              <img
-                src={dhanvantari}
-                alt="Lord Dhanvantari"
-                className="h-28 w-28 md:h-32 md:w-32 object-contain drop-shadow-sm"
-                loading="eager"
-              />
-            </div>
+            <Mascot
+              directions="/mascots/meyveda-doctor-directions.webp"
+              reactions="/mascots/meyveda-doctor-reactions.webp"
+              size={180}
+              label="Meyveda AYUSH Doctor Mascot"
+              className="select-none drop-shadow-md pointer-events-auto"
+            />
           </div>
         </div>
       </section>
 
-      {/* 2. Prominent Invite Link & Referral Code Card */}
-      <section className="rounded-2xl border-2 border-primary/30 bg-card p-6 md:p-8 shadow-soft space-y-5">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-          <div>
-            <div className="inline-flex items-center gap-1.5 rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary mb-2">
-              <Sparkles className="h-3.5 w-3.5" /> Exclusive Practitioner Invite
+      {/* 2. What Happens Next */}
+      <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-7">
+        <div>
+          <h2 className="text-xl sm:text-2xl font-bold text-[#111111] tracking-tight">
+            What Happens Next
+          </h2>
+          <p className="text-sm text-[#777777] mt-1">
+            Our collaborative roadmap for the pioneer cohort
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Step 1: Co-Create */}
+          <div className="rounded-2xl border border-[#F0ECE1] bg-[#FAF9F6] p-6 space-y-3">
+            <div className="text-[#E67230] font-bold text-base">
+              <span>Co-Create</span>
             </div>
-            <h2 className="text-xl font-extrabold text-foreground tracking-tight">
-              Your Unique Referral Invite Link
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Invite <strong className="font-bold text-[#E65C24]">AYUSH</strong> doctors (BAMS, BSMS, BNYS, BHMS, BUMS). Once they complete registration with your unique code, your referral reward is recorded.
+            <p className="text-sm text-[#555555] leading-relaxed">
+              Answer brief prompts about your workflow bottlenecks to prioritize our engineering roadmap.
             </p>
           </div>
 
-          {/* Unique 5-char code display (3 letters + 2 numbers) */}
-          <div className="flex flex-col items-center sm:items-end">
-            <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">
-              Your Invite Code
-            </span>
-            <div className="flex items-center gap-2 mt-1">
-              <span className="rounded-xl border border-primary/40 bg-primary-soft px-4 py-2 font-mono text-2xl font-black tracking-widest text-primary shadow-xs">
-                {inviteCode}
-              </span>
-              <button
-                type="button"
-                onClick={handleCopyCode}
-                className="rounded-lg border border-border bg-card p-2 text-muted-foreground hover:border-primary hover:text-primary transition-colors cursor-pointer"
-                title="Copy code"
-              >
-                {copiedCode ? <Check className="h-5 w-5 text-emerald-600" /> : <Copy className="h-5 w-5" />}
-              </button>
+          {/* Step 2: Beta Access */}
+          <div className="rounded-2xl border border-[#F0ECE1] bg-[#FAF9F6] p-6 space-y-3">
+            <div className="text-[#E67230] font-bold text-base">
+              <span>Beta Access</span>
             </div>
+            <p className="text-sm text-[#555555] leading-relaxed">
+              Get first access to test the dynamicPMS environment and patient automations.
+            </p>
+          </div>
+
+          {/* Step 3: The Builder’s Circle */}
+          <div className="rounded-2xl border border-[#F0ECE1] bg-[#FAF9F6] p-6 space-y-3">
+            <div className="text-[#E67230] font-bold text-base">
+              <span>The Builder’s Circle</span>
+            </div>
+            <p className="text-sm text-[#555555] leading-relaxed">
+              Join our private channel to shape features and collaborate with fellow AYUSH practitioners.
+            </p>
           </div>
         </div>
 
-        {/* Invite URL Copy & WhatsApp Share Box */}
-        <div className="rounded-xl border border-border bg-background p-3 sm:p-4 space-y-3">
-          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
-            <div className="relative flex-1">
+        {/* Action CTAs: Share Survey, WhatsApp Community, Telegram Group */}
+        <div className="pt-2 flex flex-col sm:flex-row items-stretch sm:items-center gap-4 flex-wrap">
+          <Link
+            to="/survey"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors"
+          >
+            Share Your Biggest Workflow Challenge
+          </Link>
+
+          <a
+            href={whatsappCommunityUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors"
+          >
+            <MessageCircle className="h-5 w-5" />
+            WhatsApp Community
+          </a>
+
+          <a
+            href={telegramCommunityUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#0088cc] px-6 py-3.5 text-base font-bold text-white shadow-sm hover:bg-[#0077b5] transition-colors"
+          >
+            <Send className="h-5 w-5" />
+            Telegram Group
+          </a>
+        </div>
+      </section>
+
+      {/* 3. Survey Link Section */}
+      <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6">
+          <div className="space-y-1">
+            <h3 className="text-lg font-bold text-[#111111]">
+              Practitioner Feedback & Workflow Survey
+            </h3>
+            <p className="text-sm text-[#666666] max-w-xl leading-relaxed">
+              Your feedback directly impacts how Meyveda builds clinical toolkits, dispensing workflows, and diagnostic records.
+            </p>
+          </div>
+
+          <Link
+            to="/survey"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-6 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors whitespace-nowrap self-start sm:self-auto"
+          >
+            Go to Survey <ArrowRight className="h-4 w-4" />
+          </Link>
+        </div>
+      </section>
+
+      {/* 5. Referral Link & QR Code */}
+      <section className="rounded-3xl border border-[#EBE7DF] bg-white p-7 md:p-10 shadow-sm space-y-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#EBE7DF] pb-5">
+          <div>
+            <h3 className="text-xl font-bold text-[#111111]">
+              Your Referral Link &amp; QR Code
+            </h3>
+            <p className="text-sm text-[#777777] mt-1">
+              Invite verified AYUSH colleagues (BAMS, BSMS, BNYS, BHMS, BUMS) to join early access.
+            </p>
+          </div>
+
+          {/* Invite Code */}
+          <div className="flex items-center gap-2.5 self-start sm:self-auto">
+            <span className="text-sm text-[#777777] font-medium">Code:</span>
+            <span className="rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-1.5 font-mono text-base font-bold text-[#E67230]">
+              {inviteCode}
+            </span>
+            <button
+              type="button"
+              onClick={handleCopyCode}
+              className="rounded-xl border border-[#EBE7DF] bg-white p-2 text-[#666666] hover:text-[#E67230] hover:border-[#E67230] transition-colors cursor-pointer"
+              title="Copy code"
+            >
+              {copiedCode ? <Check className="h-4 w-4 text-emerald-600" /> : <Copy className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+
+        {/* Split layout: Link and Actions on Left, QR Code on Right */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center pt-1">
+          {/* Left Column: Input and Action buttons */}
+          <div className="lg:col-span-8 space-y-4">
+            <div className="space-y-1.5">
+              <label className="text-sm font-bold text-[#111111]">Direct Registration URL:</label>
               <input
                 type="text"
                 readOnly
                 value={fullInviteUrl}
-                className="w-full rounded-lg border border-border bg-card px-3.5 py-2.5 font-mono text-xs text-foreground focus:outline-none select-all"
+                className="w-full rounded-xl border border-[#EBE7DF] bg-[#FAF9F6] px-4 py-3 font-mono text-sm text-[#222222] focus:outline-none select-all"
               />
             </div>
-            <div className="flex gap-2">
+
+            <div className="flex flex-wrap gap-3 pt-1">
               <button
                 type="button"
                 onClick={handleCopyLink}
-                className="flex flex-1 sm:flex-initial items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2.5 text-xs font-bold text-primary-foreground shadow-xs hover:bg-primary/90 transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#E67230] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#D15F1F] transition-colors cursor-pointer"
               >
                 {copiedLink ? (
                   <>
@@ -244,131 +332,56 @@ export function Home() {
                   </>
                 )}
               </button>
+
               <a
-                href={whatsappUrl}
+                href={whatsappShareUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center justify-center gap-1.5 rounded-lg bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-xs hover:bg-emerald-700 transition-colors cursor-pointer"
+                className="flex items-center justify-center gap-2 rounded-xl bg-[#25D366] px-5 py-3 text-sm font-bold text-white shadow-sm hover:bg-[#1EBE5D] transition-colors cursor-pointer"
               >
-                <MessageCircle className="h-4 w-4" /> Share
+                <MessageCircle className="h-4 w-4" /> Share on WhatsApp
               </a>
+
+              {qrCodeDataUrl && (
+                <button
+                  type="button"
+                  onClick={handleDownloadQr}
+                  className="flex items-center justify-center gap-2 rounded-xl border border-[#EBE7DF] bg-white px-5 py-3 text-sm font-bold text-[#111111] hover:border-[#E67230] hover:text-[#E67230] transition-colors cursor-pointer"
+                >
+                  <Download className="h-4 w-4" /> Download QR
+                </button>
+              )}
             </div>
-          </div>
-        </div>
-      </section>
 
-      {/* 3. Minimal Stats Grid: Referrals & Recorded Rewards */}
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              Doctors Registered
-            </span>
-            <Users className="h-4 w-4 text-primary" />
-          </div>
-          <div className="text-2xl font-black text-foreground">
-            {referralCount}
-          </div>
-          <p className="text-[11px] text-muted-foreground">
-            Colleagues joined with your code
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              Referral Rewards Recorded
-            </span>
-            <Award className="h-4 w-4 text-emerald-600" />
-          </div>
-          <div className="text-2xl font-black text-emerald-600">
-            {totalRewards} pts
-          </div>
-          <p className="text-[11px] text-muted-foreground">
-            10 points recorded per doctor
-          </p>
-        </div>
-
-        <div className="rounded-2xl border border-border bg-card p-5 shadow-2xs space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-bold text-muted-foreground uppercase tracking-wider">
-              Early Access Tier
-            </span>
-            <Sparkles className="h-4 w-4 text-amber-600" />
-          </div>
-          <div className="text-lg font-bold text-foreground">
-            Priority Beta Group
-          </div>
-          <p className="text-[11px] text-muted-foreground">
-            Early access to monographs & research
-          </p>
-        </div>
-      </div>
-
-      {/* 4. Doctors Joined via your Invite Code */}
-      <section className="rounded-2xl border border-border bg-card p-6 shadow-2xs space-y-4">
-        <div className="flex items-center justify-between">
-          <h3 className="text-sm font-bold text-foreground uppercase tracking-wider flex items-center gap-2">
-            <Users className="h-4 w-4 text-primary" />
-            Registered Colleagues ({joinedDoctors.length})
-          </h3>
-          <Link
-            to="/referrals"
-            className="text-xs font-bold text-primary hover:underline flex items-center gap-1"
-          >
-            View Referrals & Early Access <ArrowRight className="h-3 w-3" />
-          </Link>
-        </div>
-
-        {joinedDoctors.length > 0 ? (
-          <div className="divide-y divide-border rounded-xl border border-border overflow-hidden">
-            {joinedDoctors.map((doc) => (
-              <div key={doc.id} className="flex items-center justify-between p-3.5 bg-background hover:bg-card transition-colors">
-                <div className="space-y-0.5">
-                  <p className="text-sm font-bold text-foreground">{doc.name}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {doc.qualification || "AYUSH"} • Registered {doc.registered_at}
-                  </p>
-                </div>
-                <span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2.5 py-1 text-xs font-bold text-emerald-600 border border-emerald-500/20">
-                  <CheckCircle2 className="h-3.5 w-3.5" /> {doc.status}
-                </span>
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="rounded-xl border border-dashed border-border p-6 text-center space-y-2">
-            <Users className="h-8 w-8 text-muted-foreground mx-auto opacity-50" />
-            <p className="text-sm font-semibold text-foreground">No doctors registered with your code yet</p>
-            <p className="text-xs text-muted-foreground max-w-md mx-auto">
-              Share your invite link above with fellow doctors. Once they complete registration using your code {inviteCode}, their name and your reward will appear here.
+            <p className="text-xs text-[#777777] leading-relaxed pt-1">
+              Colleagues can scan the QR code using any smartphone camera or tap the direct link to register with your referral code.
             </p>
           </div>
-        )}
-      </section>
 
-      {/* 5. Minimal Survey Link Banner */}
-      <section className="rounded-2xl border border-primary/20 bg-primary-soft/30 p-5 shadow-2xs">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground font-bold shadow-xs">
-              <ClipboardList className="h-5 w-5" />
+          {/* Right Column: QR Code Display Card */}
+          <div className="lg:col-span-4 flex flex-col items-center justify-center p-5 rounded-2xl border border-[#EBE7DF] bg-[#FAF9F6]">
+            <div className="rounded-2xl bg-white p-3.5 shadow-sm border border-[#EBE7DF]">
+              {qrCodeDataUrl ? (
+                <img
+                  src={qrCodeDataUrl}
+                  alt={`Meyveda Referral QR Code for ${inviteCode}`}
+                  className="w-40 h-40 sm:w-44 sm:h-44 object-contain"
+                />
+              ) : (
+                <div className="w-40 h-40 flex items-center justify-center text-xs text-muted-foreground">
+                  Generating QR...
+                </div>
+              )}
             </div>
-            <div>
-              <h4 className="text-sm font-bold text-foreground">
-                Practitioner Clinical Survey
-              </h4>
-              <p className="text-xs text-muted-foreground">
-                Participate in tailoring the clinical intelligence and pharmacovigilance modules.
+
+            <div className="text-center mt-2.5">
+              <p className="text-xs font-bold text-[#111111] flex items-center justify-center gap-1.5">
+                <QrCode className="h-3.5 w-3.5 text-[#E67230]" />
+                Scan to Register
               </p>
+              <p className="text-[11px] text-muted-foreground">Code: {inviteCode}</p>
             </div>
           </div>
-          <Link
-            to="/survey"
-            className="inline-flex items-center justify-center gap-1.5 rounded-lg bg-primary px-4 py-2 text-xs font-bold text-primary-foreground shadow-xs hover:bg-primary/90 transition-colors whitespace-nowrap"
-          >
-            Open Survey <ArrowRight className="h-3.5 w-3.5" />
-          </Link>
         </div>
       </section>
     </div>

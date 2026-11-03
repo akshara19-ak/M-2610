@@ -220,7 +220,7 @@ export function BlogDetailPage() {
                   to="/register"
                   className="inline-flex items-center gap-1.5 rounded-md bg-[#E67230] px-4 py-2 text-xs font-bold text-white hover:bg-[#D15F1F] shadow-sm"
                 >
-                  <span>Register as Doctor</span>
+                  <span>Register as Practitioner</span>
                   <ArrowRight className="size-3.5" />
                 </Link>
               </div>

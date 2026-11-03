@@ -481,6 +481,12 @@ export const surveyRoute = createRoute({
   component: SurveyPage,
 });
 
+export const surveyResultRoute = createRoute({
+  getParentRoute: () => doctorWorkspaceLayoutRoute,
+  path: "/survey/result/$surveyId",
+  component: SurveyPage,
+});
+
 // 4. Admin Portal (under AdminLayout at /admin)
 export const adminLayoutRoute = createRoute({
   getParentRoute: () => rootRoute,
@@ -743,6 +749,7 @@ export const routeTree = rootRoute.addChildren([
     journalsRoute,
     referralsRoute,
     surveyRoute,
+    surveyResultRoute,
   ]),
   adminLayoutRoute.addChildren([
     adminIndexRoute,

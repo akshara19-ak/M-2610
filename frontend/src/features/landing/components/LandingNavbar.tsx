@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "@tanstack/react-router";
-import { ArrowRight, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronDown, Menu, X, Newspaper } from "lucide-react";
 import meyvedaLogo from "@/assets/meyvedalogo.png";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
@@ -16,13 +16,23 @@ export const LANDING_NAV_LINKS = [
   { label: "Community", href: "/#community" },
   { label: "Blog", href: "/blogs" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Public Relations", href: "/public-relations" },
 ];
 
 export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactDropdownOpen, setContactDropdownOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+
+  const localAuthToken = typeof localStorage !== "undefined" ? (localStorage.getItem("meyveda_auth_token") || localStorage.getItem("meyveda_access_token")) : null;
+  const localUserEmail = typeof localStorage !== "undefined" ? localStorage.getItem("meyveda_user_email") : null;
+  const localUserName = typeof localStorage !== "undefined" ? localStorage.getItem("meyveda_user_name") : null;
+  const isDoctorSessionActive = Boolean(
+    isAuthenticated ||
+    user ||
+    localAuthToken
+  );
+  const activeDoctorDisplayName = user?.doctor_profile?.full_name || localUserName || (localUserEmail ? localUserEmail.split("@")[0] : "Dr. Vaidya");
 
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
     if (href.startsWith("/#") || href.startsWith("#")) {
@@ -66,7 +76,60 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
         <nav aria-label="Main Navigation" className="hidden items-center gap-6 lg:flex xl:gap-8">
           {LANDING_NAV_LINKS.map((item) => {
             const isExternalAnchor = item.href.startsWith("/#") || item.href.startsWith("#");
-            const isActive = activePath ? activePath === item.href : false;
+            const isContact = item.label === "Contact Us";
+            const isContactActive = activePath === "/contact" || activePath === "/public-relations";
+
+            // If item is Contact Us: render link with hover/click dropdown for Public Relations
+            if (isContact) {
+              return (
+                <div
+                  key={item.label}
+                  className="relative py-2"
+                  onMouseEnter={() => setContactDropdownOpen(true)}
+                  onMouseLeave={() => setContactDropdownOpen(false)}
+                >
+                  <a
+                    href="/contact"
+                    className={`inline-flex items-center gap-1 text-[15px] font-semibold transition-colors ${
+                      isContactActive ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
+                    }`}
+                  >
+                    <span>Contact Us</span>
+                    <ChevronDown
+                      className={`size-3.5 transition-transform duration-200 ${
+                        contactDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
+                      }`}
+                    />
+                  </a>
+
+                  {/* Dropdown Menu */}
+                  {contactDropdownOpen && (
+                    <div className="absolute right-0 lg:left-0 top-full -mt-0.5 w-60 rounded-xl border border-[#EBE7DF] bg-white py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                      <Link
+                        to="/contact"
+                        className="flex flex-col px-4 py-2.5 hover:bg-[#FAF9F6] transition-colors"
+                      >
+                        <span className="text-sm font-bold text-[#111111]">Contact & Support</span>
+                        <span className="text-xs text-[#777777]">Helpdesk, grievance & headquarters</span>
+                      </Link>
+
+                      <div className="my-1 border-t border-[#F0ECE3]" />
+
+                      <Link
+                        to="/public-relations"
+                        className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[#FAF9F6] hover:text-[#E67230] transition-colors group"
+                      >
+                        <Newspaper className="size-4 text-[#888888] group-hover:text-[#E67230]" />
+                        <div className="flex flex-col">
+                          <span className="text-sm font-bold text-[#111111] group-hover:text-[#E67230]">Public Relations</span>
+                          <span className="text-xs text-[#777777]">Press releases & official announcements</span>
+                        </div>
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              );
+            }
 
             if (isExternalAnchor) {
               return (
@@ -75,7 +138,7 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
                   className={`whitespace-nowrap py-2 text-[15px] font-semibold transition-colors ${
-                    isActive ? "text-[#E67230]" : "text-[#555555] hover:text-[#111111]"
+                    activePath === item.href ? "text-[#E67230]" : "text-[#555555] hover:text-[#111111]"
                   }`}
                 >
                   {item.label}
@@ -88,7 +151,7 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
                 key={item.label}
                 href={item.href}
                 className={`whitespace-nowrap py-2 text-[15px] font-semibold transition-colors ${
-                  isActive ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
+                  activePath === item.href ? "text-[#E67230] font-bold" : "text-[#555555] hover:text-[#111111]"
                 }`}
               >
                 {item.label}
@@ -99,38 +162,26 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
 
         {/* Right CTA Area */}
         <div className="flex items-center gap-3 sm:gap-4">
-          {isAuthenticated && user ? (
-            <div className="flex items-center gap-2 sm:gap-3">
+          {isDoctorSessionActive ? (
+            <div className="flex items-center gap-3 sm:gap-4">
               <Link
                 to="/dashboard"
-                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FAF9F6] border border-[#EBE7DF] hover:border-[#E67230]/40 transition-colors"
+                className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white text-sm font-bold transition-all shadow-sm hover:shadow-md"
               >
-                <span className="size-6 sm:size-7 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
-                  {(user.doctor_profile?.full_name || user.email)[0]?.toUpperCase()}
-                </span>
-                <div className="hidden sm:block text-left">
-                  <p className="text-xs font-bold text-[#111111] leading-tight line-clamp-1">
-                    {user.doctor_profile?.full_name || user.email.split("@")[0]}
-                  </p>
-                  <p className="text-[10px] text-[#777777] font-semibold leading-tight capitalize">
-                    {user.role} · Active
-                  </p>
-                </div>
-              </Link>
-              <Link
-                to="/dashboard"
-                className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#E67230] hover:bg-[#D15F1F] text-white text-xs font-bold transition-all shadow-xs"
-              >
-                <span>My Workspace</span>
-                <ArrowRight className="size-3.5" />
+                <span>Dashboard</span>
+                <ArrowRight className="size-4" />
               </Link>
               <button
                 type="button"
                 onClick={() => {
+                  localStorage.removeItem("meyveda_auth_token");
+                  localStorage.removeItem("meyveda_access_token");
+                  localStorage.removeItem("meyveda_user_email");
+                  localStorage.removeItem("meyveda_user_role");
                   logout();
                   toast.info("Signed out of your session.");
                 }}
-                className="text-xs font-semibold text-[#666666] hover:text-[#E67230] px-2 py-1.5 transition-colors cursor-pointer"
+                className="text-sm font-semibold text-[#666666] hover:text-[#E67230] px-2 py-2 transition-colors cursor-pointer"
               >
                 Sign Out
               </button>
@@ -180,6 +231,31 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
           <nav className="flex flex-col space-y-3.5">
             {LANDING_NAV_LINKS.map((item) => {
               const isExternalAnchor = item.href.startsWith("/#") || item.href.startsWith("#");
+              const isAbout = item.label === "About Us";
+
+              if (item.label === "Contact Us") {
+                return (
+                  <div key={item.label} className="flex flex-col space-y-2">
+                    <a
+                      href="/contact"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
+                    >
+                      Contact Us
+                    </a>
+                    {/* Nested Public Relations sub-item */}
+                    <Link
+                      to="/public-relations"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="ml-4 flex items-center gap-2 rounded-md px-2 py-1 text-sm font-medium text-[#666666] hover:text-[#E67230]"
+                    >
+                      <Newspaper className="size-4 text-[#E67230]" />
+                      <span>Public Relations</span>
+                    </Link>
+                  </div>
+                );
+              }
+
               if (isExternalAnchor) {
                 return (
                   <a
@@ -206,36 +282,29 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
                 </a>
               );
             })}
-            <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-2.5">
-              {isAuthenticated && user ? (
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-[#FAF9F6] border border-[#EBE7DF]">
-                    <span className="size-8 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
-                      {(user.doctor_profile?.full_name || user.email)[0]?.toUpperCase()}
-                    </span>
-                    <div className="text-left">
-                      <p className="text-sm font-bold text-[#111111]">
-                        {user.doctor_profile?.full_name || user.email}
-                      </p>
-                      <p className="text-xs text-[#666666] capitalize">{user.role} · Active</p>
-                    </div>
-                  </div>
+            <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-3">
+              {isDoctorSessionActive ? (
+                <div className="flex flex-col gap-3">
                   <Link
                     to="/dashboard"
                     onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 rounded-lg bg-[#E67230] px-4 py-2.5 text-sm font-bold text-white shadow-xs"
+                    className="w-full rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white py-3 text-center text-base font-bold shadow-sm transition-colors flex items-center justify-center gap-2"
                   >
-                    <span>Go to Workspace</span>
+                    <span>Dashboard</span>
                     <ArrowRight className="size-4" />
                   </Link>
                   <button
                     type="button"
                     onClick={() => {
+                      localStorage.removeItem("meyveda_auth_token");
+                      localStorage.removeItem("meyveda_access_token");
+                      localStorage.removeItem("meyveda_user_email");
+                      localStorage.removeItem("meyveda_user_role");
                       logout();
                       setMobileMenuOpen(false);
                       toast.info("Signed out of your session.");
                     }}
-                    className="rounded-md py-2 text-center text-xs font-semibold text-[#888888] hover:text-[#111111]"
+                    className="w-full rounded-xl border border-[#EBE7DF] bg-white py-2.5 text-center text-sm font-semibold text-[#666666] hover:text-[#E67230]"
                   >
                     Sign Out
                   </button>
@@ -269,3 +338,5 @@ export function LandingNavbar({ onRegisterClick, activePath }: LandingNavbarProp
     </header>
   );
 }
+
+export default LandingNavbar;

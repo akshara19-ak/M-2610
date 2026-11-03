@@ -53,11 +53,13 @@ function BrandPanel({ compact }: { compact?: boolean; onNavigate?: () => void })
   return (
     <div
       className={cn(
-        "group flex shrink-0 items-center justify-center rounded-2xl bg-white shadow-soft transition-all duration-200 select-none",
-        compact ? "mx-auto h-14 w-14" : "w-full px-3 py-3",
+        "group flex shrink-0 items-center justify-center rounded-xl bg-white shadow-soft transition-all duration-200 select-none",
+        compact ? "mx-auto h-11 w-11 p-1.5" : "w-full px-4 py-2",
       )}
     >
-      <Logo compact={compact ?? false} />
+      <div className={cn("flex items-center justify-center", !compact && "-translate-x-1")}>
+        <Logo compact={compact ?? false} />
+      </div>
     </div>
   );
 }
@@ -210,9 +212,16 @@ export function AppShell({ children }: { children: ReactNode }) {
         Skip to content
       </a>
       <aside
+        style={{
+          width: collapsed ? "var(--sidebar-width-collapsed, 5.5rem)" : "var(--sidebar-width, 17.5rem)",
+          position: "fixed",
+          top: 0,
+          bottom: 0,
+          left: 0,
+          zIndex: 30,
+        }}
         className={cn(
-          "shell-sidebar motif-corner sticky top-0 hidden h-screen h-dvh min-h-screen min-h-dvh shrink-0 flex-col overflow-hidden p-3 transition-[width] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:flex",
-          collapsed ? "w-[var(--sidebar-width-collapsed)]" : "w-[var(--sidebar-width)]",
+          "shell-sidebar motif-corner hidden h-screen h-dvh flex-col overflow-hidden p-3 transition-[width] duration-[var(--duration-base)] ease-[var(--ease-out)] lg:flex",
         )}
       >
         <div className="relative z-[1] mb-4">
@@ -292,7 +301,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         )}
       </AnimatePresence>
 
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div
+        style={{
+          paddingLeft: collapsed ? "var(--sidebar-width-collapsed, 5.5rem)" : "var(--sidebar-width, 17.5rem)",
+        }}
+        className="flex min-w-0 flex-1 flex-col transition-[padding] duration-[var(--duration-base)] ease-[var(--ease-out)] max-lg:!pl-0"
+      >
         {/* Mobile menu bar - only rendered on small screens where sidebar is hidden */}
         <div className="flex h-12 items-center justify-between border-b border-border bg-white/95 px-4 backdrop-blur-md lg:hidden">
           <button
@@ -306,9 +320,19 @@ export function AppShell({ children }: { children: ReactNode }) {
           >
             <Menu className="h-5 w-5" aria-hidden="true" />
           </button>
-          <span className="max-w-[200px] truncate text-xs font-semibold text-foreground">
-            {doctor.name}
-          </span>
+          <div className="flex items-center gap-2">
+            <span className="max-w-[160px] truncate text-xs font-semibold text-foreground">
+              {doctor.name}
+            </span>
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center p-1.5 rounded-lg text-muted-foreground hover:text-[#E67230] hover:bg-muted/50 transition-colors"
+              title="Return to Meyveda Home"
+              aria-label="Return to Meyveda Home"
+            >
+              <Home className="h-4 w-4" />
+            </Link>
+          </div>
           
         </div>
 
@@ -322,10 +346,19 @@ export function AppShell({ children }: { children: ReactNode }) {
             </span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <span className="text-xs font-bold text-foreground">
               {doctor.name}
             </span>
+
+            <Link
+              to="/"
+              className="inline-flex items-center justify-center p-2 rounded-xl text-muted-foreground hover:text-[#E67230] hover:bg-muted/50 transition-colors"
+              title="Return to Meyveda Home"
+              aria-label="Return to Meyveda Home"
+            >
+              <Home className="h-4 w-4" />
+            </Link>
           </div>
         </header>
 
@@ -340,7 +373,7 @@ export function AppShell({ children }: { children: ReactNode }) {
           </motion.div>
         </main>
         <footer className="border-t border-border px-6 py-3 text-xs text-muted-foreground flex flex-col sm:flex-row items-center justify-between gap-2">
-          <span>Meyveda · Official AYUSH Practitioner Clinical Network · Verified Early Access System</span>
+          <span>Verified Early Access System</span>
           <div className="flex items-center gap-4">
             <a href="/terms" target="_blank" rel="noopener noreferrer" className="hover:text-primary hover:underline transition-colors">
               Terms &amp; Conditions

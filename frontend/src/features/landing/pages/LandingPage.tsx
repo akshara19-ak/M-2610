@@ -4,6 +4,8 @@ import {
   AlertCircle,
   ArrowDown,
   ArrowLeft,
+  ChevronDown,
+  Newspaper,
   ArrowRight,
   Award,
   Bookmark,
@@ -73,8 +75,13 @@ import practitionerImage from "@/assets/Practitioner.png";
 import mentorshipImage from "@/assets/meyveda-mentorship.jpg";
 import juniorDoctorImage from "@/assets/meyveda-doctor-hero.jpg";
 import meyvedaLogo from "@/assets/meyvedalogo.png";
+import imgDigitalIdentity from "@/assets/verified digital identity trust engine.png";
+import imgWisdomHub from "@/assets/the wisdom hub.png";
+import imgMedicineCatalogue from "@/assets/dynamic medicine catalogue  procurement.png";
+import imgClinicalToolkit from "@/assets/clinical toolkit & structured care programs.png";
+import imgOpportunityDesk from "@/assets/opportunity desk & peer collaborative.png";
 import justMeyvedaLogo from "@/assets/just_meyveda.png";
-import justMeyvedDownLogo from "@/assets/just_meyved_down.png";
+import meyvedaFaviconSource from "@/assets/meyveda-favicon-source.png";
 import reinventYourLogo from "@/assets/REINVENT_YOU_transparent.png";
 import rishiVideo from "@/assets/Rishi_hero.mp4";
 import stage1Image from "@/assets/1.png";
@@ -95,7 +102,6 @@ const navigation = [
   { label: "Community", href: "#community" },
   { label: "Blog", href: "/blogs" },
   { label: "Contact Us", href: "/contact" },
-  { label: "Public Relations", href: "/public-relations" },
 ];
 
 const AYUSH_SYSTEMS = [
@@ -2692,345 +2698,45 @@ export function WorkspaceRevenuePage() {
 /* -------------------------------------------------------------------------- */
 
 function PracticeSuiteCardPreview({ type }: { type: string }) {
+  let imgSrc = "";
+  let imgAlt = "Meyveda Capability Feature";
+
   switch (type) {
-    case "library":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          {/* Subtle grid background pattern */}
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Classical Ayurveda manuscript / open reference book with Sanskrit verses */}
-          <div className="relative flex flex-col items-center">
-            {/* Open Folio / Manuscript */}
-            <div className="relative flex h-20 w-40 items-center justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2.5 shadow-sm">
-              {/* Left page */}
-              <div className="flex flex-1 flex-col gap-1 border-r border-[#EBE7DF]/80 pr-2">
-                <span className="font-serif text-[9px] font-bold text-[#E67230]">चरक संहिता</span>
-                <div className="space-y-1">
-                  <div className="h-1 w-full rounded-sm bg-[#111111]/30" />
-                  <div className="h-1 w-4/5 rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-full rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-2/3 rounded-sm bg-[#111111]/20" />
-                </div>
-              </div>
-              {/* Right page */}
-              <div className="flex flex-1 flex-col gap-1 pl-2">
-                <span className="font-mono text-[8px] font-bold text-[#555555]">Sutra 1.41</span>
-                <div className="space-y-1">
-                  <div className="h-1 w-full rounded-sm bg-[#E67230]/40" />
-                  <div className="h-1 w-3/4 rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-5/6 rounded-sm bg-[#111111]/20" />
-                  <div className="h-1 w-1/2 rounded-sm bg-[#111111]/20" />
-                </div>
-              </div>
-              {/* Red Ribbon Bookmark */}
-              <div className="absolute -top-1 left-1/2 -translate-x-1/2 h-5 w-2 rounded-b-xs bg-[#E67230] shadow-xs" />
-            </div>
-            {/* Bottom Shastra / Classical Source Indicator */}
-            <div className="mt-1.5 flex items-center gap-1.5 rounded-full border border-[#EBE7DF] bg-white px-2.5 py-0.5 shadow-2xs">
-              <BookOpen className="size-2.5 text-[#E67230]" />
-              <span className="font-mono text-[8.5px] font-bold text-[#111111]">SAMHITA VERSE · REF 01</span>
-            </div>
-          </div>
-        </div>
-      );
-
-    case "journals":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Academic journal / research paper layout with publication metadata */}
-          <div className="relative flex items-center gap-3">
-            {/* Journal / Paper sheet */}
-            <div className="relative flex h-20 w-32 flex-col justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              <div className="border-b border-[#EBE7DF] pb-1">
-                <div className="flex items-center justify-between">
-                  <span className="font-mono text-[8px] font-bold text-[#E67230]">AYUSH RESEARCH</span>
-                  <span className="font-mono text-[7px] text-[#888888]">VOL 18 · 2026</span>
-                </div>
-                <p className="mt-0.5 truncate text-[8.5px] font-extrabold text-[#111111]">
-                  Clinical Efficacy Studies
-                </p>
-              </div>
-              {/* Paper abstract text lines & citation marker */}
-              <div className="space-y-1">
-                <div className="flex items-center gap-1">
-                  <div className="h-1 w-3/4 rounded-sm bg-[#111111]/30" />
-                  <span className="size-1 rounded-full bg-[#E67230]" />
-                </div>
-                <div className="h-1 w-full rounded-sm bg-[#111111]/20" />
-                <div className="h-1 w-5/6 rounded-sm bg-[#111111]/20" />
-              </div>
-              <div className="flex items-center justify-between text-[7px] font-mono text-[#777777]">
-                <span>DOI: 10.1016/ayush</span>
-                <span className="text-[#E67230] font-bold">[12 CITATIONS]</span>
-              </div>
-            </div>
-
-            {/* Research & Citation Symbol Badge */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <FileText className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">PEER REVIEW</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
     case "profile":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Professional AYUSH practitioner profile card */}
-          <div className="relative flex items-center gap-3">
-            {/* Identity Badge Card */}
-            <div className="relative flex h-20 w-34 items-center gap-2 rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              {/* Doctor Avatar / Portrait */}
-              <div className="relative flex size-10 shrink-0 items-center justify-center rounded-full border border-[#E67230]/40 bg-[#FFF6EE]">
-                <UserRound className="size-5 text-[#E67230]" />
-                <div className="absolute -bottom-0.5 -right-0.5 flex size-3.5 items-center justify-center rounded-full bg-[#111111] text-white">
-                  <Check className="size-2 text-[#E67230]" />
-                </div>
-              </div>
-              {/* Credentials & Details */}
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-[10px] font-extrabold text-[#111111]">Dr. Ananya P.</p>
-                <p className="truncate text-[8px] font-bold text-[#E67230]">BAMS, MD (Ayu)</p>
-                <div className="mt-1 flex items-center gap-1 rounded bg-[#FAF9F6] px-1 py-0.5 border border-[#EBE7DF]">
-                  <Award className="size-2 text-[#E67230]" />
-                  <span className="font-mono text-[7px] font-bold text-[#555555]">VERIFIED AYUSH</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Visibility / Share Badge */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <Network className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">VAIDYA FORUM</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
+      imgSrc = imgDigitalIdentity;
+      imgAlt = "Verified Digital Identity & Trust Engine";
+      break;
+    case "library":
+    case "journals":
+      imgSrc = imgWisdomHub;
+      imgAlt = "The Wisdom Hub (Knowledge & Research Base)";
+      break;
     case "medicines":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.4]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Medicine catalogue interface: Ayurvedic formulation bottle & composition */}
-          <div className="relative flex items-center justify-center gap-3">
-            {/* Glass medicine bottle */}
-            <div className="relative flex flex-col items-center">
-              {/* Bottle Cap */}
-              <div className="h-2 w-6 rounded-t-sm bg-[#111111] shadow-xs" />
-              {/* Bottle Neck */}
-              <div className="h-2 w-4 border-x border-[#EBE7DF] bg-[#F8F6F2]" />
-              {/* Bottle Body */}
-              <div className="relative flex h-18 w-14 flex-col items-center justify-between rounded-md border border-[#EBE7DF] bg-white/95 p-1.5 shadow-sm">
-                <span className="text-[9px] font-extrabold uppercase tracking-widest text-[#E67230]">
-                  ASHTA
-                </span>
-                {/* Traditional medicine label detail */}
-                <div className="w-full rounded border border-[#EBE7DF] bg-[#FAF9F6] px-1 py-0.5 text-center">
-                  <div className="h-0.5 w-full rounded bg-[#E67230]/40" />
-                  <div className="mt-0.5 h-0.5 w-3/4 mx-auto rounded bg-[#111111]/30" />
-                </div>
-                <div className="flex items-center gap-1">
-                  <span className="size-1 rounded-full bg-[#E67230]" />
-                  <span className="font-mono text-[8px] font-bold text-[#111111]">500mg</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Herbal composition leaf & search indicator */}
-            <div className="flex flex-col items-center gap-1.5">
-              {/* Botanical Leaf */}
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <svg
-                  className="size-5 text-[#E67230]"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
-                  <path d="M2 21c0-3 1.85-5.36 5.08-6" />
-                </svg>
-              </div>
-              {/* Magnifying Glass Search Badge */}
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <Search className="size-2.5 text-[#E67230]" />
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">DRAVYA FINDER</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
-    case "hrms":
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Workforce management / HRMS illustration: practitioner tiles & scheduling */}
-          <div className="relative flex items-center gap-3">
-            {/* Workforce & Team roster card */}
-            <div className="relative flex h-20 w-32 flex-col justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#EBE7DF] pb-1">
-                <span className="font-mono text-[8px] font-bold text-[#E67230]">CLINIC ROSTER</span>
-                <span className="rounded bg-[#FAF9F6] px-1 text-[7px] font-bold text-[#111111] border border-[#EBE7DF]">
-                  4 ACTIVE
-                </span>
-              </div>
-              {/* Team member slots */}
-              <div className="space-y-1.5">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex size-4 items-center justify-center rounded-full bg-[#E67230]/15 text-[#E67230]">
-                      <UserRound className="size-2.5" />
-                    </div>
-                    <span className="text-[8px] font-bold text-[#111111]">Senior Vaidya</span>
-                  </div>
-                  <span className="font-mono text-[7.5px] text-[#22c55e] font-bold">On Duty</span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-1.5">
-                    <div className="flex size-4 items-center justify-center rounded-full bg-[#111111]/10 text-[#111111]">
-                      <UserRound className="size-2.5" />
-                    </div>
-                    <span className="text-[8px] font-bold text-[#555555]">Therapist</span>
-                  </div>
-                  <span className="font-mono text-[7.5px] text-[#E67230] font-bold">Scheduled</span>
-                </div>
-              </div>
-              <div className="flex items-center gap-1 text-[7px] font-mono text-[#888888]">
-                <CalendarDays className="size-2 text-[#E67230]" />
-                <span>Next shift: 02:00 PM</span>
-              </div>
-            </div>
-
-            {/* Team / Recruitment Element */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <UsersRound className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">TEAM HRMS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-
+      imgSrc = imgMedicineCatalogue;
+      imgAlt = "Dynamic Medicine Catalogue & Procurement";
+      break;
     case "compliance":
+      imgSrc = imgClinicalToolkit;
+      imgAlt = "Clinical Toolkit & Structured Care Programs";
+      break;
+    case "hrms":
+      imgSrc = imgOpportunityDesk;
+      imgAlt = "Opportunity Desk & Peer Collaborative";
+      break;
     default:
-      return (
-        <div className="relative flex h-36 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-gradient-to-br from-[#FAF9F6] via-white to-[#FFF6EE] p-3 select-none">
-          <div
-            className="absolute inset-0 opacity-[0.35]"
-            style={{
-              backgroundImage:
-                "radial-gradient(#E67230 0.75px, transparent 0.75px), radial-gradient(#111111 0.75px, #FAF9F6 0.75px)",
-              backgroundSize: "16px 16px",
-              backgroundPosition: "0 0, 8px 8px",
-            }}
-          />
-          {/* Compliance checklist / dashboard with document records and verification */}
-          <div className="relative flex items-center gap-3">
-            {/* Compliance Checklist Document */}
-            <div className="flex h-20 w-32 flex-col justify-between rounded-lg border border-[#EBE7DF] bg-white/95 p-2 shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#EBE7DF] pb-1">
-                <span className="font-mono text-[8px] font-bold text-[#111111]">COMPLIANCE LOG</span>
-                <span className="size-1.5 rounded-full bg-[#22c55e]" />
-              </div>
-              {/* Checklist items with checkmarks */}
-              <div className="space-y-1">
-                <div className="flex items-center justify-between text-[7.5px] text-[#555555]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="size-2 text-[#22c55e]" />
-                    <span>State Board Reg</span>
-                  </span>
-                  <span className="font-mono font-bold text-[#111111]">Active</span>
-                </div>
-                <div className="flex items-center justify-between text-[7.5px] text-[#555555]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="size-2 text-[#22c55e]" />
-                    <span>Pharmacy License</span>
-                  </span>
-                  <span className="font-mono font-bold text-[#111111]">Verified</span>
-                </div>
-                <div className="flex items-center justify-between text-[7.5px] text-[#555555]">
-                  <span className="flex items-center gap-1">
-                    <CheckCircle2 className="size-2 text-[#E67230]" />
-                    <span>Annual Audit</span>
-                  </span>
-                  <span className="font-mono font-bold text-[#E67230]">Current</span>
-                </div>
-              </div>
-              <div className="rounded bg-[#FAF9F6] px-1 py-0.5 text-center text-[7px] font-bold text-[#111111] border border-[#EBE7DF]">
-                REGULATORY VERIFIED
-              </div>
-            </div>
-
-            {/* Verification Shield & Status Badge */}
-            <div className="flex flex-col items-center gap-1.5">
-              <div className="flex size-9 items-center justify-center rounded-full border border-[#E67230]/30 bg-[#FFFBF8] shadow-xs">
-                <ShieldCheck className="size-4.5 text-[#E67230]" />
-              </div>
-              <div className="flex items-center gap-1 rounded-full border border-[#EBE7DF] bg-white px-2 py-0.5 shadow-2xs">
-                <span className="font-mono text-[8.5px] font-bold text-[#111111]">AUDIT PASS</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
+      imgSrc = imgWisdomHub;
   }
+
+  return (
+    <div className="relative flex h-40 w-full items-center justify-center overflow-hidden rounded-xl border border-[#EBE7DF]/80 bg-[#FAF9F6] p-2 select-none shadow-2xs">
+      <img
+        src={imgSrc}
+        alt={imgAlt}
+        className="h-full w-full object-contain rounded-lg transition-transform duration-300 group-hover:scale-[1.03]"
+        loading="lazy"
+      />
+    </div>
+  );
 }
 
 function PracticeSuiteScrollSection({
@@ -3570,9 +3276,9 @@ export function CoreVaidyaSection() {
                 {/* Central Meyveda Logo Hub - Stays fixed */}
                 <div className="relative z-30 flex flex-col items-center justify-center size-[116px] lg:size-[128px] rounded-full bg-white shadow-[0_10px_30px_rgba(0,0,0,0.08)] border border-[#EBE7DF] p-3.5 transition-transform duration-300 hover:scale-105 pointer-events-auto">
                   <img
-                    src={justMeyvedDownLogo}
+                    src={meyvedaFaviconSource}
                     alt="Meyveda Logo"
-                    className="max-h-[68px] max-w-[82px] w-auto h-auto object-contain select-none"
+                    className="max-h-[72px] max-w-[72px] lg:max-h-[80px] lg:max-w-[80px] w-auto h-auto object-contain select-none"
                   />
                   <span className="sr-only">Meyveda Ecosystem Core</span>
                 </div>
@@ -3720,7 +3426,7 @@ export function CoreVaidyaSection() {
             <div className="flex justify-center mb-5">
               <div className="flex flex-col items-center justify-center size-[88px] rounded-full bg-white shadow-md border border-[#EBE7DF] p-2.5">
                 <img
-                  src={justMeyvedDownLogo}
+                  src={meyvedaFaviconSource}
                   alt="Meyveda Logo"
                   className="max-h-[48px] max-w-[60px] w-auto h-auto object-contain select-none"
                 />
@@ -3957,10 +3663,7 @@ export function ManagedServicesTreeSection() {
                               {service.tag}
                             </span>
                           </div>
-                          <span className="inline-flex items-center gap-1.5 text-xs text-[#888888]">
-                            <span className="size-1.5 rounded-full bg-[#E67230] animate-pulse" />
-                            Tree Node {service.number} / 05
-                          </span>
+
                         </div>
 
                         {/* Service Title */}
@@ -3984,9 +3687,7 @@ export function ManagedServicesTreeSection() {
                           <ArrowRight className="size-4 text-[#E67230]" />
                         </a>
 
-                        <span className="font-mono text-xs text-[#888888]">
-                          Auto-sliding (3s) · Hover to pause
-                        </span>
+
                       </div>
                     </div>
                   );
@@ -4324,10 +4025,7 @@ export function ManagedServicesTreeSection() {
                               {service.tag}
                             </span>
                           </div>
-                          <span className="inline-flex items-center gap-1.5 text-xs text-[#888888]">
-                            <span className="size-1.5 rounded-full bg-[#E67230] animate-pulse" />
-                            Tree Node {service.number} / 05
-                          </span>
+
                         </div>
 
                         {/* Service Title */}
@@ -4351,9 +4049,7 @@ export function ManagedServicesTreeSection() {
                           <ArrowRight className="size-3.5 sm:size-4 text-[#E67230]" />
                         </a>
 
-                        <span className="font-mono text-[11px] sm:text-xs text-[#888888]">
-                          Auto-sliding (3s)
-                        </span>
+
                       </div>
                     </div>
                   );
@@ -4483,11 +4179,23 @@ export function MeyvedaDoctorsPage() {
   const navigate = useNavigate();
   // Navigation & modals
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactDropdownOpen, setContactDropdownOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [signInModalOpen, setSignInModalOpen] = useState(false);
 
   // Authentication Context Hook
   const { user, isAuthenticated, logout, login, register: authRegister } = useAuth();
+
+  // Session detection for returning doctors/users
+  const localAuthToken = typeof localStorage !== "undefined" ? (localStorage.getItem("meyveda_auth_token") || localStorage.getItem("meyveda_access_token")) : null;
+  const localUserEmail = typeof localStorage !== "undefined" ? localStorage.getItem("meyveda_user_email") : null;
+  const localUserName = typeof localStorage !== "undefined" ? localStorage.getItem("meyveda_user_name") : null;
+  const isDoctorSessionActive = Boolean(
+    isAuthenticated ||
+    user ||
+    localAuthToken
+  );
+  const activeDoctorDisplayName = user?.doctor_profile?.full_name || localUserName || (localUserEmail ? localUserEmail.split("@")[0] : "Dr. Vaidya");
 
   const handleExploreDoctorDashboard = () => {
     const token =
@@ -5191,52 +4899,90 @@ export function MeyvedaDoctorsPage() {
 
           {/* CENTER: Navigation Links */}
           <nav aria-label="Main Navigation" className="hidden items-center gap-6 lg:flex xl:gap-8">
-            {navigation.map((item) => (
-              <a
-                className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
-                href={item.href}
-                key={item.label}
-                onClick={(e) => handleNavClick(e, item.href)}
-              >
-                {item.label}
-              </a>
-            ))}
+            {navigation.map((item) => {
+              if (item.label === "Contact Us") {
+                return (
+                  <div
+                    key={item.label}
+                    className="relative py-2"
+                    onMouseEnter={() => setContactDropdownOpen(true)}
+                    onMouseLeave={() => setContactDropdownOpen(false)}
+                  >
+                    <a
+                      href="/contact"
+                      className="inline-flex items-center gap-1 whitespace-nowrap text-[15px] font-semibold text-[#555555] hover:text-[#111111] transition-colors"
+                    >
+                      <span>Contact Us</span>
+                      <ChevronDown
+                        className={`size-3.5 transition-transform duration-200 ${
+                          contactDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
+                        }`}
+                      />
+                    </a>
+
+                    {contactDropdownOpen && (
+                      <div className="absolute right-0 lg:left-0 top-full -mt-0.5 w-60 rounded-xl border border-[#EBE7DF] bg-white py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                        <Link
+                          to="/contact"
+                          className="flex flex-col px-4 py-2.5 hover:bg-[#FAF9F6] transition-colors"
+                        >
+                          <span className="text-sm font-bold text-[#111111]">Contact & Support</span>
+                          <span className="text-xs text-[#777777]">Helpdesk, grievance & headquarters</span>
+                        </Link>
+
+                        <div className="my-1 border-t border-[#F0ECE3]" />
+
+                        <Link
+                          to="/public-relations"
+                          className="flex items-center gap-2.5 px-4 py-2.5 hover:bg-[#FAF9F6] hover:text-[#E67230] transition-colors group"
+                        >
+                          <Newspaper className="size-4 text-[#888888] group-hover:text-[#E67230]" />
+                          <div className="flex flex-col">
+                            <span className="text-sm font-bold text-[#111111] group-hover:text-[#E67230]">Public Relations</span>
+                            <span className="text-xs text-[#777777]">Press releases & announcements</span>
+                          </div>
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <a
+                  className="whitespace-nowrap py-2 text-[15px] font-semibold text-[#555555] transition-colors hover:text-[#111111]"
+                  href={item.href}
+                  key={item.label}
+                  onClick={(e) => handleNavClick(e, item.href)}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* RIGHT: CTAs (Sign In + Register Modal Triggers or Authenticated User) */}
           <div className="flex items-center gap-3 sm:gap-4">
-            {isAuthenticated && user ? (
-              <div className="flex items-center gap-2 sm:gap-3">
+            {isDoctorSessionActive ? (
+              <div className="flex items-center gap-3 sm:gap-4">
                 <Link
                   to="/dashboard"
-                  className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FAF9F6] border border-[#EBE7DF] hover:border-[#E67230]/40 transition-colors"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white text-sm font-bold transition-all shadow-sm hover:shadow-md"
                 >
-                  <span className="size-6 sm:size-7 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
-                    {(user.doctor_profile?.full_name || user.email)[0]?.toUpperCase()}
-                  </span>
-                  <div className="hidden sm:block text-left">
-                    <p className="text-xs font-bold text-[#111111] leading-tight line-clamp-1">
-                      {user.doctor_profile?.full_name || user.email.split("@")[0]}
-                    </p>
-                    <p className="text-[10px] text-[#777777] font-semibold leading-tight capitalize">
-                      {user.role} · Active
-                    </p>
-                  </div>
-                </Link>
-                <Link
-                  to="/dashboard"
-                  className="hidden md:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#E67230] hover:bg-[#D15F1F] text-white text-xs font-bold transition-all shadow-xs"
-                >
-                  <span>My Workspace</span>
-                  <ArrowRight className="size-3.5" />
+                  <span>Dashboard</span>
+                  <ArrowRight className="size-4" />
                 </Link>
                 <button
                   type="button"
                   onClick={() => {
+                    localStorage.removeItem("meyveda_auth_token");
+                    localStorage.removeItem("meyveda_access_token");
+                    localStorage.removeItem("meyveda_user_email");
+                    localStorage.removeItem("meyveda_user_role");
                     logout();
                     toast.info("Signed out of your session.");
                   }}
-                  className="text-xs font-semibold text-[#666666] hover:text-[#E67230] px-2 py-1.5 transition-colors cursor-pointer"
+                  className="text-sm font-semibold text-[#666666] hover:text-[#E67230] px-2 py-2 transition-colors cursor-pointer"
                 >
                   Sign Out
                 </button>
@@ -5291,48 +5037,66 @@ export function MeyvedaDoctorsPage() {
             className="border-b border-[#EBE7DF] bg-white px-5 py-6 lg:hidden"
           >
             <nav className="flex flex-col space-y-3.5">
-              {navigation.map((item) => (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  onClick={(e) => {
-                    handleNavClick(e, item.href);
-                    setMobileMenuOpen(false);
-                  }}
-                  className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
-                >
-                  {item.label}
-                </a>
-              ))}
-              <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-2.5">
-                {isAuthenticated && user ? (
-                  <div className="flex flex-col gap-2">
-                    <div className="flex items-center gap-2.5 p-2.5 rounded-lg bg-[#FAF9F6] border border-[#EBE7DF]">
-                      <span className="size-8 rounded-full bg-[#E67230] text-white flex items-center justify-center text-xs font-bold">
-                        {(user.doctor_profile?.full_name || user.email)[0]?.toUpperCase()}
-                      </span>
-                      <div className="text-left">
-                        <p className="text-sm font-bold text-[#111111]">
-                          {user.doctor_profile?.full_name || user.email}
-                        </p>
-                        <p className="text-xs text-[#666666] capitalize">{user.role} · Active</p>
-                      </div>
+              {navigation.map((item) => {
+                if (item.label === "Contact Us") {
+                  return (
+                    <div key={item.label} className="flex flex-col space-y-2">
+                      <a
+                        href="/contact"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
+                      >
+                        Contact Us
+                      </a>
+                      <Link
+                        to="/public-relations"
+                        onClick={() => setMobileMenuOpen(false)}
+                        className="ml-4 flex items-center gap-2 rounded-md px-2 py-1 text-sm font-medium text-[#666666] hover:text-[#E67230]"
+                      >
+                        <Newspaper className="size-4 text-[#E67230]" />
+                        <span>Public Relations</span>
+                      </Link>
                     </div>
+                  );
+                }
+
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    onClick={(e) => {
+                      handleNavClick(e, item.href);
+                      setMobileMenuOpen(false);
+                    }}
+                    className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
+                  >
+                    {item.label}
+                  </a>
+                );
+              })}
+              <div className="pt-4 border-t border-[#EBE7DF] flex flex-col gap-2.5">
+                {isDoctorSessionActive ? (
+                  <div className="flex flex-col gap-3">
                     <Link
                       to="/dashboard"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="w-full rounded-md bg-[#E67230] hover:bg-[#D15F1F] text-white py-2.5 text-center text-sm font-bold shadow-xs transition-colors"
+                      className="w-full rounded-xl bg-[#E67230] hover:bg-[#D15F1F] text-white py-3 text-center text-base font-bold shadow-sm transition-colors flex items-center justify-center gap-2"
                     >
-                      Open Practitioner Dashboard
+                      <span>Dashboard</span>
+                      <ArrowRight className="size-4" />
                     </Link>
                     <button
                       type="button"
                       onClick={() => {
+                        localStorage.removeItem("meyveda_auth_token");
+                        localStorage.removeItem("meyveda_access_token");
+                        localStorage.removeItem("meyveda_user_email");
+                        localStorage.removeItem("meyveda_user_role");
                         logout();
                         setMobileMenuOpen(false);
                         toast.info("Signed out.");
                       }}
-                      className="w-full rounded-md border border-[#EBE7DF] bg-white py-2 text-center text-sm font-bold text-[#666666] hover:text-[#E67230]"
+                      className="w-full rounded-xl border border-[#EBE7DF] bg-white py-2.5 text-center text-sm font-semibold text-[#666666] hover:text-[#E67230]"
                     >
                       Sign Out
                     </button>
@@ -5668,7 +5432,7 @@ export function MeyvedaDoctorsPage() {
                   to="/register"
                   className="inline-flex items-center gap-2 rounded-md bg-[#111111] px-6 py-3.5 text-sm font-bold text-white transition-all hover:bg-[#222222] cursor-pointer"
                 >
-                  <span>Register as a Doctor</span>
+                  <span>Register as a Practitioner</span>
                   <ArrowRight className="size-4" />
                 </Link>
               </div>
@@ -5789,7 +5553,7 @@ export function MeyvedaDoctorsPage() {
                   <MapPin className="size-4 text-[#E67230] shrink-0 mt-0.5" />
                   <div>
                     <a
-                      href="https://maps.google.com/?q=Meyveda+Ayush+Private+Limited"
+                      href="https://maps.google.com/?q=200+Feet+Radial+Rd%2C+Boopathy+Nagar%2C+Kovilambakkam%2C+Tambaram%2C+Tamil+Nadu+600117"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-[#E67230] transition-colors underline flex items-center gap-1"

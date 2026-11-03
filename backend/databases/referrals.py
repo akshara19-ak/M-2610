@@ -278,6 +278,11 @@ def validate_referral_mobile(raw_mobile: str, required: bool = False) -> str:
     status_code=status.HTTP_201_CREATED,
 )
 @router.post(
+    "/api/v1/referrals/send",
+    response_model=ReferralRecord,
+    status_code=status.HTTP_201_CREATED,
+)
+@router.post(
     "/api/v1/invitations",
     response_model=ReferralRecord,
     status_code=status.HTTP_201_CREATED,
@@ -353,21 +358,35 @@ async def create_referral(
             detail="Self-referrals are not permitted",
         )
 
-    # Check for duplicate submission when called via /api/v1/referrals
-    if request.url.path.endswith("/referrals"):
-        existing_dup = (
-            db.query(DBReferral)
-            .filter(
-                DBReferral.referring_doctor_id == doctor.id,
-                DBReferral.referred_contact == norm_contact,
-            )
-            .first()
+    # Check if this email was already referred across the platform (by any practitioner) or registered
+    existing_user_doc = db.query(User).filter(func.lower(User.email) == norm_contact).first()
+    if existing_user_doc:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="already refered by fellow",
         )
-        if existing_dup:
-            raise HTTPException(
-                status_code=status.HTTP_409_CONFLICT,
-                detail="A referral for this contact has already been created by you",
-            )
+
+    existing_any_invitation = (
+        db.query(ColleagueInvitation)
+        .filter(func.lower(ColleagueInvitation.colleague_email) == norm_contact)
+        .first()
+    )
+    if existing_any_invitation:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="already refered by fellow",
+        )
+
+    existing_any_referral = (
+        db.query(DBReferral)
+        .filter(func.lower(DBReferral.referred_contact) == norm_contact)
+        .first()
+    )
+    if existing_any_referral:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="already refered by fellow",
+        )
 
     # 3. Ensure doctor has an invite code
     if not doctor.invite_code:
