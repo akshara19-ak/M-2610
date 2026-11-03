@@ -5175,10 +5175,10 @@ export function MeyvedaDoctorsPage() {
                 Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
               </p>
 
-              {/* Headline with Brand Graphic - Enlarged for impact and alignment */}
+              {/* Headline with Brand Graphic - Extra Enlarged for bold prominent presence */}
               <h1
                 id="hero-title"
-                className="relative h-[52px] sm:h-[60px] lg:h-[70px] xl:h-[76px]"
+                className="relative h-[64px] sm:h-[76px] lg:h-[90px] xl:h-[102px]"
               >
                 <span className="sr-only">REINVENT YOUR</span>
                 <img
@@ -5186,7 +5186,7 @@ export function MeyvedaDoctorsPage() {
                   alt="REINVENT YOUR"
                   width={2144}
                   height={387}
-                  className="absolute top-0 left-0 h-[66px] sm:h-[76px] lg:h-[88px] xl:h-[96px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
+                  className="absolute top-0 left-0 h-[80px] sm:h-[96px] lg:h-[114px] xl:h-[128px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
                   loading="eager"
                   decoding="async"
                 />
