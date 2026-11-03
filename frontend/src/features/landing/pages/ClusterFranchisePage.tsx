@@ -85,12 +85,37 @@ export function ClusterFranchisePage() {
   const [modalFullName, setModalFullName] = useState("");
   const [modalPhone, setModalPhone] = useState("");
   const [modalEmail, setModalEmail] = useState("");
+  const [modalPincode, setModalPincode] = useState("");
   const [modalDistrict, setModalDistrict] = useState("");
+  const [modalBlock, setModalBlock] = useState("");
+  const [modalStateName, setModalStateName] = useState("");
+  const [modalPincodeLoading, setModalPincodeLoading] = useState(false);
+  const [modalPincodeStatus, setModalPincodeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [modalLogistics, setModalLogistics] = useState<"available" | "plan">("available");
   const [modalCarpetArea, setModalCarpetArea] = useState("");
   const [modalFootfall, setModalFootfall] = useState("");
   const [modalCapital, setModalCapital] = useState("₹15 Lakhs – ₹25 Lakhs (Ideal for Commander / Attachment)");
   const [isModalSubmitting, setIsModalSubmitting] = useState(false);
+
+  // Inline CMP Application Form State
+  const [inlineModel, setInlineModel] = useState<string>(
+    "1. Territory Commander (Exclusive Macro Supply Chain)"
+  );
+  const [inlineFullName, setInlineFullName] = useState<string>("");
+  const [inlinePhone, setInlinePhone] = useState<string>("");
+  const [inlineEmail, setInlineEmail] = useState<string>("");
+  const [inlinePincode, setInlinePincode] = useState<string>("");
+  const [inlineDistrict, setInlineDistrict] = useState<string>("");
+  const [inlineBlock, setInlineBlock] = useState<string>("");
+  const [inlineStateName, setInlineStateName] = useState<string>("");
+  const [inlinePincodeLoading, setInlinePincodeLoading] = useState<boolean>(false);
+  const [inlinePincodeStatus, setInlinePincodeStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [inlineLogistics, setInlineLogistics] = useState<"available" | "plan">("available");
+  const [inlineCarpetArea, setInlineCarpetArea] = useState<string>("");
+  const [inlineFootfall, setInlineFootfall] = useState<string>("");
+  const [inlineCapital, setInlineCapital] = useState<string>(
+    "₹15 Lakhs – ₹25 Lakhs (Ideal for Commander / Attachment)"
+  );
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -101,6 +126,104 @@ export function ClusterFranchisePage() {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [isModalOpen]);
+
+  // Auto-detect District and Block from PIN code for Modal
+  useEffect(() => {
+    const cleanPin = modalPincode.trim().replace(/\D/g, "").slice(0, 6);
+    if (cleanPin.length === 6 && /^[1-9][0-9]{5}$/.test(cleanPin)) {
+      let isCancelled = false;
+      setModalPincodeLoading(true);
+      setModalPincodeStatus("loading");
+
+      apiClient
+        .get<any>(`/pincode/${cleanPin}`)
+        .then((res) => {
+          if (!isCancelled) {
+            const dist = (res?.district || res?.primary_post_office?.district || res?.division || "").trim();
+            const rawBlock = (res?.block || res?.primary_post_office?.block || res?.primary_post_office?.name || res?.post_offices?.[0] || "").trim();
+            const cleanBlock = rawBlock
+              .replace(/\s+(Head Post Office|Sub Post Office|Branch Post Office|H\.O\.|S\.O\.|B\.O\.).*$/i, "")
+              .trim();
+            const st = (res?.state || "").trim();
+
+            setModalDistrict(dist);
+            setModalBlock(cleanBlock || dist);
+            setModalStateName(st);
+            setModalPincodeStatus("success");
+          }
+        })
+        .catch(() => {
+          if (!isCancelled) {
+            setModalDistrict("");
+            setModalBlock("");
+            setModalStateName("");
+            setModalPincodeStatus("error");
+          }
+        })
+        .finally(() => {
+          if (!isCancelled) setModalPincodeLoading(false);
+        });
+
+      return () => {
+        isCancelled = true;
+      };
+    } else {
+      setModalDistrict("");
+      setModalBlock("");
+      setModalStateName("");
+      setModalPincodeStatus("idle");
+    }
+  }, [modalPincode]);
+
+  // Auto-detect District and Block from PIN code for Inline Form
+  useEffect(() => {
+    const cleanPin = inlinePincode.trim().replace(/\D/g, "").slice(0, 6);
+    if (cleanPin.length === 6 && /^[1-9][0-9]{5}$/.test(cleanPin)) {
+      let isCancelled = false;
+      setInlinePincodeLoading(true);
+      setInlinePincodeStatus("loading");
+
+      apiClient
+        .get<any>(`/pincode/${cleanPin}`)
+        .then((res) => {
+          if (!isCancelled) {
+            const dist = (res?.district || res?.primary_post_office?.district || res?.division || "").trim();
+            const rawBlock = (res?.block || res?.primary_post_office?.block || res?.primary_post_office?.name || res?.post_offices?.[0] || "").trim();
+            const cleanBlock = rawBlock
+              .replace(/\s+(Head Post Office|Sub Post Office|Branch Post Office|H\.O\.|S\.O\.|B\.O\.).*$/i, "")
+              .trim();
+            const st = (res?.state || "").trim();
+
+            setInlineDistrict(dist);
+            setInlineBlock(cleanBlock || dist);
+            setInlineStateName(st);
+            setInlinePincodeStatus("success");
+            setInlineErrors((p) => ({ ...p, district: undefined }));
+          }
+        })
+        .catch(() => {
+          if (!isCancelled) {
+            setInlineDistrict("");
+            setInlineBlock("");
+            setInlineStateName("");
+            setInlinePincodeStatus("error");
+            setInlineErrors((p) => ({ ...p, district: "Invalid PIN code or postal records not found." }));
+          }
+        })
+        .finally(() => {
+          if (!isCancelled) setInlinePincodeLoading(false);
+        });
+
+      return () => {
+        isCancelled = true;
+      };
+    } else {
+      setInlineDistrict("");
+      setInlineBlock("");
+      setInlineStateName("");
+      setInlinePincodeStatus("idle");
+    }
+  }, [inlinePincode]);
 
   const handleModalSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -113,8 +236,12 @@ export function ClusterFranchisePage() {
       toast.error(mobileVal.error || "Please enter a valid 10-digit mobile number.");
       return;
     }
+    if (!modalPincode.trim() || !/^[1-9][0-9]{5}$/.test(modalPincode.trim())) {
+      toast.error("Please enter a valid 6-digit Indian PIN code.");
+      return;
+    }
     if (!modalDistrict.trim()) {
-      toast.error("Please enter your target district or territory.");
+      toast.error("Please wait for postal records to resolve from your PIN code.");
       return;
     }
 
@@ -125,13 +252,18 @@ export function ClusterFranchisePage() {
 
     setIsModalSubmitting(true);
     try {
+      const isTerritoryCommander = modalModel.includes("Territory Commander");
+      const targetArea = isTerritoryCommander
+        ? `District: ${modalDistrict.trim()}${modalStateName ? `, ${modalStateName}` : ""}`
+        : `Block / Sub Branch: ${modalBlock.trim() || modalDistrict.trim()}${modalDistrict ? ` (${modalDistrict})` : ""}${modalStateName ? `, ${modalStateName}` : ""}`;
+
       await apiClient.post("/api/v1/franchise/enquiry", {
         full_name: modalFullName.trim(),
         mobile: modalPhone.trim(),
         email: modalEmail.trim() || undefined,
-        territory_pincode: "000000",
+        territory_pincode: modalPincode.trim(),
         interested_tier: modalModel,
-        message: `CMP Application Intake | District: ${modalDistrict.trim()} | ${facilityInfo} | Capital: ${modalCapital}`,
+        message: `CMP Application Intake | PIN: ${modalPincode.trim()} | Target Area: ${targetArea} | ${facilityInfo} | Capital: ${modalCapital}`,
       });
       toast.success("CMP application submitted successfully! Our expansion team will review your qualifications.");
       setIsModalOpen(false);
@@ -148,20 +280,7 @@ export function ClusterFranchisePage() {
       setIsModalSubmitting(false);
     }
   };
-  // Inline CMP Application Form State
-  const [inlineModel, setInlineModel] = useState<string>(
-    "1. Territory Commander (Exclusive Macro Supply Chain)"
-  );
-  const [inlineFullName, setInlineFullName] = useState<string>("");
-  const [inlinePhone, setInlinePhone] = useState<string>("");
-  const [inlineEmail, setInlineEmail] = useState<string>("");
-  const [inlineDistrict, setInlineDistrict] = useState<string>("");
-  const [inlineLogistics, setInlineLogistics] = useState<"available" | "plan">("available");
-  const [inlineCarpetArea, setInlineCarpetArea] = useState<string>("");
-  const [inlineFootfall, setInlineFootfall] = useState<string>("");
-  const [inlineCapital, setInlineCapital] = useState<string>(
-    "₹15 Lakhs – ₹25 Lakhs (Ideal for Commander / Attachment)"
-  );
+
 
   const [inlineErrors, setInlineErrors] = useState<{
     fullName?: string;
@@ -208,8 +327,10 @@ export function ClusterFranchisePage() {
       }
     }
 
-    if (!inlineDistrict.trim()) {
-      errors.district = "Target district / PIN code is required.";
+    if (!inlinePincode.trim() || !/^[1-9][0-9]{5}$/.test(inlinePincode.trim())) {
+      errors.district = "Please enter a valid 6-digit Indian PIN code.";
+    } else if (!inlineDistrict.trim()) {
+      errors.district = "Please wait for postal records to auto-resolve from PIN code.";
     }
 
     setInlineErrors(errors);
@@ -233,13 +354,18 @@ export function ClusterFranchisePage() {
       : `Logistics: ${inlineLogistics === "available" ? "Commercial Warehouse Available" : "Plan to Acquire Upon Approval"}`;
 
     try {
+      const isTerritoryCommander = inlineModel.includes("Territory Commander");
+      const targetArea = isTerritoryCommander
+        ? `District: ${inlineDistrict.trim()}${inlineStateName ? `, ${inlineStateName}` : ""}`
+        : `Block / Sub Branch: ${inlineBlock.trim() || inlineDistrict.trim()}${inlineDistrict ? ` (${inlineDistrict})` : ""}${inlineStateName ? `, ${inlineStateName}` : ""}`;
+
       const res = await apiClient.post<any>("/api/v1/franchise/enquiry", {
         full_name: inlineFullName.trim(),
         mobile: inlinePhone.trim(),
         email: inlineEmail.trim(),
-        territory_pincode: "000000",
+        territory_pincode: inlinePincode.trim(),
         interested_tier: inlineModel,
-        message: `CMP Application Intake | District: ${inlineDistrict.trim()} | ${facilityInfo} | Capital: ${inlineCapital}`,
+        message: `CMP Application Intake | PIN: ${inlinePincode.trim()} | Target Area: ${targetArea} | ${facilityInfo} | Capital: ${inlineCapital}`,
       });
 
       const submissionRecord = {
@@ -247,7 +373,7 @@ export function ClusterFranchisePage() {
         fullName: inlineFullName.trim(),
         phone: inlinePhone.trim(),
         email: inlineEmail.trim(),
-        district: inlineDistrict.trim(),
+        district: isTerritoryCommander ? `${inlineDistrict.trim()}` : `${inlineBlock.trim() || inlineDistrict.trim()}`,
         model: inlineModel,
         facilityInfo,
         capital: inlineCapital,
@@ -1741,20 +1867,63 @@ Submitted: ${d.timestamp}`;
                     )}
                   </div>
                   <div>
-                    <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
-                      TARGET DISTRICT / PIN CODE <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      required
-                      value={inlineDistrict}
-                      onChange={(e) => {
-                        setInlineDistrict(e.target.value);
-                        if (inlineErrors.district) setInlineErrors((p) => ({ ...p, district: undefined }));
-                      }}
-                      placeholder="e.g. 600117 / Pune Metro"
-                      className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
-                    />
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555]">
+                        PIN CODE <span className="text-red-500">*</span>
+                      </label>
+                      {inlinePincodeLoading ? (
+                        <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#E67230]">
+                          <Loader2 className="size-3 animate-spin" />
+                          <span>Locating...</span>
+                        </span>
+                      ) : inlineDistrict ? (
+                        <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                          <CheckCircle2 className="size-3 text-emerald-600" />
+                          <span>
+                            {inlineModel.includes("Territory Commander")
+                              ? `District: ${inlineDistrict}`
+                              : `Block: ${inlineBlock || inlineDistrict}`}
+                          </span>
+                        </span>
+                      ) : null}
+                    </div>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
+                        maxLength={6}
+                        required
+                        value={inlinePincode}
+                        onChange={(e) => {
+                          const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                          setInlinePincode(val);
+                          if (inlineErrors.district) setInlineErrors((p) => ({ ...p, district: undefined }));
+                        }}
+                        placeholder="e.g. 635126"
+                        className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:bg-white focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-all"
+                      />
+                      <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
+                        {inlinePincodeLoading ? (
+                          <Loader2 className="size-4 animate-spin text-[#E67230]" />
+                        ) : inlineDistrict ? (
+                          <CheckCircle2 className="size-4 text-emerald-600" />
+                        ) : (
+                          <MapPin className="size-4 text-[#888888]" />
+                        )}
+                      </div>
+                    </div>
+                    {inlineDistrict && (
+                      <p className="mt-1.5 text-xs text-[#555555] flex items-center gap-1">
+                        <span className="font-semibold text-[#111111]">
+                          {inlineModel.includes("Territory Commander") ? "Macro Territory (District):" : "Local Cluster (Block):"}
+                        </span>{" "}
+                        <span className="text-[#E67230] font-bold">
+                          {inlineModel.includes("Territory Commander") ? inlineDistrict : (inlineBlock || inlineDistrict)}
+                        </span>
+                        {inlineStateName ? `, ${inlineStateName}` : ""}
+                      </p>
+                    )}
                     {inlineErrors.district && (
                       <p className="mt-1 text-xs text-red-600 font-medium">{inlineErrors.district}</p>
                     )}
@@ -2001,17 +2170,62 @@ Submitted: ${d.timestamp}`;
                   />
                 </div>
                 <div>
-                  <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555] mb-2">
-                    TARGET DISTRICT / PIN CODE *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    value={modalDistrict}
-                    onChange={(e) => setModalDistrict(e.target.value)}
-                    placeholder="e.g. 600117 / Pune Metro"
-                    className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
-                  />
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-[11px] sm:text-xs font-bold uppercase tracking-wider text-[#555555]">
+                      PIN CODE *
+                    </label>
+                    {modalPincodeLoading ? (
+                      <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-[#E67230]">
+                        <Loader2 className="size-3 animate-spin" />
+                        <span>Locating...</span>
+                      </span>
+                    ) : modalDistrict ? (
+                      <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-md border border-emerald-200">
+                        <CheckCircle2 className="size-3 text-emerald-600" />
+                        <span>
+                          {modalModel.includes("Territory Commander")
+                            ? `District: ${modalDistrict}`
+                            : `Block: ${modalBlock || modalDistrict}`}
+                        </span>
+                      </span>
+                    ) : null}
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      maxLength={6}
+                      required
+                      value={modalPincode}
+                      onChange={(e) => {
+                        const val = e.target.value.replace(/\D/g, "").slice(0, 6);
+                        setModalPincode(val);
+                      }}
+                      placeholder="e.g. 635126"
+                      className="w-full h-12 rounded-xl border border-[#D9D3C7] bg-[#FAF9F6] px-4 font-mono text-xs sm:text-sm text-[#111111] placeholder:text-[#999999] focus:border-[#E67230] focus:ring-1 focus:ring-[#E67230] focus:outline-none transition-colors"
+                    />
+                    <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
+                      {modalPincodeLoading ? (
+                        <Loader2 className="size-4 animate-spin text-[#E67230]" />
+                      ) : modalDistrict ? (
+                        <CheckCircle2 className="size-4 text-emerald-600" />
+                      ) : (
+                        <MapPin className="size-4 text-[#888888]" />
+                      )}
+                    </div>
+                  </div>
+                  {modalDistrict && (
+                    <p className="mt-1.5 text-xs text-[#555555] flex items-center gap-1">
+                      <span className="font-semibold text-[#111111]">
+                        {modalModel.includes("Territory Commander") ? "Macro Territory (District):" : "Local Cluster (Block):"}
+                      </span>{" "}
+                      <span className="text-[#E67230] font-bold">
+                        {modalModel.includes("Territory Commander") ? modalDistrict : (modalBlock || modalDistrict)}
+                      </span>
+                      {modalStateName ? `, ${modalStateName}` : ""}
+                    </p>
+                  )}
                 </div>
               </div>
 

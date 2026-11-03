@@ -23,6 +23,7 @@ class PostOfficeDetail(BaseModel):
     district: Optional[str] = Field(None, description="District Name")
     division: Optional[str] = Field(None, description="Postal Division")
     region: Optional[str] = Field(None, description="Postal Region")
+    block: Optional[str] = Field(None, description="Administrative Block / Taluk")
     state: Optional[str] = Field(None, description="State / UT Name")
     country: Optional[str] = Field("India", description="Country")
     pincode: str = Field(..., description="6-digit PIN code")
@@ -45,6 +46,7 @@ class PincodeLookupResponse(BaseModel):
     state: str = Field(..., description="State or Union Territory identified")
     region: Optional[str] = Field(None, description="Postal region")
     division: Optional[str] = Field(None, description="Postal division")
+    block: Optional[str] = Field(None, description="Administrative block / taluk / sub-district")
     post_offices: List[str] = Field(default_factory=list, description="Names of post offices serving this PIN code")
     primary_post_office: Optional[PostOfficeDetail] = Field(None, description="Detailed record of primary post office")
     ayush_governance: AyushBoardResponse = Field(..., description="Mapped statutory AYUSH authority for this region")
@@ -240,12 +242,14 @@ async def lookup_pincode_and_ayush_board(
                                 cand_reg = ho_rec.get("Region") or cand_state
 
                                 ayush_board_data = get_ayush_board_details(cand_state)
+                                cand_block = ho_rec.get("Block") or ho_name
                                 return PincodeLookupResponse(
                                     pincode=cleaned_pincode,
                                     district=cand_dist,
                                     state=cand_state,
                                     region=cand_reg,
                                     division=cand_div,
+                                    block=cand_block,
                                     post_offices=[p.get("Name") for p in cand_pos if p.get("Name")],
                                     primary_post_office=PostOfficeDetail(
                                         name=f"{ho_name} Head Post Office (H.O.)",
@@ -258,6 +262,7 @@ async def lookup_pincode_and_ayush_board(
                                         state=cand_state,
                                         country="India",
                                         pincode=cleaned_pincode,
+                                        block=cand_block,
                                     ),
                                     ayush_governance=AyushBoardResponse(**ayush_board_data),
                                 )
@@ -274,6 +279,7 @@ async def lookup_pincode_and_ayush_board(
                 state=fb_state,
                 region=fb_state,
                 division=fb_city,
+                block=fb_city,
                 post_offices=[f"{fb_city} Head Post Office", f"{fb_city} Branch Office"],
                 primary_post_office=PostOfficeDetail(
                     name=f"{fb_city} Head Post Office (H.O.)",
@@ -304,6 +310,10 @@ async def lookup_pincode_and_ayush_board(
 
     po_names = [po.get("Name") for po in post_offices if po.get("Name")]
 
+    block_val = primary_po_raw.get("Block")
+    if not block_val or block_val == "NA":
+        block_val = primary_po_raw.get("Name")
+
     primary_po_detail = PostOfficeDetail(
         name=primary_po_raw.get("Name") or "",
         branch_type=primary_po_raw.get("BranchType"),
@@ -315,6 +325,7 @@ async def lookup_pincode_and_ayush_board(
         state=primary_po_raw.get("State"),
         country=primary_po_raw.get("Country") or "India",
         pincode=primary_po_raw.get("Pincode") or cleaned_pincode,
+        block=block_val,
     )
 
     # Core Logic: Map to Statutory AYUSH Board
@@ -327,6 +338,7 @@ async def lookup_pincode_and_ayush_board(
         state=state,
         region=region,
         division=division,
+        block=block_val,
         post_offices=po_names,
         primary_post_office=primary_po_detail,
         ayush_governance=ayush_governance,
