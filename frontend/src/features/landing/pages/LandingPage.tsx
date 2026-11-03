@@ -3169,7 +3169,7 @@ export function CoreVaidyaSection() {
     return () => window.removeEventListener("resize", checkMedia);
   }, []);
 
-  // Auto-advance active service every 3 seconds only on mobile (< 1024px / !isDesktop)
+  // Auto-advance active service every 2 seconds only on mobile (< 1024px / !isDesktop)
   useEffect(() => {
     if (isDesktop) return;
 
@@ -3179,7 +3179,7 @@ export function CoreVaidyaSection() {
         const nextIdx = (curIdx + 1) % CORE_VAIDYA_SERVICES.length;
         return CORE_VAIDYA_SERVICES[nextIdx].id;
       });
-    }, 3000);
+    }, 2000);
 
     return () => clearInterval(timer);
   }, [isDesktop]);
@@ -3506,7 +3506,7 @@ export function CoreVaidyaSection() {
                     id={`core-vaidya-mobile-circle-${service.id}`}
                     aria-pressed={isCurrent}
                     onClick={() => setSelectedId(service.id)}
-                    className={`aspect-square rounded-full p-3 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E67230] ${isCurrent
+                    className={`aspect-square rounded-full p-3 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E67230] ${idx === 4 ? "col-span-2 justify-self-center w-[130px] sm:w-[140px]" : "w-full"} ${isCurrent
                       ? "scale-105 border-2 border-white ring-2 ring-[#E67230] opacity-100 shadow-lg"
                       : "border border-white/40 opacity-65 hover:opacity-90 shadow-sm"
                       }`}
@@ -3715,14 +3715,16 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
 ];
 export function ManagedServicesTreeSection() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchDeltaXRef = useRef<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  // Automatic cycling every 3 seconds across all 5 nodes in order
+  // Automatic cycling every 2 seconds across all 5 nodes in order
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % MANAGED_SERVICES_DATA.length);
-    }, 3000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [isHovered]);
 
@@ -3775,7 +3777,31 @@ export function ManagedServicesTreeSection() {
             </div>
 
             {/* Smooth Sliding Carousel Viewport */}
-            <div className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300 touch-pan-y"
+              onTouchStart={(e) => {
+                touchStartXRef.current = e.touches[0].clientX;
+                touchDeltaXRef.current = 0;
+              }}
+              onTouchMove={(e) => {
+                if (touchStartXRef.current !== null) {
+                  touchDeltaXRef.current = e.touches[0].clientX - touchStartXRef.current;
+                }
+              }}
+              onTouchEnd={() => {
+                if (touchStartXRef.current !== null) {
+                  if (touchDeltaXRef.current < -40) {
+                    // Swiped left -> next slide
+                    setCurrentIndex((prev) => (prev + 1) % MANAGED_SERVICES_DATA.length);
+                  } else if (touchDeltaXRef.current > 40) {
+                    // Swiped right -> prev slide
+                    setCurrentIndex((prev) => (prev - 1 + MANAGED_SERVICES_DATA.length) % MANAGED_SERVICES_DATA.length);
+                  }
+                }
+                touchStartXRef.current = null;
+                touchDeltaXRef.current = 0;
+              }}
+            >
               <div
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -3992,7 +4018,31 @@ export function ManagedServicesTreeSection() {
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* Sliding Card */}
-            <div className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300 touch-pan-y"
+              onTouchStart={(e) => {
+                touchStartXRef.current = e.touches[0].clientX;
+                touchDeltaXRef.current = 0;
+              }}
+              onTouchMove={(e) => {
+                if (touchStartXRef.current !== null) {
+                  touchDeltaXRef.current = e.touches[0].clientX - touchStartXRef.current;
+                }
+              }}
+              onTouchEnd={() => {
+                if (touchStartXRef.current !== null) {
+                  if (touchDeltaXRef.current < -40) {
+                    // Swiped left -> next slide
+                    setCurrentIndex((prev) => (prev + 1) % MANAGED_SERVICES_DATA.length);
+                  } else if (touchDeltaXRef.current > 40) {
+                    // Swiped right -> prev slide
+                    setCurrentIndex((prev) => (prev - 1 + MANAGED_SERVICES_DATA.length) % MANAGED_SERVICES_DATA.length);
+                  }
+                }
+                touchStartXRef.current = null;
+                touchDeltaXRef.current = 0;
+              }}
+            >
               <div
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
