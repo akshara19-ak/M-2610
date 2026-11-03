@@ -4314,6 +4314,14 @@ export function MeyvedaDoctorsPage() {
 
   // Safe navigation handler for anchor links and routes
   const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
+    if (href === "#top" || href === "#" || href === "/" || href === "/#top") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      if (window.location.hash) {
+        window.history.replaceState(null, "", window.location.pathname);
+      }
+      return;
+    }
     if (href.startsWith("#")) {
       const targetId = href.slice(1);
       const targetElement = document.getElementById(targetId);
@@ -4326,6 +4334,14 @@ export function MeyvedaDoctorsPage() {
       navigate({ to: href as any });
     }
   };
+
+  // Ensure scroll position is at the very top if #top is in URL
+  useEffect(() => {
+    if (window.location.hash === "#top") {
+      window.scrollTo({ top: 0, behavior: "instant" });
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
 
   // Registration Form State (Full Name, Qualification, Pincode, Reg No, Email OTP, Mobile OTP)
   const [doctorName, setDoctorName] = useState("");
@@ -4963,6 +4979,7 @@ export function MeyvedaDoctorsPage() {
             aria-label="Meyveda — Home"
             className="inline-flex items-center rounded-sm transition-opacity hover:opacity-90"
             href="#top"
+            onClick={(e) => handleNavClick(e, "#top")}
           >
             <MeyvedaLogo />
           </a>
@@ -5205,7 +5222,7 @@ export function MeyvedaDoctorsPage() {
       {/* ==================================================================== */}
       <section
         aria-labelledby="hero-title"
-        className="relative flex min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-5.5rem)] lg:max-h-[820px] items-center overflow-hidden bg-[#FAF9F6] py-8 sm:py-10 lg:py-0"
+        className="relative flex min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-5.5rem)] lg:max-h-[820px] items-center overflow-hidden bg-[#FAF9F6] py-8 sm:py-10 lg:py-0 scroll-mt-20 sm:scroll-mt-22"
         id="top"
       >
         {/* Full-Bleed Background Video Layer */}
