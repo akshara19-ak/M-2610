@@ -4179,7 +4179,7 @@ export function MeyvedaDoctorsPage() {
   const navigate = useNavigate();
   // Navigation & modals
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [aboutDropdownOpen, setAboutDropdownOpen] = useState(false);
+  const [contactDropdownOpen, setContactDropdownOpen] = useState(false);
   const [registerModalOpen, setRegisterModalOpen] = useState(false);
   const [signInModalOpen, setSignInModalOpen] = useState(false);
 
@@ -4900,34 +4900,34 @@ export function MeyvedaDoctorsPage() {
           {/* CENTER: Navigation Links */}
           <nav aria-label="Main Navigation" className="hidden items-center gap-6 lg:flex xl:gap-8">
             {navigation.map((item) => {
-              if (item.label === "About Us") {
+              if (item.label === "Contact Us") {
                 return (
                   <div
                     key={item.label}
                     className="relative py-2"
-                    onMouseEnter={() => setAboutDropdownOpen(true)}
-                    onMouseLeave={() => setAboutDropdownOpen(false)}
+                    onMouseEnter={() => setContactDropdownOpen(true)}
+                    onMouseLeave={() => setContactDropdownOpen(false)}
                   >
                     <a
-                      href="/about"
+                      href="/contact"
                       className="inline-flex items-center gap-1 whitespace-nowrap text-[15px] font-semibold text-[#555555] hover:text-[#111111] transition-colors"
                     >
-                      <span>About Us</span>
+                      <span>Contact Us</span>
                       <ChevronDown
                         className={`size-3.5 transition-transform duration-200 ${
-                          aboutDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
+                          contactDropdownOpen ? "rotate-180 text-[#E67230]" : "text-[#888888]"
                         }`}
                       />
                     </a>
 
-                    {aboutDropdownOpen && (
-                      <div className="absolute left-0 top-full -mt-0.5 w-56 rounded-xl border border-[#EBE7DF] bg-white py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
+                    {contactDropdownOpen && (
+                      <div className="absolute right-0 lg:left-0 top-full -mt-0.5 w-60 rounded-xl border border-[#EBE7DF] bg-white py-2 shadow-lg ring-1 ring-black/5 animate-in fade-in slide-in-from-top-1 duration-150 z-50">
                         <Link
-                          to="/about"
+                          to="/contact"
                           className="flex flex-col px-4 py-2.5 hover:bg-[#FAF9F6] transition-colors"
                         >
-                          <span className="text-sm font-bold text-[#111111]">About Meyveda</span>
-                          <span className="text-xs text-[#777777]">Our mission, clinical charter & story</span>
+                          <span className="text-sm font-bold text-[#111111]">Contact & Support</span>
+                          <span className="text-xs text-[#777777]">Helpdesk, grievance & headquarters</span>
                         </Link>
 
                         <div className="my-1 border-t border-[#F0ECE3]" />
@@ -5038,15 +5038,15 @@ export function MeyvedaDoctorsPage() {
           >
             <nav className="flex flex-col space-y-3.5">
               {navigation.map((item) => {
-                if (item.label === "About Us") {
+                if (item.label === "Contact Us") {
                   return (
                     <div key={item.label} className="flex flex-col space-y-2">
                       <a
-                        href="/about"
+                        href="/contact"
                         onClick={() => setMobileMenuOpen(false)}
                         className="rounded-md px-2 py-1.5 text-base font-semibold text-[#111111] hover:bg-[#FAF9F6] hover:text-[#E67230]"
                       >
-                        About Us
+                        Contact Us
                       </a>
                       <Link
                         to="/public-relations"
