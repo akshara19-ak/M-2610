@@ -55,6 +55,11 @@ import {
   Scale,
   ExternalLink,
   Loader2,
+  Server,
+  Truck,
+  Globe2,
+  TrendingUp,
+  FlaskConical,
 } from "lucide-react";
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { toast } from "sonner";
@@ -89,7 +94,7 @@ import stage2Image from "@/assets/2.png";
 import stage3Image from "@/assets/3.png";
 import stage4Image from "@/assets/4.png";
 import stage5Image from "@/assets/5.png";
-import treePng from "@/assets/tree.png";
+import treeBranchPng from "@/assets/Tree_branch.png";
 import { ClusterFranchiseePartnerSection } from "../components/ClusterFranchiseePartnerSection";
 
 /* -------------------------------------------------------------------------- */
@@ -110,7 +115,7 @@ const AYUSH_SYSTEMS = [
     restText: "yurveda",
     fullName: "Ayurveda",
     icon: (
-      /* Mortar & pestle with leafy sprout & small leaf motif (Ayurveda) */
+      /* Ayurveda: Mortar & pestle with leafy sprout */
       <svg
         className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
@@ -121,14 +126,14 @@ const AYUSH_SYSTEMS = [
         strokeLinejoin="round"
       >
         {/* Mortar bowl */}
-        <path d="M4 11h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
-        <path d="M8 18.5h8" />
+        <path d="M4 12h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
+        <path d="M8.5 19.5h7" />
         {/* Pestle diagonally extending out */}
-        <path d="M15.5 4l-4 7" />
-        {/* Leaf branch sprouted on top left */}
-        <path d="M10.5 6.5C8 6 7 8 8 10c2 .5 3-1.5 2.5-3.5Z" />
-        {/* Small internal leaf emblem on bowl */}
-        <path d="M14 14.5c-1.5 0-2.2 1.2-1.8 2.3 1.2.3 2.2-.8 1.8-2.3Z" />
+        <path d="M15.5 4.5l-4.5 7.5" />
+        <circle cx="16.5" cy="3.5" r="1.2" fill="currentColor" />
+        {/* Leaf branch on left */}
+        <path d="M9.5 7.5c-2.5 0-3.5 2-3.5 4 2 0 4-1.5 3.5-4Z" />
+        <path d="M7 11l2-2.5" />
       </svg>
     ),
   },
@@ -138,7 +143,7 @@ const AYUSH_SYSTEMS = [
     fullName: "Yoga and\nNaturopathy",
     isTwoLine: true,
     icon: (
-      /* Meditating figure in full lotus posture with radiating lotus petals behind (Yoga & Naturopathy) */
+      /* Yoga & Naturopathy: Meditating figure with radiating sunburst aura */
       <svg
         className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
@@ -148,15 +153,19 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Meditator head & torso */}
-        <circle cx="12" cy="6" r="1.8" />
-        <path d="M12 9.5c-2 0-3 1.5-3 3 0 2.2 2 3.8 3 5 1-1.2 3-2.8 3-5 0-1.5-1-3-3-3Z" />
-        {/* Folded crossed legs in lotus base */}
-        <path d="M6 18c1.5-1.5 3.5-1.5 6-1.5s4.5 0 6 1.5c-2 1.5-4 1.5-6 1.5s-4 0-6-1.5Z" />
-        {/* Surrounding lotus petals */}
-        <path d="M7 13.5C5.5 12 5.5 9.5 7.5 8c1 1.5 1.5 3.5 1 5.5" />
-        <path d="M17 13.5c1.5-1.5 1.5-4-.5-5.5-1 1.5-1.5 3.5-1 5.5" />
-        <path d="M10 6C9 4 10.5 2.5 12 2c1.5.5 3 2 2 4" />
+        {/* Radiating sunburst aura rays */}
+        <path d="M12 2v2" />
+        <path d="M7.5 4l1.2 1.5" />
+        <path d="M16.5 4l-1.2 1.5" />
+        <path d="M4.5 7.5l1.8.8" />
+        <path d="M19.5 7.5l-1.8.8" />
+        {/* Meditator head */}
+        <circle cx="12" cy="7.5" r="2" />
+        {/* Torso & arms in meditative posture */}
+        <path d="M12 10.5v4" />
+        <path d="M9 12.5l3 2 3-2" />
+        {/* Crossed legs in full lotus (Padmasana) */}
+        <path d="M5.5 18c1.5-1.5 4-2 6.5-2s5 .5 6.5 2c-2 1.5-4.5 2-6.5 2s-4.5-.5-6.5-2Z" />
       </svg>
     ),
   },
@@ -165,7 +174,7 @@ const AYUSH_SYSTEMS = [
     restText: "nani",
     fullName: "Unani",
     icon: (
-      /* Unani preparation bowl with diagonal pestle & top sprig */
+      /* Unani: Flask / bottle with cork stopper and leaf on bottom-right */
       <svg
         className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
@@ -175,13 +184,15 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Shallow preparation bowl */}
-        <path d="M4 11h16c0 4.5-3.5 7.5-8 7.5s-8-3-8-7.5Z" />
-        <path d="M8 18.5h8" />
-        {/* Long pestle */}
-        <path d="M16 4l-4.5 7" />
-        {/* Leaf sprig at top of pestle */}
-        <path d="M11 6.5c-2-.5-2.8 1.2-2 2.8 1.8.3 2.5-1.2 2-2.8Z" />
+        {/* Cork stopper & bottle neck */}
+        <path d="M10.5 3h3" />
+        <path d="M11 3v2.5M13 3v2.5" />
+        {/* Bulbous round vessel body */}
+        <path d="M11 5.5c-2 1-4 3.5-4 6.5a6 6 0 0 0 9.8 4.6" />
+        <path d="M13 5.5c1.8.9 3.5 3 3.9 5.5" />
+        {/* Resting leaf at bottom right */}
+        <path d="M15 14c-1.8 1.8-2 4.5 0 6 2.5 0 4-1.8 4.8-4-1.8-.5-3.5-.8-4.8-2Z" />
+        <path d="M15.5 19.5l2.5-3" />
       </svg>
     ),
   },
@@ -190,7 +201,7 @@ const AYUSH_SYSTEMS = [
     restText: "iddha",
     fullName: "Siddha",
     icon: (
-      /* Traditional Siddha pot / Kalash vessel topped with flame/finial and flanked by side leaves */
+      /* Siddha: 3-petal lotus / blossom emblem */
       <svg
         className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
@@ -200,17 +211,14 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Top flame / spire finial */}
-        <path d="M12 2c-.8 1.2-.8 2 0 3 .8-1 .8-1.8 0-3Z" />
-        <circle cx="12" cy="6.2" r="1.2" />
-        {/* Tiered neck of vessel */}
-        <path d="M10 8h4" />
-        <path d="M9 10h6" />
-        {/* Rounded pot body */}
-        <path d="M8 11.5c-2 1.5-2 4.5 0 6 1.8 1.5 6.2 1.5 8 0 2-1.5 2-4.5 0-6" />
-        {/* Flanking side leaves */}
-        <path d="M6 14.5c-2.5-.5-3.5 1.5-2.5 3 1.8.5 3-.8 2.5-3Z" />
-        <path d="M18 14.5c2.5-.5 3.5 1.5 2.5 3-1.8.5-3-.8-2.5-3Z" />
+        {/* Center pointed upright petal */}
+        <path d="M12 3c-2.5 3.5-2.5 8 0 13 2.5-5 2.5-9.5 0-13Z" />
+        {/* Left outer petal */}
+        <path d="M11 15c-4-1-6.5-4-6.5-8 3.5 0 6.5 2.5 7.5 6" />
+        {/* Right outer petal */}
+        <path d="M13 15c4-1 6.5-4 6.5-8-3.5 0-6.5 2.5-7.5 6" />
+        {/* Base connection */}
+        <path d="M10 18.5c1 .5 3 .5 4 0" />
       </svg>
     ),
   },
@@ -219,7 +227,7 @@ const AYUSH_SYSTEMS = [
     restText: "omoeopathy",
     fullName: "Homoeopathy",
     icon: (
-      /* Homoeopathic medicine bottle with globules and flowering branch */
+      /* Homoeopathy: Medicine jar with globules and herbal sprig */
       <svg
         className="size-[22px] sm:size-[24px] lg:size-[26px]"
         viewBox="0 0 24 24"
@@ -229,18 +237,18 @@ const AYUSH_SYSTEMS = [
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        {/* Bottle neck & rim */}
-        <path d="M8 4h8" />
-        <path d="M9 4v2.5L7 9v10a1.5 1.5 0 0 0 1.5 1.5h7a1.5 1.5 0 0 0 1.5-1.5V9l-2-2.5V4" />
-        {/* Inner globules / pellets */}
-        <circle cx="10" cy="13" r=".9" />
-        <circle cx="14" cy="13" r=".9" />
-        <circle cx="12" cy="15.5" r=".9" />
-        <circle cx="10" cy="17.5" r=".9" />
-        <circle cx="14" cy="17.5" r=".9" />
-        {/* Small herbal blossom beside bottle base */}
-        <path d="M18 16c1.5-1.5 3-1 3.5.5s-1 2.5-2.5 2" />
-        <path d="M18 18.5c1.2.2 2 1.2 1.5 2.2-.8.5-1.8 0-2-1" />
+        {/* Jar cap */}
+        <rect x="7" y="3" width="7" height="2.5" rx="1" />
+        {/* Jar body */}
+        <path d="M7.5 5.5v1.5l-1.5 2v9a1.5 1.5 0 0 0 1.5 1.5h6a1.5 1.5 0 0 0 1.5-1.5v-9l-1.5-2v-1.5" />
+        {/* Pellets / globules inside */}
+        <circle cx="9.5" cy="13" r=".9" fill="currentColor" />
+        <circle cx="12" cy="12" r=".9" fill="currentColor" />
+        <circle cx="10" cy="16" r=".9" fill="currentColor" />
+        <circle cx="12.5" cy="15.5" r=".9" fill="currentColor" />
+        {/* Two small leaves on right */}
+        <path d="M15 15.5c1.8-1 3.5-.5 3.5 1s-1.5 1.8-3 1.2" />
+        <path d="M15 18c1.5 0 2.5 1.2 2 2-.8.8-2 .5-2.2-.8" />
       </svg>
     ),
   },
@@ -3499,85 +3507,158 @@ interface ManagedServiceNode {
   gradient: string;
   glow: string;
   border: string;
+  borderColor: string;
   tag: string;
   leftPercent: number;
   topPercent: number;
   sizePercent: number;
+  circleTitle: React.ReactNode;
+  circleDesc: React.ReactNode;
+  circleIcon: React.ReactNode;
 }
 
 const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "iaas",
     number: "01",
-    title: "Infrastructure-as-a-Service (IaaS)",
+    title: "IaaS",
     description:
-      "Instantly deployable, plug-and-play co-working physical spaces, and tele-health for bypassing heavy initial capital expenditures for medical and IT equipment.",
+      "Instant infrastructure for healthcare & business needs. Deployable, plug-and-play co-working physical spaces and tele-health to bypass heavy initial capital expenditures.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
-    glow: "0 12px 32px -4px rgba(230, 114, 48, 0.45)",
-    border: "#E67230",
+    glow: "0 12px 32px -4px rgba(252, 118, 33, 0.45)",
+    border: "#FC7621",
+    borderColor: "#E67230",
     tag: "SHARED INFRASTRUCTURE",
-    leftPercent: 27.7,
-    topPercent: 61.0,
-    sizePercent: 14.5,
+    leftPercent: 49.57,
+    topPercent: 16.69,
+    sizePercent: 17.85,
+    circleTitle: "IaaS",
+    circleDesc: (
+      <>
+        <span className="whitespace-nowrap">Instant infrastructure</span>
+        <br />
+        <span className="whitespace-nowrap">for healthcare &amp;</span>
+        <br />
+        <span className="whitespace-nowrap">business needs.</span>
+      </>
+    ),
+    circleIcon: <Server className="w-full h-full text-[#E67230] stroke-[1.85]" />,
   },
   {
-    id: "global-patient-sourcing",
+    id: "global-opportunities",
     number: "02",
-    title: "Global Patient Sourcing & MVT Footprint",
+    title: "Global Opportunities",
     description:
-      "Centralized marketplace driving patient acquisition locally and internationally via Medical Value Travel (MVT), featuring a customized micro-site builder for member clinics.",
+      "Expand your reach with MVT worldwide. Centralized marketplace driving patient acquisition locally and internationally via Medical Value Travel (MVT).",
     gradient: "linear-gradient(135deg, #F37E38 0%, #D86423 50%, #B84E14 100%)",
-    glow: "0 12px 32px -4px rgba(216, 100, 35, 0.45)",
-    border: "#D86423",
-    tag: "PATIENT ACQUISITION & MVT",
-    leftPercent: 30.0,
-    topPercent: 42.0,
-    sizePercent: 13.0,
+    glow: "0 12px 32px -4px rgba(241, 198, 160, 0.45)",
+    border: "#F1C6A0",
+    borderColor: "#E5C5B0",
+    tag: "GLOBAL REACH & MVT",
+    leftPercent: 28.71,
+    topPercent: 31.30,
+    sizePercent: 17.63,
+    circleTitle: (
+      <>
+        <span className="whitespace-nowrap">Global</span>
+        <br />
+        <span className="whitespace-nowrap">Opportunities</span>
+      </>
+    ),
+    circleDesc: (
+      <>
+        <span className="whitespace-nowrap">Expand your reach</span>
+        <br />
+        <span className="whitespace-nowrap">with MVT worldwide.</span>
+      </>
+    ),
+    circleIcon: <Globe2 className="w-full h-full text-[#E67230] stroke-[1.85]" />,
+  },
+  {
+    id: "operating-support-system",
+    number: "03",
+    title: "Operating Support System",
+    description:
+      "Seamless logistics & claim management. Frictionless NHCX cashless claim settlements, corporate camp engines, and complete end-to-end operational backing.",
+    gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
+    glow: "0 12px 32px -4px rgba(227, 96, 28, 0.45)",
+    border: "#E3601C",
+    borderColor: "#E67230",
+    tag: "LOGISTICS & CLAIMS",
+    leftPercent: 24.62,
+    topPercent: 61.16,
+    sizePercent: 19.35,
+    circleTitle: (
+      <>
+        <span className="whitespace-nowrap">Operating Suport</span>
+        <br />
+        <span className="whitespace-nowrap">System</span>
+      </>
+    ),
+    circleDesc: (
+      <>
+        <span className="whitespace-nowrap">Seamless logistics &amp;</span>
+        <br />
+        <span className="whitespace-nowrap">claim management.</span>
+      </>
+    ),
+    circleIcon: <Truck className="w-full h-full text-[#E67230] stroke-[1.85]" />,
   },
   {
     id: "mso-backbone",
-    number: "03",
-    title: "MSO Backbone & Financial Command Center",
-    description:
-      "Complete support for hub-and-spoke expansion, including a financial, accounting, and tax knowledge hub to handle regulatory compliance and enable vertical/horizontal scaling.",
-    gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
-    glow: "0 12px 32px -4px rgba(190, 86, 26, 0.45)",
-    border: "#AE4E18",
-    tag: "FINANCIAL COMMAND & SCALE",
-    leftPercent: 46.2,
-    topPercent: 30.3,
-    sizePercent: 14.0,
-  },
-  {
-    id: "enterprise-logistics",
     number: "04",
-    title: "Enterprise Logistics, NHCX Claims & M-CAMP Engine",
+    title: "MSO back bone",
     description:
-      "High-level logistics dashboard, frictionless NHCX cashless claim settlements, and coordination of corporate & Outreach CAMPS like \"NO-TO-NCD\" preventive health camps.",
-    gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
-    glow: "0 12px 32px -4px rgba(230, 114, 48, 0.45)",
-    border: "#E67230",
-    tag: "LOGISTICS & NHCX CLAIMS",
-    leftPercent: 61.8,
-    topPercent: 42.0,
-    sizePercent: 13.0,
+      "Scale smarter with our MSO support. Financial command center, regulatory compliance, and administrative infrastructure for hub-and-spoke expansion.",
+    gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
+    glow: "0 12px 32px -4px rgba(252, 165, 54, 0.45)",
+    border: "#FCA536",
+    borderColor: "#E67230",
+    tag: "MSO BACKBONE & SCALE",
+    leftPercent: 70.54,
+    topPercent: 31.30,
+    sizePercent: 17.63,
+    circleTitle: <span className="whitespace-nowrap">MSO back bone</span>,
+    circleDesc: (
+      <>
+        <span className="whitespace-nowrap">Scale smarter with</span>
+        <br />
+        <span className="whitespace-nowrap">our MSO support.</span>
+      </>
+    ),
+    circleIcon: <TrendingUp className="w-full h-full text-[#E67230] stroke-[1.85]" />,
   },
   {
-    id: "brand-incubation",
+    id: "innovation-expansion",
     number: "05",
-    title: "Brand Incubation & Clinical Research Hub",
+    title: "innovation & expansion",
     description:
-      "CTMS for executing structured research, alongside an incubation network scaling brand equity and connecting practitioners with mentors for new product/service launches.",
+      "Research, innovate & grow with us. Clinical trial management (CTMS), brand incubation, and mentorship programs for launching groundbreaking AYUSH therapies.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
-    glow: "0 12px 32px -4px rgba(190, 86, 26, 0.45)",
-    border: "#AE4E18",
-    tag: "RESEARCH & BRAND INCUBATION",
-    leftPercent: 66.1,
-    topPercent: 61.0,
-    sizePercent: 14.5,
+    glow: "0 12px 32px -4px rgba(237, 194, 157, 0.45)",
+    border: "#EDC29D",
+    borderColor: "#E5C5B0",
+    tag: "RESEARCH & INNOVATION",
+    leftPercent: 75.70,
+    topPercent: 61.32,
+    sizePercent: 17.85,
+    circleTitle: (
+      <>
+        <span className="whitespace-nowrap">innovation &amp;</span>
+        <br />
+        <span className="whitespace-nowrap">expansion</span>
+      </>
+    ),
+    circleDesc: (
+      <>
+        <span className="whitespace-nowrap">Research, innovate &amp;</span>
+        <br />
+        <span className="whitespace-nowrap">grow with us.</span>
+      </>
+    ),
+    circleIcon: <FlaskConical className="w-full h-full text-[#E67230] stroke-[1.85]" />,
   },
 ];
-
 export function ManagedServicesTreeSection() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
@@ -3712,154 +3793,58 @@ export function ManagedServicesTreeSection() {
             </div>
           </div>
 
-          {/* RIGHT COLUMN: Authentic Organic Tree with Natural Wind-Blown Foliage */}
+          {/* RIGHT COLUMN: Authentic Organic Tree with Pure Elemental UI Circles */}
           <div
             className="lg:col-span-7 flex justify-center items-center py-0"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
             <div className="relative w-full aspect-[1536/1024] flex items-center justify-center select-none overflow-visible scale-105 xl:scale-110 transition-transform duration-500">
-              {/* Authentic Organic Tree Artwork */}
+              {/* Authentic Organic Tree Artwork: Tree_branch.png */}
               <img
-                src={treePng}
+                src={treeBranchPng}
                 alt="Managed Services Growth Tree"
-                className="w-full h-full object-contain pointer-events-none"
+                className="w-full h-full object-contain pointer-events-none opacity-85 drop-shadow-[0_8px_30px_rgba(0,0,0,0.03)]"
               />
 
-              {/* Natural Wind-Breeze Foliage Layer */}
-              <svg
-                viewBox="0 0 1536 1024"
-                className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-                aria-hidden="true"
-              >
-                <defs>
-                  <linearGradient id="overlayLeafWarm" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#F9B183" />
-                    <stop offset="100%" stopColor="#E67230" />
-                  </linearGradient>
-                  <linearGradient id="overlayLeafBurnt" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#E67230" />
-                    <stop offset="100%" stopColor="#AE4E18" />
-                  </linearGradient>
-                  <linearGradient id="overlayLeafAmber" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#FBBF7A" />
-                    <stop offset="100%" stopColor="#E67230" />
-                  </linearGradient>
-                  <linearGradient id="overlayLeafGolden" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#FED7AA" />
-                    <stop offset="100%" stopColor="#EA580C" />
-                  </linearGradient>
-                </defs>
-
-                {/* Wind Breeze Leaves: LEFT BRANCH FOLIAGE */}
-                <g className="tree-leaf-sway-1" transform="translate(302, 364) rotate(-38)">
-                  <path d="M 0 0 C -12 -20 -8 -36 0 -46 C 8 -36 12 -20 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-rustle" transform="translate(334, 458) rotate(-45)">
-                  <path d="M 0 0 C -11 -17 -6 -30 0 -38 C 6 -30 11 -17 0 0 Z" fill="url(#overlayLeafBurnt)" opacity="0.94" />
-                </g>
-                <g className="tree-leaf-flutter" transform="translate(452, 266) rotate(22)">
-                  <path d="M 0 0 C -10 -16 -5 -28 0 -35 C 5 -28 10 -16 0 0 Z" fill="url(#overlayLeafAmber)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-breeze" transform="translate(327, 658) rotate(48)">
-                  <path d="M 0 0 C -14 -22 -9 -38 0 -48 C 9 -38 14 -22 0 0 Z" fill="url(#overlayLeafGolden)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-sway-2" transform="translate(502, 826) rotate(-28)">
-                  <path d="M 0 0 C -11 -18 -7 -32 0 -40 C 7 -32 11 -18 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-sway-3" transform="translate(527, 863) rotate(35)">
-                  <path d="M 0 0 C -12 -20 -7 -34 0 -42 C 7 -34 12 -20 0 0 Z" fill="url(#overlayLeafBurnt)" opacity="0.92" />
-                </g>
-
-                {/* Wind Breeze Leaves: TOP CROWN FOLIAGE */}
-                <g className="tree-leaf-breeze" transform="translate(564, 165) rotate(32)">
-                  <path d="M 0 0 C -13 -20 -8 -36 0 -46 C 8 -36 13 -20 0 0 Z" fill="url(#overlayLeafGolden)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-sway-1" transform="translate(591, 325) rotate(-18)">
-                  <path d="M 0 0 C -10 -16 -6 -30 0 -38 C 6 -30 10 -16 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-flutter" transform="translate(768, 110) rotate(-12)">
-                  <path d="M 0 0 C -12 -18 -7 -32 0 -40 C 7 -32 12 -18 0 0 Z" fill="url(#overlayLeafAmber)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-rustle" transform="translate(783, 134) rotate(26)">
-                  <path d="M 0 0 C -15 -24 -9 -42 0 -52 C 9 -42 15 -24 0 0 Z" fill="url(#overlayLeafBurnt)" opacity="0.95" />
-                </g>
-                <g className="tree-leaf-breeze" transform="translate(849, 322) rotate(-24)">
-                  <path d="M 0 0 C -11 -18 -6 -32 0 -40 C 6 -32 11 -18 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-sway-2" transform="translate(925, 171) rotate(38)">
-                  <path d="M 0 0 C -12 -20 -7 -34 0 -44 C 7 -34 12 -20 0 0 Z" fill="url(#overlayLeafGolden)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-flutter" transform="translate(949, 213) rotate(-32)">
-                  <path d="M 0 0 C -11 -17 -6 -30 0 -38 C 6 -30 11 -17 0 0 Z" fill="url(#overlayLeafAmber)" opacity="0.9" />
-                </g>
-
-                {/* Wind Breeze Leaves: RIGHT BRANCH FOLIAGE */}
-                <g className="tree-leaf-sway-2" transform="translate(963, 164) rotate(42)">
-                  <path d="M 0 0 C -12 -19 -7 -34 0 -42 C 7 -34 12 -19 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-breeze" transform="translate(1078, 271) rotate(-26)">
-                  <path d="M 0 0 C -11 -18 -6 -32 0 -40 C 6 -32 11 -18 0 0 Z" fill="url(#overlayLeafGolden)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-rustle" transform="translate(1107, 299) rotate(36)">
-                  <path d="M 0 0 C -16 -26 -10 -44 0 -54 C 10 -44 16 -26 0 0 Z" fill="url(#overlayLeafBurnt)" opacity="0.95" />
-                </g>
-                <g className="tree-leaf-flutter" transform="translate(1234, 389) rotate(-34)">
-                  <path d="M 0 0 C -13 -21 -8 -36 0 -46 C 8 -36 13 -21 0 0 Z" fill="url(#overlayLeafAmber)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-sway-3" transform="translate(1162, 549) rotate(45)">
-                  <path d="M 0 0 C -11 -18 -7 -32 0 -40 C 7 -32 11 -18 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-breeze" transform="translate(1027, 773) rotate(-25)">
-                  <path d="M 0 0 C -12 -19 -7 -34 0 -42 C 7 -34 12 -19 0 0 Z" fill="url(#overlayLeafGolden)" opacity="0.9" />
-                </g>
-
-                {/* Wind Breeze Leaves: CENTER & LOWER CANOPY */}
-                <g className="tree-leaf-rustle" transform="translate(643, 495) rotate(-20)">
-                  <path d="M 0 0 C -11 -17 -6 -30 0 -38 C 6 -30 11 -17 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-sway-1" transform="translate(713, 528) rotate(22)">
-                  <path d="M 0 0 C -13 -20 -8 -36 0 -44 C 8 -36 13 -20 0 0 Z" fill="url(#overlayLeafBurnt)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-flutter" transform="translate(563, 566) rotate(-35)">
-                  <path d="M 0 0 C -11 -18 -6 -32 0 -40 C 6 -32 11 -18 0 0 Z" fill="url(#overlayLeafGolden)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-breeze" transform="translate(574, 642) rotate(40)">
-                  <path d="M 0 0 C -14 -22 -8 -38 0 -48 C 8 -38 14 -22 0 0 Z" fill="url(#overlayLeafAmber)" opacity="0.92" />
-                </g>
-                <g className="tree-leaf-sway-2" transform="translate(861, 550) rotate(-28)">
-                  <path d="M 0 0 C -10 -16 -6 -28 0 -36 C 6 -28 10 -16 0 0 Z" fill="url(#overlayLeafWarm)" opacity="0.9" />
-                </g>
-                <g className="tree-leaf-rustle" transform="translate(908, 881) rotate(32)">
-                  <path d="M 0 0 C -12 -19 -7 -34 0 -42 C 7 -34 12 -19 0 0 Z" fill="url(#overlayLeafBurnt)" opacity="0.9" />
-                </g>
-              </svg>
-
-              {/* 5 Seamless Interactive Hotspots */}
-              {MANAGED_SERVICES_DATA.map((service, index) => {
+              {/* Pure Elemental UI Circles matching Pic 2 (strictly circular, responsive typography, authentic doodles) */}
+              {MANAGED_SERVICES_DATA.map((service) => {
                 return (
-                  <button
+                  <div
                     key={service.id}
-                    type="button"
                     id={`managed-tree-node-${service.id}`}
-                    aria-label={`View details for ${service.title}`}
-                    aria-pressed={currentIndex === index}
-                    onClick={() => setCurrentIndex(index)}
-                    onMouseEnter={() => {
-                      setCurrentIndex(index);
-                      setIsHovered(true);
-                    }}
-                    onMouseLeave={() => setIsHovered(false)}
-                    onFocus={() => setCurrentIndex(index)}
                     style={{
                       left: `${service.leftPercent}%`,
                       top: `${service.topPercent}%`,
                       width: `${service.sizePercent}%`,
+                      height: 0,
+                      paddingBottom: `${service.sizePercent}%`,
+                      borderWidth: service.borderColor === "#E67230" ? "3.5px" : "3px",
+                      borderColor: service.borderColor,
                     }}
-                    className="absolute -translate-x-1/2 -translate-y-1/2 z-30 aspect-square rounded-full cursor-pointer bg-transparent border-0 outline-none p-0 focus:outline-none"
+                    className="absolute -translate-x-1/2 -translate-y-1/2 z-30 rounded-full bg-white shadow-[0_8px_24px_rgba(0,0,0,0.07)] overflow-hidden select-text pointer-events-auto cursor-default box-border"
                   >
-                    <span className="sr-only">{service.title}</span>
-                  </button>
+                    {/* Inner Content Positioned Absolute to Guarantee Perfect 1:1 Circle Geometry */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-[6%] pt-[8%] pb-[9%] box-border">
+                      {/* Premium Vector Icon - cleanly sized and comfortably visible */}
+                      <div className="flex items-center justify-center w-[27%] max-w-[42px] min-w-[24px] aspect-square mb-[6%] shrink-0 select-none">
+                        {service.circleIcon}
+                      </div>
+
+                      {/* Content Group (Title & Description tightly locked together with minimal gap) */}
+                      <div className="flex flex-col items-center text-center">
+                        {/* Node Title */}
+                        <h4 className="font-extrabold text-[#111111] leading-[1.12] tracking-tight select-text text-[clamp(10px,1.2vw,14px)]">
+                          {service.circleTitle}
+                        </h4>
+
+                        {/* Node Subtitle Description - reduced gap between title and description */}
+                        <p className="mt-1 sm:mt-1.5 font-normal text-[#555555] leading-[1.2] tracking-tight select-text text-[clamp(7.5px,0.9vw,10.5px)]">
+                          {service.circleDesc}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 );
               })}
             </div>
@@ -3891,106 +3876,57 @@ export function ManagedServicesTreeSection() {
             </p>
           </div>
 
-          {/* 2. Complete Tree Illustration with All 5 Circular Nodes */}
+          {/* 2. Complete Tree Illustration with Pure Elemental UI Circles */}
           <div
             className="relative w-full max-w-[680px] mx-auto aspect-[1536/1024] flex items-center justify-center select-none my-4 sm:my-6 overflow-visible"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            {/* Tree Artwork */}
+            {/* Tree Artwork: Tree_branch.png */}
             <img
-              src={treePng}
+              src={treeBranchPng}
               alt="Managed Services Growth Tree"
-              className="w-full h-full object-contain pointer-events-none"
+              className="w-full h-full object-contain pointer-events-none opacity-85 drop-shadow-[0_8px_30px_rgba(0,0,0,0.03)]"
             />
 
-            {/* Natural Wind-Breeze Foliage Layer */}
-            <svg
-              viewBox="0 0 1536 1024"
-              className="absolute inset-0 w-full h-full pointer-events-none overflow-visible"
-              aria-hidden="true"
-            >
-              <defs>
-                <linearGradient id="overlayLeafWarmMobile" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#F9B183" />
-                  <stop offset="100%" stopColor="#E67230" />
-                </linearGradient>
-                <linearGradient id="overlayLeafBurntMobile" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#E67230" />
-                  <stop offset="100%" stopColor="#AE4E18" />
-                </linearGradient>
-                <linearGradient id="overlayLeafAmberMobile" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#FBBF7A" />
-                  <stop offset="100%" stopColor="#E67230" />
-                </linearGradient>
-                <linearGradient id="overlayLeafGoldenMobile" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0%" stopColor="#FED7AA" />
-                  <stop offset="100%" stopColor="#EA580C" />
-                </linearGradient>
-              </defs>
-
-              {/* Foliage Leaves */}
-              <g className="tree-leaf-sway-1" transform="translate(302, 364) rotate(-38)">
-                <path d="M 0 0 C -12 -20 -8 -36 0 -46 C 8 -36 12 -20 0 0 Z" fill="url(#overlayLeafWarmMobile)" opacity="0.92" />
-              </g>
-              <g className="tree-leaf-rustle" transform="translate(334, 458) rotate(-45)">
-                <path d="M 0 0 C -11 -17 -6 -30 0 -38 C 6 -30 11 -17 0 0 Z" fill="url(#overlayLeafBurntMobile)" opacity="0.94" />
-              </g>
-              <g className="tree-leaf-flutter" transform="translate(452, 266) rotate(22)">
-                <path d="M 0 0 C -10 -16 -5 -28 0 -35 C 5 -28 10 -16 0 0 Z" fill="url(#overlayLeafAmberMobile)" opacity="0.9" />
-              </g>
-              <g className="tree-leaf-breeze" transform="translate(327, 658) rotate(48)">
-                <path d="M 0 0 C -14 -22 -9 -38 0 -48 C 9 -38 14 -22 0 0 Z" fill="url(#overlayLeafGoldenMobile)" opacity="0.9" />
-              </g>
-              <g className="tree-leaf-breeze" transform="translate(564, 165) rotate(32)">
-                <path d="M 0 0 C -13 -20 -8 -36 0 -46 C 8 -36 13 -20 0 0 Z" fill="url(#overlayLeafGoldenMobile)" opacity="0.9" />
-              </g>
-              <g className="tree-leaf-sway-1" transform="translate(591, 325) rotate(-18)">
-                <path d="M 0 0 C -10 -16 -6 -30 0 -38 C 6 -30 10 -16 0 0 Z" fill="url(#overlayLeafWarmMobile)" opacity="0.9" />
-              </g>
-              <g className="tree-leaf-flutter" transform="translate(768, 110) rotate(-12)">
-                <path d="M 0 0 C -12 -18 -7 -32 0 -40 C 7 -32 12 -18 0 0 Z" fill="url(#overlayLeafAmberMobile)" opacity="0.92" />
-              </g>
-              <g className="tree-leaf-rustle" transform="translate(783, 134) rotate(26)">
-                <path d="M 0 0 C -15 -24 -9 -42 0 -52 C 9 -42 15 -24 0 0 Z" fill="url(#overlayLeafBurntMobile)" opacity="0.95" />
-              </g>
-              <g className="tree-leaf-sway-2" transform="translate(925, 171) rotate(38)">
-                <path d="M 0 0 C -12 -20 -7 -34 0 -44 C 7 -34 12 -20 0 0 Z" fill="url(#overlayLeafGoldenMobile)" opacity="0.92" />
-              </g>
-              <g className="tree-leaf-breeze" transform="translate(1078, 271) rotate(-26)">
-                <path d="M 0 0 C -11 -18 -6 -32 0 -40 C 6 -32 11 -18 0 0 Z" fill="url(#overlayLeafGoldenMobile)" opacity="0.92" />
-              </g>
-              <g className="tree-leaf-rustle" transform="translate(1107, 299) rotate(36)">
-                <path d="M 0 0 C -16 -26 -10 -44 0 -54 C 10 -44 16 -26 0 0 Z" fill="url(#overlayLeafBurntMobile)" opacity="0.95" />
-              </g>
-              <g className="tree-leaf-flutter" transform="translate(1234, 389) rotate(-34)">
-                <path d="M 0 0 C -13 -21 -8 -36 0 -46 C 8 -36 13 -21 0 0 Z" fill="url(#overlayLeafAmberMobile)" opacity="0.92" />
-              </g>
-            </svg>
-
-            {/* 5 Seamless Interactive Touch/Click Hotspots on Tree Artwork */}
-            {MANAGED_SERVICES_DATA.map((service, index) => {
-              const isSelected = currentIndex === index;
+            {/* Pure Elemental UI Circles matching Pic 2 (strictly circular on mobile, no oval distortion) */}
+            {MANAGED_SERVICES_DATA.map((service) => {
               return (
-                <button
+                <div
                   key={service.id}
-                  type="button"
                   id={`managed-tree-node-mobile-${service.id}`}
-                  aria-label={`Select ${service.title}`}
-                  aria-pressed={isSelected}
-                  onClick={() => setCurrentIndex(index)}
                   style={{
                     left: `${service.leftPercent}%`,
                     top: `${service.topPercent}%`,
                     width: `${service.sizePercent}%`,
+                    height: 0,
+                    paddingBottom: `${service.sizePercent}%`,
+                    borderWidth: service.borderColor === "#E67230" ? "2.5px" : "2px",
+                    borderColor: service.borderColor,
                   }}
-                  className={`absolute -translate-x-1/2 -translate-y-1/2 z-30 aspect-square rounded-full cursor-pointer transition-all duration-300 p-0 focus:outline-none ${isSelected
-                      ? "ring-4 ring-[#E67230]/70 ring-offset-2 ring-offset-[#FAF9F6] shadow-md"
-                      : "ring-0 hover:ring-2 hover:ring-[#E67230]/40"
-                    }`}
+                  className="absolute -translate-x-1/2 -translate-y-1/2 z-30 rounded-full bg-white shadow-[0_4px_14px_rgba(0,0,0,0.08)] overflow-hidden select-text pointer-events-auto cursor-default box-border"
                 >
-                  <span className="sr-only">{service.title}</span>
-                </button>
+                  {/* Inner Content Positioned Absolute to Guarantee Perfect 1:1 Geometry */}
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-[5%] pt-[7%] pb-[8%] box-border">
+                    {/* Premium Vector Icon */}
+                    <div className="flex items-center justify-center w-[27%] max-w-[34px] min-w-[18px] aspect-square mb-[5%] shrink-0 select-none">
+                      {service.circleIcon}
+                    </div>
+
+                    {/* Content Group (Title & Description tightly locked together with minimal gap) */}
+                    <div className="flex flex-col items-center text-center">
+                      {/* Node Title */}
+                      <h4 className="font-extrabold text-[#111111] leading-[1.1] tracking-tight select-text text-[clamp(8px,2.2vw,11.5px)]">
+                        {service.circleTitle}
+                      </h4>
+
+                      {/* Node Subtitle Description - reduced gap between title and description */}
+                      <p className="mt-1 font-normal text-[#555555] leading-[1.18] tracking-tight select-text text-[clamp(6px,1.7vw,8.5px)]">
+                        {service.circleDesc}
+                      </p>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>
@@ -4122,7 +4058,7 @@ function AyushSlideCarousel() {
                 className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${
                   isFocused
                     ? "bg-[#111111] text-[#E67230] shadow-md scale-105"
-                    : "bg-[#F3EFEA] text-[#111111] hover:bg-[#EBE5DE]"
+                    : "bg-[#FBEDE0] text-[#111111] hover:bg-[#F8E2D0] border border-[#F5DCBE]/60 shadow-[0_2px_8px_rgba(230,114,48,0.06)]"
                 }`}
               >
                 <span
@@ -5166,17 +5102,17 @@ export function MeyvedaDoctorsPage() {
         {/* Hero Content Layer (Structured Left Side) */}
         <div className="relative z-10 mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12">
           <div className="meyveda-enter max-w-[540px] lg:max-w-[580px] xl:max-w-[620px]">
-            {/* Hero Header Lockup: Eyebrow + Brand Graphic Headline (stands out by 0.1-0.2cm ~5px to the left, fitting precisely within the blue lines) */}
+            {/* Hero Header Lockup: Eyebrow + Brand Graphic Headline (aligned with exact gap and alignment matching Image 2) */}
             <div className="-ml-[5px] sm:-ml-[6px] md:-ml-[7px]">
-              {/* Section Eyebrow (Reduced in proportion to headline) */}
-              <p className="mb-2 pl-[1px] text-[12.5px] sm:text-[13.5px] lg:text-[14px] font-bold uppercase tracking-wider text-[#E67230]">
+              {/* Section Eyebrow */}
+              <p className="mb-3.5 sm:mb-4 lg:mb-4.5 pl-[1px] text-[12.5px] sm:text-[13.5px] lg:text-[14px] font-bold uppercase tracking-wider text-[#E67230] leading-none">
                 Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
               </p>
 
-              {/* Headline with Brand Graphic (Scaled to fit neatly within the blue boundary lines) */}
+              {/* Headline with Brand Graphic */}
               <h1
                 id="hero-title"
-                className="relative h-[40px] sm:h-[46px] lg:h-[52px] xl:h-[54px]"
+                className="relative h-[44px] sm:h-[50px] lg:h-[56px] xl:h-[58px]"
               >
                 <span className="sr-only">REINVENT YOUR</span>
                 <img
@@ -5184,7 +5120,7 @@ export function MeyvedaDoctorsPage() {
                   alt="REINVENT YOUR"
                   width={2144}
                   height={387}
-                  className="absolute -top-[7px] sm:-top-[9px] lg:-top-[10px] left-0 h-[64px] sm:h-[74px] lg:h-[82px] xl:h-[86px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
+                  className="absolute top-0 left-0 h-[56px] sm:h-[64px] lg:h-[72px] xl:h-[76px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
                   loading="eager"
                   decoding="async"
                 />
