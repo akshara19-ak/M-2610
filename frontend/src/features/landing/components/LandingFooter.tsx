@@ -34,13 +34,13 @@ export function LandingFooter() {
                 className="h-11 sm:h-13 lg:h-[54px] w-auto object-contain select-none transition-opacity hover:opacity-95"
               />
             </Link>
-            <p className="text-sm leading-relaxed text-[#555555]">
-              Meyveda is a proprietary digital operating system and Management Services Organization (MSO) dedicated exclusively to the AYUSH sector.
-            </p>
-            <div className="pt-2 text-xs text-[#666666] space-y-1">
+            <div className="text-xs text-[#666666] space-y-1">
               <p className="font-bold text-[#111111] uppercase tracking-wide">MEYVEDA AYUSH PRIVATE LIMITED</p>
               <p className="font-mono text-[#555555]">CIN: U86909TN2026PTC199470</p>
             </div>
+            <p className="text-sm leading-relaxed text-[#555555]">
+              Meyveda is a proprietary digital operating system and Management Services Organization (MSO) dedicated exclusively to the AYUSH sector.
+            </p>
           </div>
 
           {/* Col 2 (Span 3): Contact Information */}
