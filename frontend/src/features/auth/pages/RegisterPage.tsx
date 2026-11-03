@@ -121,12 +121,24 @@ export function Register() {
         .get<any>(`/pincode/${cleanPin}`)
         .then((res) => {
           if (!isCancelled) {
-            const postOfficeName = res?.primary_post_office?.name || res?.post_offices?.[0] || "";
-            const districtName = res?.district || res?.primary_post_office?.district || res?.division || "";
-            const detectedCity = postOfficeName && districtName && postOfficeName.toLowerCase() !== districtName.toLowerCase()
-              ? postOfficeName + ', ' + districtName
-              : districtName || postOfficeName || "";
-            const detectedState = res?.state || "";
+            // Extract clean town / post office name
+            const rawPoName = (res?.primary_post_office?.name || res?.post_offices?.[0] || "").trim();
+            const cleanTown = rawPoName
+              .replace(/\s+(Head Post Office|Sub Post Office|Branch Post Office|H\.O\.|S\.O\.|B\.O\.).*$/i, "")
+              .replace(/\s+Main Branch$/i, "")
+              .trim();
+
+            const districtName = (res?.district || res?.primary_post_office?.district || res?.division || "").trim();
+            const detectedState = (res?.state || "").trim();
+
+            // Format City cleanly: e.g. "Mannargudi, Tiruvarur" or "Begepalli, Krishnagiri" or "Chennai"
+            let detectedCity = "";
+            if (cleanTown && districtName && cleanTown.toLowerCase() !== districtName.toLowerCase()) {
+              detectedCity = `${cleanTown}, ${districtName}`;
+            } else {
+              detectedCity = districtName || cleanTown || "";
+            }
+
             if (detectedCity) {
               setCity(detectedCity);
               setStateName(detectedState);
@@ -148,14 +160,24 @@ export function Register() {
               setGoverningCouncil(null);
             }
 
-            const mainBr = res?.district || res?.primary_post_office?.district || res?.division || "Main Head Office";
-            const subBr = res?.primary_post_office?.name || res?.post_offices?.[0] || mainBr;
+            // Proper Main Apex Branch & Sub Branch
+            const mainBranchName = rawPoName.toLowerCase().includes("head post office")
+              ? rawPoName
+              : `${cleanTown || districtName} Head Post Office (H.O.)`;
+
+            const subBranchName =
+              rawPoName && rawPoName !== cleanTown && !rawPoName.toLowerCase().includes("head post office")
+                ? rawPoName
+                : cleanTown
+                ? `${cleanTown} Delivery Sub Branch`
+                : `${districtName} Delivery Unit`;
+
             const brType = res?.primary_post_office?.branch_type || "Post Office";
             setPostalBranchDetails({
-              mainBranch: `${mainBr} Main Branch`,
-              subBranch: subBr !== mainBr ? `${subBr} (${brType})` : `${subBr} Branch`,
+              mainBranch: mainBranchName,
+              subBranch: subBranchName,
               branchType: brType,
-              district: districtName || mainBr,
+              district: districtName,
               state: detectedState,
             });
           }
