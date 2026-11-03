@@ -5215,10 +5215,7 @@ export function MeyvedaDoctorsPage() {
               YOUR NEXT CHAPTER STARTS HERE!
             </h2>
 
-            {/* Supporting paragraph text */}
-            <p className="mt-2.5 max-w-[500px] text-xs sm:text-sm leading-relaxed text-[#555555]">
-              Bring trusted <strong className="font-bold text-[#E65C24]">AYUSH</strong> knowledge, clinical insights, and dynamic practice management together in one unified platform. Discover how Meyveda connects you to a verified peer community, empowering you to strengthen your clinic, deepen your expertise, and grow with confidence.
-            </p>
+
 
             {/* Action Buttons: Request for Early Access CTA */}
             <div className="mt-5 flex flex-wrap items-center gap-3">
