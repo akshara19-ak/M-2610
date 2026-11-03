@@ -35,10 +35,7 @@ export interface ReferralsSearchParams {
 
 export const Route = createFileRoute("/_ws/referrals")({
   validateSearch: (s: Record<string, unknown>): ReferralsSearchParams => ({
-    tab:
-      s["tab"] === "overview" || s["tab"] === "history"
-        ? (s["tab"] as ReferralsSearchParams["tab"])
-        : undefined,
+    tab: s["tab"] === "history" ? "history" : "overview",
     status: typeof s["status"] === "string" ? s["status"] : undefined,
     q: typeof s["q"] === "string" ? s["q"] : undefined,
   }),
@@ -65,7 +62,7 @@ export function ReferralsPage() {
   const referrals = useStore((s) => s.referrals);
   const referralAccount = useStore((s) => s.referralAccount);
 
-  const activeTab = search.tab || "overview";
+  const activeTab = search.tab === "history" ? "history" : "overview";
   const statusFilter = search.status || "All";
   const q = search.q || "";
 
