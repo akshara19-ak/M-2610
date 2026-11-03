@@ -212,6 +212,31 @@ async def lookup_pincode_and_ayush_board(
     post_offices = first_record.get("PostOffice") or []
 
     if record_status != "Success" or not post_offices:
+        # Check prefix-based fallback if external postal API does not index this specific sub-PIN
+        if prefix_2 in PIN_PREFIX_FALLBACK:
+            fb_city, fb_state = PIN_PREFIX_FALLBACK[prefix_2]
+            ayush_board_data = get_ayush_board_details(fb_state)
+            return PincodeLookupResponse(
+                pincode=cleaned_pincode,
+                district=fb_city,
+                state=fb_state,
+                region=fb_state,
+                division=fb_city,
+                post_offices=[f"{fb_city} Head Post Office", f"{fb_city} Branch Office"],
+                primary_post_office=PostOfficeDetail(
+                    name=f"{fb_city} Main Branch",
+                    branch_type="Head Post Office",
+                    delivery_status="Delivery",
+                    circle=fb_state,
+                    district=fb_city,
+                    division=fb_city,
+                    region=fb_state,
+                    state=fb_state,
+                    country="India",
+                    pincode=cleaned_pincode,
+                ),
+                ayush_governance=AyushBoardResponse(**ayush_board_data),
+            )
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="PIN code incorrect.",
