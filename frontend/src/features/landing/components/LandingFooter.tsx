@@ -82,7 +82,7 @@ export function LandingFooter() {
               <li className="flex items-center gap-2.5">
                 <Phone className="size-4 text-[#E67230] shrink-0" />
                 <a
-                  href="tel:998-MEYVEDA"
+                  href="tel:+919986398332"
                   className="hover:text-[#E67230] transition-colors font-medium"
                 >
                   998-MEYVEDA

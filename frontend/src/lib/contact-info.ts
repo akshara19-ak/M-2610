@@ -7,7 +7,7 @@ export const MEYVEDA_CONTACT = {
   companyName: "Meyveda Ayush Private Limited",
   cin: "U86909TN2026PTC199470",
   email: "contact@meyveda.com",
-  phone: "+91 9986398332",
+  phone: "+919986398332",
   phoneDisplay: "998-MEYVEDA",
   phoneFormatted: "998-MEYVEDA",
   phoneNumericFormatted: "+91 99863 98332",
