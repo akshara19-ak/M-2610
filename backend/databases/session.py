@@ -91,4 +91,13 @@ def init_db():
     Create tables and seed initial data if needed.
     """
     import databases.schema.models  # noqa: F401
+    # Automatically ensure PostgreSQL enum values exist if running on Postgres
+    try:
+        with engine.connect() as conn:
+            conn.execute(text("ALTER TYPE user_role ADD VALUE IF NOT EXISTS 'content_manager'"))
+            conn.commit()
+    except Exception:
+        # Ignore if SQLite or already exists
+        pass
+
     Base.metadata.create_all(bind=engine)
