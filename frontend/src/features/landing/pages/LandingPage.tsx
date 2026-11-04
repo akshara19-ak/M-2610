@@ -2960,13 +2960,7 @@ function PracticeSuiteScrollSection({
                           {item.description}
                         </p>
 
-                        {/* Reference Detail Strip */}
-                        <div className="mt-4 flex items-center gap-2 rounded-lg border border-[#EBE7DF]/80 bg-[#FAF9F6] px-3 py-2 text-xs text-[#333333] transition-colors group-hover:bg-white group-hover:border-[#E67230]/30">
-                          <span className="size-1.5 rounded-full bg-[#E67230] shrink-0" />
-                          <span className="font-mono text-[11px] text-[#666666] truncate">
-                            {item.referenceDetail}
-                          </span>
-                        </div>
+                        
                       </div>
                     </a>
                   </div>
@@ -3042,13 +3036,7 @@ function PracticeSuiteScrollSection({
                         {item.description}
                       </p>
 
-                      {/* Reference Detail Strip */}
-                      <div className="mt-4 flex items-center gap-2 rounded-lg border border-[#EBE7DF]/80 bg-[#FAF9F6] px-3 py-2 text-xs text-[#333333]">
-                        <span className="size-1.5 rounded-full bg-[#E67230] shrink-0" />
-                        <span className="font-mono text-[11px] text-[#666666] truncate">
-                          {item.referenceDetail}
-                        </span>
-                      </div>
+                      
                     </div>
                   </a>
                 </div>

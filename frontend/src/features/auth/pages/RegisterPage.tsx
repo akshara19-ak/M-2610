@@ -1291,7 +1291,7 @@ export function Register() {
                         type="text"
                         required
                         maxLength={5}
-                        placeholder="MSV77"
+                        placeholder=""
                         value={inviteCode}
                         onChange={(e) => {
                           const val = e.target.value.toUpperCase().slice(0, 5);
