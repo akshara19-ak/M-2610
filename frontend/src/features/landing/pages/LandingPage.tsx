@@ -3169,6 +3169,21 @@ export function CoreVaidyaSection() {
     return () => window.removeEventListener("resize", checkMedia);
   }, []);
 
+  // Auto-advance active service every 2 seconds only on mobile (< 1024px / !isDesktop)
+  useEffect(() => {
+    if (isDesktop) return;
+
+    const timer = setInterval(() => {
+      setSelectedId((prev) => {
+        const curIdx = CORE_VAIDYA_SERVICES.findIndex((s) => s.id === prev);
+        const nextIdx = (curIdx + 1) % CORE_VAIDYA_SERVICES.length;
+        return CORE_VAIDYA_SERVICES[nextIdx].id;
+      });
+    }, 2000);
+
+    return () => clearInterval(timer);
+  }, [isDesktop]);
+
   useEffect(() => {
     if (!isDesktop || reducedMotion) return;
 
@@ -3491,7 +3506,7 @@ export function CoreVaidyaSection() {
                     id={`core-vaidya-mobile-circle-${service.id}`}
                     aria-pressed={isCurrent}
                     onClick={() => setSelectedId(service.id)}
-                    className={`aspect-square rounded-full p-3 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E67230] ${isCurrent
+                    className={`aspect-square rounded-full p-3 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#E67230] ${idx === 4 ? "col-span-2 justify-self-center w-[130px] sm:w-[140px]" : "w-full"} ${isCurrent
                       ? "scale-105 border-2 border-white ring-2 ring-[#E67230] opacity-100 shadow-lg"
                       : "border border-white/40 opacity-65 hover:opacity-90 shadow-sm"
                       }`}
@@ -3560,7 +3575,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "iaas",
     number: "01",
-    title: "IaaS",
+    title: "Infrastructure-as-a-Service (IaaS)",
     description:
       "Instant infrastructure for healthcare & business needs. Deployable, plug-and-play co-working physical spaces and tele-health to bypass heavy initial capital expenditures.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
@@ -3586,7 +3601,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "global-opportunities",
     number: "02",
-    title: "Global Opportunities",
+    title: "Global Patient Sourcing & MVT Footprint",
     description:
       "Expand your reach with MVT worldwide. Centralized marketplace driving patient acquisition locally and internationally via Medical Value Travel (MVT).",
     gradient: "linear-gradient(135deg, #F37E38 0%, #D86423 50%, #B84E14 100%)",
@@ -3616,7 +3631,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "operating-support-system",
     number: "03",
-    title: "Operating Support System",
+    title: "Enterprise Logistics, NHCX Claims & M-CAMP Engine",
     description:
       "Seamless logistics & claim management. Frictionless NHCX cashless claim settlements, corporate camp engines, and complete end-to-end operational backing.",
     gradient: "linear-gradient(135deg, #F98F4B 0%, #E67230 50%, #C95618 100%)",
@@ -3646,7 +3661,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "mso-backbone",
     number: "04",
-    title: "MSO back bone",
+    title: "MSO Backbone & Financial Command Center",
     description:
       "Scale smarter with our MSO support. Financial command center, regulatory compliance, and administrative infrastructure for hub-and-spoke expansion.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
@@ -3670,7 +3685,7 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
   {
     id: "innovation-expansion",
     number: "05",
-    title: "innovation & expansion",
+    title: "Brand Incubation & Clinical Research Hub",
     description:
       "Research, innovate & grow with us. Clinical trial management (CTMS), brand incubation, and mentorship programs for launching groundbreaking AYUSH therapies.",
     gradient: "linear-gradient(135deg, #DD6724 0%, #BE561A 50%, #9F400F 100%)",
@@ -3700,14 +3715,16 @@ const MANAGED_SERVICES_DATA: ManagedServiceNode[] = [
 ];
 export function ManagedServicesTreeSection() {
   const [currentIndex, setCurrentIndex] = useState<number>(0);
+  const touchStartXRef = useRef<number | null>(null);
+  const touchDeltaXRef = useRef<number>(0);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
-  // Automatic cycling every 3 seconds across all 5 nodes in order
+  // Automatic cycling every 2 seconds across all 5 nodes in order
   useEffect(() => {
     if (isHovered) return;
     const interval = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % MANAGED_SERVICES_DATA.length);
-    }, 3000);
+    }, 2000);
     return () => clearInterval(interval);
   }, [isHovered]);
 
@@ -3767,7 +3784,31 @@ export function ManagedServicesTreeSection() {
             </div>
 
             {/* Smooth Sliding Carousel Viewport */}
-            <div className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300 touch-pan-y"
+              onTouchStart={(e) => {
+                touchStartXRef.current = e.touches[0].clientX;
+                touchDeltaXRef.current = 0;
+              }}
+              onTouchMove={(e) => {
+                if (touchStartXRef.current !== null) {
+                  touchDeltaXRef.current = e.touches[0].clientX - touchStartXRef.current;
+                }
+              }}
+              onTouchEnd={() => {
+                if (touchStartXRef.current !== null) {
+                  if (touchDeltaXRef.current < -40) {
+                    // Swiped left -> next slide
+                    setCurrentIndex((prev) => (prev + 1) % MANAGED_SERVICES_DATA.length);
+                  } else if (touchDeltaXRef.current > 40) {
+                    // Swiped right -> prev slide
+                    setCurrentIndex((prev) => (prev - 1 + MANAGED_SERVICES_DATA.length) % MANAGED_SERVICES_DATA.length);
+                  }
+                }
+                touchStartXRef.current = null;
+                touchDeltaXRef.current = 0;
+              }}
+            >
               <div
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -3991,7 +4032,31 @@ export function ManagedServicesTreeSection() {
             onMouseLeave={() => setIsHovered(false)}
           >
             {/* Sliding Card */}
-            <div className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300">
+            <div
+              className="relative overflow-hidden rounded-2xl border border-[#EBE7DF] bg-white shadow-sm transition-all duration-300 touch-pan-y"
+              onTouchStart={(e) => {
+                touchStartXRef.current = e.touches[0].clientX;
+                touchDeltaXRef.current = 0;
+              }}
+              onTouchMove={(e) => {
+                if (touchStartXRef.current !== null) {
+                  touchDeltaXRef.current = e.touches[0].clientX - touchStartXRef.current;
+                }
+              }}
+              onTouchEnd={() => {
+                if (touchStartXRef.current !== null) {
+                  if (touchDeltaXRef.current < -40) {
+                    // Swiped left -> next slide
+                    setCurrentIndex((prev) => (prev + 1) % MANAGED_SERVICES_DATA.length);
+                  } else if (touchDeltaXRef.current > 40) {
+                    // Swiped right -> prev slide
+                    setCurrentIndex((prev) => (prev - 1 + MANAGED_SERVICES_DATA.length) % MANAGED_SERVICES_DATA.length);
+                  }
+                }
+                touchStartXRef.current = null;
+                touchDeltaXRef.current = 0;
+              }}
+            >
               <div
                 className="flex transition-transform duration-700 ease-in-out"
                 style={{ transform: `translateX(-${currentIndex * 100}%)` }}
@@ -4079,8 +4144,11 @@ export function ManagedServicesTreeSection() {
 function AyushSlideCarousel() {
   const [focusedIndex, setFocusedIndex] = useState(0);
 
-  // Stepping in loop: focuses each element for 2.8 seconds, then advances left to right
+  // Stepping in loop: on tablet/desktop (min-width: 640px), focuses each element for 2.8s
   useEffect(() => {
+    // Only run the stepping animation if screen is desktop/tablet (sm and up)
+    if (typeof window === "undefined" || window.innerWidth < 640) return;
+
     const timer = setInterval(() => {
       setFocusedIndex((prev) => (prev + 1) % AYUSH_SYSTEMS.length);
     }, 2800);
@@ -4089,7 +4157,7 @@ function AyushSlideCarousel() {
   }, []);
 
   return (
-    <div className="my-2.5 sm:my-3 w-full">
+    <div className="mt-3.5 mb-2.5 sm:mt-4 sm:mb-3 w-full">
       {/* 
         Bounded strictly between the blue line guidelines:
         Width spans max-w-[390px] sm:max-w-[440px] lg:max-w-[480px] xl:max-w-[505px]
@@ -4104,39 +4172,51 @@ function AyushSlideCarousel() {
               key={sys.letter}
               type="button"
               onClick={() => setFocusedIndex(idx)}
-              className="group inline-flex items-center gap-2 sm:gap-2.5 focus:outline-none shrink-0"
+              className="group inline-flex items-center gap-1.5 sm:gap-2.5 focus:outline-none shrink-0"
             >
-              {/* Icon Circle (Enlarged, smoothly turns into bold black circle when focused) */}
+              {/* Icon Circle */}
               <div
-                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out ${isFocused
-                    ? "bg-[#111111] text-[#E67230] shadow-md scale-105"
-                    : "bg-[#FBEDE0] text-[#111111] hover:bg-[#F8E2D0] border border-[#F5DCBE]/60 shadow-[0_2px_8px_rgba(230,114,48,0.06)]"
+                className={`size-[38px] sm:size-[42px] lg:size-[46px] rounded-full flex items-center justify-center shrink-0 transition-all duration-400 ease-out bg-[#FBEDE0] text-[#111111] hover:bg-[#F8E2D0] border border-[#F5DCBE]/60 shadow-[0_2px_8px_rgba(230,114,48,0.06)] ${
+                  isFocused
+                    ? "sm:bg-[#111111] sm:text-[#E67230] sm:shadow-md sm:scale-105"
+                    : ""
                 }`}
               >
                 <span
-                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 ${isFocused ? "text-[#E67230]" : "text-[#111111]"
-                    }`}
+                  className={`shrink-0 flex items-center justify-center transition-colors duration-300 text-[#111111] ${
+                    isFocused ? "sm:text-[#E67230]" : ""
+                  }`}
                 >
                   {sys.icon}
                 </span>
               </div>
 
-              {/* Text Container: cross-fades cleanly between the initial letter and the full cohesive name */}
+              {/* Text Container */}
               <div className="relative flex items-center">
-                {/* 1. Unfocused State: Single bold letter (A, Y, U, S, H) in brand orange */}
+                {/* 
+                  Letter (A, Y, U, S, H):
+                  - On mobile (<sm): Always visible, static, brand orange, no expanding animation.
+                  - On desktop (sm+): Cross-fades out when expanded.
+                */}
                 <span
-                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight transition-opacity duration-300 ${isFocused ? "opacity-0 absolute pointer-events-none" : "opacity-100"
-                    }`}
+                  className={`text-base sm:text-lg lg:text-[19px] font-extrabold uppercase text-[#E67230] tracking-tight ${
+                    isFocused ? "opacity-100 sm:opacity-0 sm:absolute sm:pointer-events-none" : "opacity-100"
+                  }`}
                 >
                   {sys.letter}
                 </span>
 
-                {/* 2. Focused State: Smoothly expands as ONE unified cohesive name (same size/boldness as headline) */}
+                {/* 
+                  Expanded text (Ayurveda, Yoga and Naturopathy, etc.):
+                  - On mobile (<sm): Completely hidden (hidden sm:flex).
+                  - On desktop (sm+): Smoothly expands when focused.
+                */}
                 <div
-                  className={`overflow-hidden transition-all duration-500 ease-out flex items-center ${isFocused
+                  className={`hidden sm:flex overflow-hidden transition-all duration-500 ease-out items-center ${
+                    isFocused
                       ? "max-w-[210px] opacity-100"
                       : "max-w-0 opacity-0 pointer-events-none"
-                    }`}
+                  }`}
                 >
                   {sys.isTwoLine ? (
                     <span className="whitespace-nowrap text-xs sm:text-[13.5px] lg:text-[14.5px] font-extrabold uppercase leading-[1.15] tracking-tight text-[#111111]">
@@ -5137,7 +5217,7 @@ export function MeyvedaDoctorsPage() {
       {/* ==================================================================== */}
       <section
         aria-labelledby="hero-title"
-        className="relative flex min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-5.5rem)] lg:max-h-[820px] items-center overflow-hidden bg-[#FAF9F6] py-8 sm:py-10 lg:py-0 scroll-mt-20 sm:scroll-mt-22"
+        className="relative flex min-h-[calc(100vh-5rem)] lg:min-h-[calc(100vh-5.5rem)] lg:h-[calc(100vh-5.5rem)] lg:max-h-[820px] items-end sm:items-center overflow-hidden bg-[#FAF9F6] pt-16 pb-12 sm:py-10 lg:py-0 scroll-mt-20 sm:scroll-mt-22"
         id="top"
       >
         {/* Full-Bleed Background Video Layer */}
@@ -5160,7 +5240,7 @@ export function MeyvedaDoctorsPage() {
           {/* Fading transition begins around the horizontal position where 'Next' ends (~36-40%) and clears quickly */}
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#FAF9F6]/85 via-[#FAF9F6]/45 to-transparent sm:from-[#FAF9F6]/80 sm:via-[#FAF9F6]/35 sm:to-transparent lg:bg-gradient-to-r lg:from-[#FAF9F6]/95 lg:from-0% lg:via-[#FAF9F6]/90 lg:via-26% lg:via-[#FAF9F6]/55 lg:via-36% lg:via-[#FAF9F6]/15 lg:via-44% lg:to-transparent lg:to-50%"
+            className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#FAF9F6]/95 via-[#FAF9F6]/60 via-35% to-transparent sm:bg-gradient-to-b sm:from-[#FAF9F6]/80 sm:via-[#FAF9F6]/35 sm:to-transparent lg:bg-gradient-to-r lg:from-[#FAF9F6]/95 lg:from-0% lg:via-[#FAF9F6]/90 lg:via-26% lg:via-[#FAF9F6]/55 lg:via-36% lg:via-[#FAF9F6]/15 lg:via-44% lg:to-transparent lg:to-50%"
           />
         </div>
 
@@ -5174,10 +5254,10 @@ export function MeyvedaDoctorsPage() {
                 Dear <strong className="font-bold text-[#E65C24]">AYUSH</strong> Practitioners
               </p>
 
-              {/* Headline with Brand Graphic */}
+              {/* Headline with Brand Graphic - Extra Enlarged for bold prominent presence */}
               <h1
                 id="hero-title"
-                className="relative h-[44px] sm:h-[50px] lg:h-[56px] xl:h-[58px]"
+                className="relative h-[64px] sm:h-[76px] lg:h-[90px] xl:h-[102px]"
               >
                 <span className="sr-only">REINVENT YOUR</span>
                 <img
@@ -5185,7 +5265,7 @@ export function MeyvedaDoctorsPage() {
                   alt="REINVENT YOUR"
                   width={2144}
                   height={387}
-                  className="absolute top-0 left-0 h-[56px] sm:h-[64px] lg:h-[72px] xl:h-[76px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
+                  className="absolute top-0 left-0 h-[80px] sm:h-[96px] lg:h-[114px] xl:h-[128px] w-auto max-w-full object-contain object-left pointer-events-none select-none"
                   loading="eager"
                   decoding="async"
                 />
@@ -5214,16 +5294,13 @@ export function MeyvedaDoctorsPage() {
               YOUR NEXT CHAPTER STARTS HERE!
             </h2>
 
-            {/* Supporting paragraph text */}
-            <p className="mt-2.5 max-w-[500px] text-xs sm:text-sm leading-relaxed text-[#555555]">
-              Bring trusted <strong className="font-bold text-[#E65C24]">AYUSH</strong> knowledge, clinical insights, and dynamic practice management together in one unified platform. Discover how Meyveda connects you to a verified peer community, empowering you to strengthen your clinic, deepen your expertise, and grow with confidence.
-            </p>
 
-            {/* Action Buttons: Request for Early Access CTA */}
-            <div className="mt-5 flex flex-wrap items-center gap-3">
+
+            {/* Action Buttons: Request for Early Access CTA placed down with clean breathing room */}
+            <div className="mt-7 sm:mt-8 lg:mt-9 flex flex-wrap items-center gap-3">
               <RegisterPrimaryButton
                 size="default"
-                className="h-11 sm:h-12 px-6 text-sm sm:text-[15px] uppercase font-bold tracking-wide"
+                className="h-12 sm:h-13 px-7 text-sm sm:text-[15px] uppercase font-bold tracking-wide shadow-md hover:shadow-lg transition-all"
 
               >
                 REQUEST FOR EARLY ACCESS
@@ -5554,7 +5631,7 @@ export function MeyvedaDoctorsPage() {
                   <MapPin className="size-4 text-[#E67230] shrink-0 mt-0.5" />
                   <div>
                     <a
-                      href="https://maps.google.com/?q=200+Feet+Radial+Rd%2C+Boopathy+Nagar%2C+Kovilambakkam%2C+Tambaram%2C+Tamil+Nadu+600117"
+                      href="https://maps.app.goo.gl/WHz1KTARf1hsfqJx9"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="hover:text-[#E67230] transition-colors underline flex items-center gap-1"

@@ -59,7 +59,7 @@ export function LandingFooter() {
                 <MapPin className="size-4 text-[#E67230] shrink-0 mt-0.5" />
                 <div>
                   <a
-                    href="https://maps.app.goo.gl/TBF4mn7xpvhgyppt9"
+                    href="https://maps.app.goo.gl/WHz1KTARf1hsfqJx9"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hover:text-[#E67230] transition-colors underline flex items-center gap-1"
